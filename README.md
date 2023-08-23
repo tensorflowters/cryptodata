@@ -1,4 +1,4 @@
-# Dataviz system design
+# Dataviz
 
 ## Sytem Design
 
@@ -68,3 +68,21 @@ We should also consider setting up an automation tool or CI/CD pipeline, like Je
 
 - [Jenkins](https://www.jenkins.io/)
 - [GitHub Actions](https://github.com)
+
+## Feeds
+
+We'll use the following news feeds:
+
+- [CryptoPanic](https://cryptopanic.com/news/)
+
+## Data schema
+
+## News object
+
+A news should have the following attributes:
+
+- `id`: unique identifier
+- `title`: title of the news
+- `datetime`: date of the news
+- `description`: description of the news
+- `url`: url of the news
