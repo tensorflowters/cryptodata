@@ -42,7 +42,7 @@ class TestArgparseHelper(TestCase):
             action="store",
             required=False,
             help="The settings file to read from",
-            default="localsettings.py",
+            default="settings.py",
         )
 
         feed_parser = subparsers.add_parser(

@@ -89,7 +89,7 @@ class ZookeeperWatcher(object):
         Spawns a worker thread to set up the zookeeper connection
         """
         thread = Thread(target=self.init_connections, kwargs={"no_init": no_init})
-        thread.setDaemon(True)
+        thread.daemon = True
         thread.start()
         thread.join()
 

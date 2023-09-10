@@ -27,7 +27,7 @@ class SettingsWrapper(object):
     def _init__(self):
         pass
 
-    def load(self, local="localsettings.py", default="settings.py"):
+    def load(self, local="settings.py", default="settings.py"):
         """
         Load the settings dict
 
@@ -82,7 +82,7 @@ class SettingsWrapper(object):
         except ImportError:
             log.warning("No default settings found")
 
-    def _load_custom(self, settings_name="localsettings.py"):
+    def _load_custom(self, settings_name="settings.py"):
         """
         Load the user defined settings, overriding the defaults
 

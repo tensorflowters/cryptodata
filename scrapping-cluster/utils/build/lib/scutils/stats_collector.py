@@ -418,7 +418,7 @@ class ThreadedCounter(AbstractCounter):
         """
         self.active = True
         self.thread = Thread(target=self._main_loop)
-        self.thread.setDaemon(True)
+        self.thread.daemon = True
         self.thread.start()
 
     def deactivate(self):

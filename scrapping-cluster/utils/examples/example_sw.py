@@ -17,7 +17,7 @@ parser.add_argument(
     action="store",
     required=False,
     help="The override settings file",
-    default="localsettings.py",
+    default="settings.py",
 )
 parser.add_argument(
     "-v",

@@ -787,7 +787,7 @@ if __name__ == "__main__":
         action="store",
         required=False,
         help="The settings file to read from",
-        default="localsettings.py",
+        default="settings.py",
     )
     parser.add_argument(
         "-ll",

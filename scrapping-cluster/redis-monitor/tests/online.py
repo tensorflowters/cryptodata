@@ -42,10 +42,8 @@ class TestRedisMonitor(TestCase):
     consumer = None
 
     def setUp(self):
-        self.redis_monitor = RedisMonitor("localsettings.py")
-        self.redis_monitor.settings = self.redis_monitor.wrapper.load(
-            "localsettings.py"
-        )
+        self.redis_monitor = RedisMonitor("settings.py")
+        self.redis_monitor.settings = self.redis_monitor.wrapper.load("settings.py")
         self.redis_monitor.logger = MagicMock()
         self.redis_monitor.settings["KAFKA_TOPIC_PREFIX"] = "demo_test"
         self.redis_monitor.settings["STATS_TOTAL"] = False

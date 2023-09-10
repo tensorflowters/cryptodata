@@ -7,7 +7,7 @@ def str2bool(v):
     return str(v).lower() in ("true", "1") if type(v) == str else bool(v)
 
 
-# Scrapy Cluster Settings
+# SCRAPY CLUSTER SETTINGS
 
 # Specify the host, port and password to use when connecting to Redis.
 REDIS_DB = int(os.getenv("REDIS_DB", 0))
@@ -110,7 +110,7 @@ SC_LOG_BACKUPS = 5
 SC_LOG_DIR = os.getenv("SC_LOG_DIR", "logs")
 SC_LOG_FILE = "sc_crawler.log"
 SC_LOG_JSON = str2bool(os.getenv("SC_LOG_JSON", False))
-SC_LOG_LEVEL = os.getenv("SC_LOG_LEVEL", "INFO")
+SC_LOG_LEVEL = os.getenv("SC_LOG_LEVEL", "DEBUG")
 SC_LOG_MAX_BYTES = 10 * 1024 * 1024
 SC_LOG_STDOUT = str2bool(os.getenv("SC_LOG_STDOUT", True))
 SC_LOGGER_NAME = "sc-crawler"
@@ -175,7 +175,7 @@ DOWNLOADER_MIDDLEWARES = {
 }
 
 # Disable the built in logging in production
-LOG_ENABLED = str2bool(os.getenv("LOG_ENABLED", False))
+LOG_ENABLED = str2bool(os.getenv("LOG_ENABLED", True))
 
 # Allow all return codes
 HTTPERROR_ALLOW_ALL = True
@@ -186,3 +186,5 @@ DOWNLOAD_TIMEOUT = 10
 
 # Avoid in-memory DNS cache. See Advanced topics of docs for info
 DNSCACHE_ENABLED = True
+
+REQUEST_FINGERPRINTER_IMPLEMENTATION = "2.7"

@@ -13,7 +13,6 @@ from . import settings
 new_settings = Settings()
 new_settings.setmodule(settings)
 
-from scrapy.utils.python import to_unicode
 from scrapy.utils.request import request_from_dict
 
 import redis

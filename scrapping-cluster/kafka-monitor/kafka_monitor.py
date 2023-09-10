@@ -570,7 +570,7 @@ def main():
         action="store",
         required=False,
         help="The settings file to read from",
-        default="localsettings.py",
+        default="settings.py",
     )
     base_parser.add_argument(
         "-ll",
