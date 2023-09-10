@@ -48,10 +48,18 @@ services:
         restart: always
 
     zookeeper:
-        image: wurstmeister/zookeeper
+        image: zookeeper:3.9.0
+        environment:
+            ZOO_MY_ID: 1
+            ZOO_PORT: 2181
         ports:
             - '2181:2181'
+            - '8081:8081'
         restart: always
+        volumes:
+            - ./utils/config/zoo.cfg:/conf/zoo.cfg
+            - zookeeper_data:/data
+            - zookeeper_datalog:/datalog
 
     kafka:
         image: wurstmeister/kafka
@@ -66,3 +74,9 @@ services:
         depends_on:
             - zookeeper
         restart: always
+
+volumes:
+    zookeeper_data:
+        driver: local
+    zookeeper_datalog:
+        driver: local
