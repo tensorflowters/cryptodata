@@ -1,0 +1,95 @@
+version: '3'
+
+networks:
+  app:
+    driver: bridge
+
+volumes:
+  postgresql_data:
+  redis_data:
+  kafka_data:
+  zookeeper_data:
+
+services:
+  postgresql:
+    image: 'bitnami/postgresql:latest'
+    environment:
+      - POSTGRESQL_DATABASE=bitnami_airflow
+      - POSTGRESQL_USERNAME=bn_airflow
+      - POSTGRESQL_PASSWORD=bitnami1
+    volumes:
+      - postgresql_data:/bitnami/postgresql
+    networks:
+      - app
+
+  redis:
+    image: 'bitnami/redis:latest'
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+    volumes:
+      - redis_data:/bitnami
+    networks:
+      - app
+
+  airflow-worker:
+    image: bitnami/airflow-worker:latest
+    environment:
+      - AIRFLOW_FERNET_KEY=46BKJoQYlPPOexq0OhDZnIlNepKFf87WFwLbfzqDDho=
+      - AIRFLOW_SECRET_KEY=a25mQ1FHTUh3MnFRSk5KMEIyVVU2YmN0VGRyYTVXY08=
+      - AIRFLOW_EXECUTOR=CeleryExecutor
+      - AIRFLOW_DATABASE_NAME=bitnami_airflow
+      - AIRFLOW_DATABASE_USERNAME=bn_airflow
+      - AIRFLOW_DATABASE_PASSWORD=bitnami1
+      - AIRFLOW_LOAD_EXAMPLES=yes
+    networks:
+      - app
+
+  airflow-scheduler:
+    image: bitnami/airflow-scheduler:latest
+    environment:
+      - AIRFLOW_FERNET_KEY=46BKJoQYlPPOexq0OhDZnIlNepKFf87WFwLbfzqDDho=
+      - AIRFLOW_SECRET_KEY=a25mQ1FHTUh3MnFRSk5KMEIyVVU2YmN0VGRyYTVXY08=
+      - AIRFLOW_EXECUTOR=CeleryExecutor
+      - AIRFLOW_DATABASE_NAME=bitnami_airflow
+      - AIRFLOW_DATABASE_USERNAME=bn_airflow
+      - AIRFLOW_DATABASE_PASSWORD=bitnami1
+      - AIRFLOW_LOAD_EXAMPLES=yes
+    networks:
+      - app
+
+  airflow:
+    image: bitnami/airflow:latest
+    environment:
+      - AIRFLOW_FERNET_KEY=46BKJoQYlPPOexq0OhDZnIlNepKFf87WFwLbfzqDDho=
+      - AIRFLOW_SECRET_KEY=a25mQ1FHTUh3MnFRSk5KMEIyVVU2YmN0VGRyYTVXY08=
+      - AIRFLOW_EXECUTOR=CeleryExecutor
+      - AIRFLOW_DATABASE_NAME=bitnami_airflow
+      - AIRFLOW_DATABASE_USERNAME=bn_airflow
+      - AIRFLOW_DATABASE_PASSWORD=bitnami1
+      - AIRFLOW_PASSWORD=bitnami123
+      - AIRFLOW_USERNAME=user
+      - AIRFLOW_EMAIL=user@example.com
+    ports:
+      - '8080:8080'
+    networks:
+      - app
+
+  kafka:
+    image: 'bitnami/kafka:latest'
+    networks:
+      - app
+    volumes:
+      - kafka_data:/bitnami/kafka
+    environment:
+      - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181
+      - KAFKA_CFG_AUTO_CREATE_TOPICS_ENABLE=true
+      - ALLOW_PLAINTEXT_LISTENER=yes
+
+  zookeeper:
+    image: 'bitnami/zookeeper:latest'
+    networks:
+      - app
+    volumes:
+      - zookeeper_data:/bitnami/zookeeper
+    environment:
+      - ALLOW_ANONYMOUS_LOGIN=yes
