@@ -73,6 +73,8 @@ services:
       - '8080:8080'
     networks:
       - app
+    volumes:
+      - ./airflow/dags:/opt/bitnami/airflow/dags
 
   kafka:
     image: 'bitnami/kafka:latest'
