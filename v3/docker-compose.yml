@@ -1,0 +1,10 @@
+version: "3.9"
+
+services:
+    scrapper:
+        build:
+            context: ./scraper
+            dockerfile: scraper.dockerfile
+        command: ["python", "main.py"]
+        volumes:
+            - ./scraper/main.py:/home/scraper/main.py
