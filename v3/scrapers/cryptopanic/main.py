@@ -6,6 +6,7 @@ import hashlib
 import json
 import pendulum
 
+
 def get_sha256_hash(url):
     m = hashlib.sha256()
     m.update(url.encode('utf-8'))
