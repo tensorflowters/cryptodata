@@ -16,3 +16,7 @@ New workflow:
 - Grafana display data from database (not yet added to compose file)
 
 README.md is probably not up to date, I'll update it later.
+
+### Update
+
+Finished a working testing scraper
