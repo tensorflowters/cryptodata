@@ -1788,3 +1788,157 @@ jinja2.exceptions.TemplateNotFound: ./start.sh
 [2023-10-21T02:04:37.882+0000] {logging_mixin.py:151} INFO - [2023-10-21T02:04:37.882+0000] {dag.py:2941} INFO - Sync 1 DAGs
 [2023-10-21T02:04:37.896+0000] {logging_mixin.py:151} INFO - [2023-10-21T02:04:37.895+0000] {dag.py:3722} INFO - Setting next_dagrun for scrap_scryptopanic to 2023-10-21T01:59:37.895830+00:00, run_after=2023-10-21T02:04:37.895830+00:00
 [2023-10-21T02:04:37.906+0000] {processor.py:179} INFO - Processing /opt/airflow/dags/scraping/cryptopanic.py took 0.043 seconds
+[2023-10-21T02:05:08.352+0000] {processor.py:157} INFO - Started process (PID=6475) to work on /opt/airflow/dags/scraping/cryptopanic.py
+[2023-10-21T02:05:08.352+0000] {processor.py:829} INFO - Processing file /opt/airflow/dags/scraping/cryptopanic.py for tasks to queue
+[2023-10-21T02:05:08.353+0000] {logging_mixin.py:151} INFO - [2023-10-21T02:05:08.353+0000] {dagbag.py:536} INFO - Filling up the DagBag from /opt/airflow/dags/scraping/cryptopanic.py
+[2023-10-21T02:05:08.359+0000] {logging_mixin.py:151} INFO - [2023-10-21T02:05:08.358+0000] {templater.py:76} ERROR - Failed to resolve template field 'bash_command'
+Traceback (most recent call last):
+  File "/home/airflow/.local/lib/python3.8/site-packages/airflow/template/templater.py", line 74, in resolve_template_files
+    setattr(self, field, env.loader.get_source(env, content)[0])  # type: ignore
+  File "/home/airflow/.local/lib/python3.8/site-packages/jinja2/loaders.py", line 218, in get_source
+    raise TemplateNotFound(template)
+jinja2.exceptions.TemplateNotFound: ./start.sh
+[2023-10-21T02:05:08.359+0000] {processor.py:839} INFO - DAG(s) dict_keys(['scrap_scryptopanic']) retrieved from /opt/airflow/dags/scraping/cryptopanic.py
+[2023-10-21T02:05:08.369+0000] {logging_mixin.py:151} INFO - [2023-10-21T02:05:08.369+0000] {dag.py:2941} INFO - Sync 1 DAGs
+[2023-10-21T02:05:08.381+0000] {logging_mixin.py:151} INFO - [2023-10-21T02:05:08.381+0000] {dag.py:3722} INFO - Setting next_dagrun for scrap_scryptopanic to 2023-10-21T02:00:08.381672+00:00, run_after=2023-10-21T02:05:08.381672+00:00
+[2023-10-21T02:05:08.392+0000] {processor.py:179} INFO - Processing /opt/airflow/dags/scraping/cryptopanic.py took 0.041 seconds
+[2023-10-21T02:05:38.751+0000] {processor.py:157} INFO - Started process (PID=6530) to work on /opt/airflow/dags/scraping/cryptopanic.py
+[2023-10-21T02:05:38.751+0000] {processor.py:829} INFO - Processing file /opt/airflow/dags/scraping/cryptopanic.py for tasks to queue
+[2023-10-21T02:05:38.752+0000] {logging_mixin.py:151} INFO - [2023-10-21T02:05:38.751+0000] {dagbag.py:536} INFO - Filling up the DagBag from /opt/airflow/dags/scraping/cryptopanic.py
+[2023-10-21T02:05:38.758+0000] {logging_mixin.py:151} INFO - [2023-10-21T02:05:38.757+0000] {templater.py:76} ERROR - Failed to resolve template field 'bash_command'
+Traceback (most recent call last):
+  File "/home/airflow/.local/lib/python3.8/site-packages/airflow/template/templater.py", line 74, in resolve_template_files
+    setattr(self, field, env.loader.get_source(env, content)[0])  # type: ignore
+  File "/home/airflow/.local/lib/python3.8/site-packages/jinja2/loaders.py", line 218, in get_source
+    raise TemplateNotFound(template)
+jinja2.exceptions.TemplateNotFound: ./start.sh
+[2023-10-21T02:05:38.758+0000] {processor.py:839} INFO - DAG(s) dict_keys(['scrap_scryptopanic']) retrieved from /opt/airflow/dags/scraping/cryptopanic.py
+[2023-10-21T02:05:38.769+0000] {logging_mixin.py:151} INFO - [2023-10-21T02:05:38.769+0000] {dag.py:2941} INFO - Sync 1 DAGs
+[2023-10-21T02:05:38.782+0000] {logging_mixin.py:151} INFO - [2023-10-21T02:05:38.781+0000] {dag.py:3722} INFO - Setting next_dagrun for scrap_scryptopanic to 2023-10-21T02:00:38.781805+00:00, run_after=2023-10-21T02:05:38.781805+00:00
+[2023-10-21T02:05:38.792+0000] {processor.py:179} INFO - Processing /opt/airflow/dags/scraping/cryptopanic.py took 0.043 seconds
+[2023-10-21T02:06:09.199+0000] {processor.py:157} INFO - Started process (PID=6585) to work on /opt/airflow/dags/scraping/cryptopanic.py
+[2023-10-21T02:06:09.200+0000] {processor.py:829} INFO - Processing file /opt/airflow/dags/scraping/cryptopanic.py for tasks to queue
+[2023-10-21T02:06:09.200+0000] {logging_mixin.py:151} INFO - [2023-10-21T02:06:09.200+0000] {dagbag.py:536} INFO - Filling up the DagBag from /opt/airflow/dags/scraping/cryptopanic.py
+[2023-10-21T02:06:09.205+0000] {logging_mixin.py:151} INFO - [2023-10-21T02:06:09.205+0000] {templater.py:76} ERROR - Failed to resolve template field 'bash_command'
+Traceback (most recent call last):
+  File "/home/airflow/.local/lib/python3.8/site-packages/airflow/template/templater.py", line 74, in resolve_template_files
+    setattr(self, field, env.loader.get_source(env, content)[0])  # type: ignore
+  File "/home/airflow/.local/lib/python3.8/site-packages/jinja2/loaders.py", line 218, in get_source
+    raise TemplateNotFound(template)
+jinja2.exceptions.TemplateNotFound: ./start.sh
+[2023-10-21T02:06:09.205+0000] {processor.py:839} INFO - DAG(s) dict_keys(['scrap_scryptopanic']) retrieved from /opt/airflow/dags/scraping/cryptopanic.py
+[2023-10-21T02:06:09.216+0000] {logging_mixin.py:151} INFO - [2023-10-21T02:06:09.216+0000] {dag.py:2941} INFO - Sync 1 DAGs
+[2023-10-21T02:06:09.229+0000] {logging_mixin.py:151} INFO - [2023-10-21T02:06:09.229+0000] {dag.py:3722} INFO - Setting next_dagrun for scrap_scryptopanic to 2023-10-21T02:01:09.229325+00:00, run_after=2023-10-21T02:06:09.229325+00:00
+[2023-10-21T02:06:09.240+0000] {processor.py:179} INFO - Processing /opt/airflow/dags/scraping/cryptopanic.py took 0.042 seconds
+[2023-10-21T02:06:39.825+0000] {processor.py:157} INFO - Started process (PID=6640) to work on /opt/airflow/dags/scraping/cryptopanic.py
+[2023-10-21T02:06:39.825+0000] {processor.py:829} INFO - Processing file /opt/airflow/dags/scraping/cryptopanic.py for tasks to queue
+[2023-10-21T02:06:39.826+0000] {logging_mixin.py:151} INFO - [2023-10-21T02:06:39.826+0000] {dagbag.py:536} INFO - Filling up the DagBag from /opt/airflow/dags/scraping/cryptopanic.py
+[2023-10-21T02:06:39.831+0000] {logging_mixin.py:151} INFO - [2023-10-21T02:06:39.831+0000] {templater.py:76} ERROR - Failed to resolve template field 'bash_command'
+Traceback (most recent call last):
+  File "/home/airflow/.local/lib/python3.8/site-packages/airflow/template/templater.py", line 74, in resolve_template_files
+    setattr(self, field, env.loader.get_source(env, content)[0])  # type: ignore
+  File "/home/airflow/.local/lib/python3.8/site-packages/jinja2/loaders.py", line 218, in get_source
+    raise TemplateNotFound(template)
+jinja2.exceptions.TemplateNotFound: ./start.sh
+[2023-10-21T02:06:39.831+0000] {processor.py:839} INFO - DAG(s) dict_keys(['scrap_scryptopanic']) retrieved from /opt/airflow/dags/scraping/cryptopanic.py
+[2023-10-21T02:06:39.842+0000] {logging_mixin.py:151} INFO - [2023-10-21T02:06:39.841+0000] {dag.py:2941} INFO - Sync 1 DAGs
+[2023-10-21T02:06:39.854+0000] {logging_mixin.py:151} INFO - [2023-10-21T02:06:39.854+0000] {dag.py:3722} INFO - Setting next_dagrun for scrap_scryptopanic to 2023-10-21T02:01:39.854047+00:00, run_after=2023-10-21T02:06:39.854047+00:00
+[2023-10-21T02:06:39.864+0000] {processor.py:179} INFO - Processing /opt/airflow/dags/scraping/cryptopanic.py took 0.041 seconds
+[2023-10-21T02:07:10.308+0000] {processor.py:157} INFO - Started process (PID=6695) to work on /opt/airflow/dags/scraping/cryptopanic.py
+[2023-10-21T02:07:10.308+0000] {processor.py:829} INFO - Processing file /opt/airflow/dags/scraping/cryptopanic.py for tasks to queue
+[2023-10-21T02:07:10.309+0000] {logging_mixin.py:151} INFO - [2023-10-21T02:07:10.308+0000] {dagbag.py:536} INFO - Filling up the DagBag from /opt/airflow/dags/scraping/cryptopanic.py
+[2023-10-21T02:07:10.314+0000] {logging_mixin.py:151} INFO - [2023-10-21T02:07:10.314+0000] {templater.py:76} ERROR - Failed to resolve template field 'bash_command'
+Traceback (most recent call last):
+  File "/home/airflow/.local/lib/python3.8/site-packages/airflow/template/templater.py", line 74, in resolve_template_files
+    setattr(self, field, env.loader.get_source(env, content)[0])  # type: ignore
+  File "/home/airflow/.local/lib/python3.8/site-packages/jinja2/loaders.py", line 218, in get_source
+    raise TemplateNotFound(template)
+jinja2.exceptions.TemplateNotFound: ./start.sh
+[2023-10-21T02:07:10.314+0000] {processor.py:839} INFO - DAG(s) dict_keys(['scrap_scryptopanic']) retrieved from /opt/airflow/dags/scraping/cryptopanic.py
+[2023-10-21T02:07:10.324+0000] {logging_mixin.py:151} INFO - [2023-10-21T02:07:10.324+0000] {dag.py:2941} INFO - Sync 1 DAGs
+[2023-10-21T02:07:10.336+0000] {logging_mixin.py:151} INFO - [2023-10-21T02:07:10.336+0000] {dag.py:3722} INFO - Setting next_dagrun for scrap_scryptopanic to 2023-10-21T02:02:10.336531+00:00, run_after=2023-10-21T02:07:10.336531+00:00
+[2023-10-21T02:07:10.346+0000] {processor.py:179} INFO - Processing /opt/airflow/dags/scraping/cryptopanic.py took 0.040 seconds
+[2023-10-21T02:07:40.762+0000] {processor.py:157} INFO - Started process (PID=6750) to work on /opt/airflow/dags/scraping/cryptopanic.py
+[2023-10-21T02:07:40.763+0000] {processor.py:829} INFO - Processing file /opt/airflow/dags/scraping/cryptopanic.py for tasks to queue
+[2023-10-21T02:07:40.763+0000] {logging_mixin.py:151} INFO - [2023-10-21T02:07:40.763+0000] {dagbag.py:536} INFO - Filling up the DagBag from /opt/airflow/dags/scraping/cryptopanic.py
+[2023-10-21T02:07:40.768+0000] {logging_mixin.py:151} INFO - [2023-10-21T02:07:40.768+0000] {templater.py:76} ERROR - Failed to resolve template field 'bash_command'
+Traceback (most recent call last):
+  File "/home/airflow/.local/lib/python3.8/site-packages/airflow/template/templater.py", line 74, in resolve_template_files
+    setattr(self, field, env.loader.get_source(env, content)[0])  # type: ignore
+  File "/home/airflow/.local/lib/python3.8/site-packages/jinja2/loaders.py", line 218, in get_source
+    raise TemplateNotFound(template)
+jinja2.exceptions.TemplateNotFound: ./start.sh
+[2023-10-21T02:07:40.769+0000] {processor.py:839} INFO - DAG(s) dict_keys(['scrap_scryptopanic']) retrieved from /opt/airflow/dags/scraping/cryptopanic.py
+[2023-10-21T02:07:40.779+0000] {logging_mixin.py:151} INFO - [2023-10-21T02:07:40.779+0000] {dag.py:2941} INFO - Sync 1 DAGs
+[2023-10-21T02:07:40.793+0000] {logging_mixin.py:151} INFO - [2023-10-21T02:07:40.793+0000] {dag.py:3722} INFO - Setting next_dagrun for scrap_scryptopanic to 2023-10-21T02:02:40.793306+00:00, run_after=2023-10-21T02:07:40.793306+00:00
+[2023-10-21T02:07:40.804+0000] {processor.py:179} INFO - Processing /opt/airflow/dags/scraping/cryptopanic.py took 0.044 seconds
+[2023-10-21T02:08:11.353+0000] {processor.py:157} INFO - Started process (PID=6805) to work on /opt/airflow/dags/scraping/cryptopanic.py
+[2023-10-21T02:08:11.354+0000] {processor.py:829} INFO - Processing file /opt/airflow/dags/scraping/cryptopanic.py for tasks to queue
+[2023-10-21T02:08:11.354+0000] {logging_mixin.py:151} INFO - [2023-10-21T02:08:11.354+0000] {dagbag.py:536} INFO - Filling up the DagBag from /opt/airflow/dags/scraping/cryptopanic.py
+[2023-10-21T02:08:11.359+0000] {logging_mixin.py:151} INFO - [2023-10-21T02:08:11.359+0000] {templater.py:76} ERROR - Failed to resolve template field 'bash_command'
+Traceback (most recent call last):
+  File "/home/airflow/.local/lib/python3.8/site-packages/airflow/template/templater.py", line 74, in resolve_template_files
+    setattr(self, field, env.loader.get_source(env, content)[0])  # type: ignore
+  File "/home/airflow/.local/lib/python3.8/site-packages/jinja2/loaders.py", line 218, in get_source
+    raise TemplateNotFound(template)
+jinja2.exceptions.TemplateNotFound: ./start.sh
+[2023-10-21T02:08:11.360+0000] {processor.py:839} INFO - DAG(s) dict_keys(['scrap_scryptopanic']) retrieved from /opt/airflow/dags/scraping/cryptopanic.py
+[2023-10-21T02:08:11.369+0000] {logging_mixin.py:151} INFO - [2023-10-21T02:08:11.369+0000] {dag.py:2941} INFO - Sync 1 DAGs
+[2023-10-21T02:08:11.382+0000] {logging_mixin.py:151} INFO - [2023-10-21T02:08:11.382+0000] {dag.py:3722} INFO - Setting next_dagrun for scrap_scryptopanic to 2023-10-21T02:03:11.382058+00:00, run_after=2023-10-21T02:08:11.382058+00:00
+[2023-10-21T02:08:11.392+0000] {processor.py:179} INFO - Processing /opt/airflow/dags/scraping/cryptopanic.py took 0.040 seconds
+[2023-10-21T02:08:41.744+0000] {processor.py:157} INFO - Started process (PID=6860) to work on /opt/airflow/dags/scraping/cryptopanic.py
+[2023-10-21T02:08:41.745+0000] {processor.py:829} INFO - Processing file /opt/airflow/dags/scraping/cryptopanic.py for tasks to queue
+[2023-10-21T02:08:41.746+0000] {logging_mixin.py:151} INFO - [2023-10-21T02:08:41.746+0000] {dagbag.py:536} INFO - Filling up the DagBag from /opt/airflow/dags/scraping/cryptopanic.py
+[2023-10-21T02:08:41.752+0000] {logging_mixin.py:151} INFO - [2023-10-21T02:08:41.752+0000] {templater.py:76} ERROR - Failed to resolve template field 'bash_command'
+Traceback (most recent call last):
+  File "/home/airflow/.local/lib/python3.8/site-packages/airflow/template/templater.py", line 74, in resolve_template_files
+    setattr(self, field, env.loader.get_source(env, content)[0])  # type: ignore
+  File "/home/airflow/.local/lib/python3.8/site-packages/jinja2/loaders.py", line 218, in get_source
+    raise TemplateNotFound(template)
+jinja2.exceptions.TemplateNotFound: ./start.sh
+[2023-10-21T02:08:41.752+0000] {processor.py:839} INFO - DAG(s) dict_keys(['scrap_scryptopanic']) retrieved from /opt/airflow/dags/scraping/cryptopanic.py
+[2023-10-21T02:08:41.763+0000] {logging_mixin.py:151} INFO - [2023-10-21T02:08:41.763+0000] {dag.py:2941} INFO - Sync 1 DAGs
+[2023-10-21T02:08:41.777+0000] {logging_mixin.py:151} INFO - [2023-10-21T02:08:41.777+0000] {dag.py:3722} INFO - Setting next_dagrun for scrap_scryptopanic to 2023-10-21T02:03:41.777216+00:00, run_after=2023-10-21T02:08:41.777216+00:00
+[2023-10-21T02:08:41.789+0000] {processor.py:179} INFO - Processing /opt/airflow/dags/scraping/cryptopanic.py took 0.046 seconds
+[2023-10-21T02:09:12.153+0000] {processor.py:157} INFO - Started process (PID=6915) to work on /opt/airflow/dags/scraping/cryptopanic.py
+[2023-10-21T02:09:12.154+0000] {processor.py:829} INFO - Processing file /opt/airflow/dags/scraping/cryptopanic.py for tasks to queue
+[2023-10-21T02:09:12.154+0000] {logging_mixin.py:151} INFO - [2023-10-21T02:09:12.154+0000] {dagbag.py:536} INFO - Filling up the DagBag from /opt/airflow/dags/scraping/cryptopanic.py
+[2023-10-21T02:09:12.160+0000] {logging_mixin.py:151} INFO - [2023-10-21T02:09:12.159+0000] {templater.py:76} ERROR - Failed to resolve template field 'bash_command'
+Traceback (most recent call last):
+  File "/home/airflow/.local/lib/python3.8/site-packages/airflow/template/templater.py", line 74, in resolve_template_files
+    setattr(self, field, env.loader.get_source(env, content)[0])  # type: ignore
+  File "/home/airflow/.local/lib/python3.8/site-packages/jinja2/loaders.py", line 218, in get_source
+    raise TemplateNotFound(template)
+jinja2.exceptions.TemplateNotFound: ./start.sh
+[2023-10-21T02:09:12.160+0000] {processor.py:839} INFO - DAG(s) dict_keys(['scrap_scryptopanic']) retrieved from /opt/airflow/dags/scraping/cryptopanic.py
+[2023-10-21T02:09:12.170+0000] {logging_mixin.py:151} INFO - [2023-10-21T02:09:12.170+0000] {dag.py:2941} INFO - Sync 1 DAGs
+[2023-10-21T02:09:12.183+0000] {logging_mixin.py:151} INFO - [2023-10-21T02:09:12.183+0000] {dag.py:3722} INFO - Setting next_dagrun for scrap_scryptopanic to 2023-10-21T02:04:12.183673+00:00, run_after=2023-10-21T02:09:12.183673+00:00
+[2023-10-21T02:09:12.194+0000] {processor.py:179} INFO - Processing /opt/airflow/dags/scraping/cryptopanic.py took 0.042 seconds
+[2023-10-21T02:09:42.582+0000] {processor.py:157} INFO - Started process (PID=6970) to work on /opt/airflow/dags/scraping/cryptopanic.py
+[2023-10-21T02:09:42.583+0000] {processor.py:829} INFO - Processing file /opt/airflow/dags/scraping/cryptopanic.py for tasks to queue
+[2023-10-21T02:09:42.584+0000] {logging_mixin.py:151} INFO - [2023-10-21T02:09:42.583+0000] {dagbag.py:536} INFO - Filling up the DagBag from /opt/airflow/dags/scraping/cryptopanic.py
+[2023-10-21T02:09:42.589+0000] {logging_mixin.py:151} INFO - [2023-10-21T02:09:42.589+0000] {templater.py:76} ERROR - Failed to resolve template field 'bash_command'
+Traceback (most recent call last):
+  File "/home/airflow/.local/lib/python3.8/site-packages/airflow/template/templater.py", line 74, in resolve_template_files
+    setattr(self, field, env.loader.get_source(env, content)[0])  # type: ignore
+  File "/home/airflow/.local/lib/python3.8/site-packages/jinja2/loaders.py", line 218, in get_source
+    raise TemplateNotFound(template)
+jinja2.exceptions.TemplateNotFound: ./start.sh
+[2023-10-21T02:09:42.589+0000] {processor.py:839} INFO - DAG(s) dict_keys(['scrap_scryptopanic']) retrieved from /opt/airflow/dags/scraping/cryptopanic.py
+[2023-10-21T02:09:42.599+0000] {logging_mixin.py:151} INFO - [2023-10-21T02:09:42.599+0000] {dag.py:2941} INFO - Sync 1 DAGs
+[2023-10-21T02:09:42.612+0000] {logging_mixin.py:151} INFO - [2023-10-21T02:09:42.612+0000] {dag.py:3722} INFO - Setting next_dagrun for scrap_scryptopanic to 2023-10-21T02:04:42.612486+00:00, run_after=2023-10-21T02:09:42.612486+00:00
+[2023-10-21T02:09:42.623+0000] {processor.py:179} INFO - Processing /opt/airflow/dags/scraping/cryptopanic.py took 0.042 seconds
+[2023-10-21T02:10:13.168+0000] {processor.py:157} INFO - Started process (PID=7025) to work on /opt/airflow/dags/scraping/cryptopanic.py
+[2023-10-21T02:10:13.168+0000] {processor.py:829} INFO - Processing file /opt/airflow/dags/scraping/cryptopanic.py for tasks to queue
+[2023-10-21T02:10:13.169+0000] {logging_mixin.py:151} INFO - [2023-10-21T02:10:13.169+0000] {dagbag.py:536} INFO - Filling up the DagBag from /opt/airflow/dags/scraping/cryptopanic.py
+[2023-10-21T02:10:13.175+0000] {logging_mixin.py:151} INFO - [2023-10-21T02:10:13.175+0000] {templater.py:76} ERROR - Failed to resolve template field 'bash_command'
+Traceback (most recent call last):
+  File "/home/airflow/.local/lib/python3.8/site-packages/airflow/template/templater.py", line 74, in resolve_template_files
+    setattr(self, field, env.loader.get_source(env, content)[0])  # type: ignore
+  File "/home/airflow/.local/lib/python3.8/site-packages/jinja2/loaders.py", line 218, in get_source
+    raise TemplateNotFound(template)
+jinja2.exceptions.TemplateNotFound: ./start.sh
+[2023-10-21T02:10:13.175+0000] {processor.py:839} INFO - DAG(s) dict_keys(['scrap_scryptopanic']) retrieved from /opt/airflow/dags/scraping/cryptopanic.py
+[2023-10-21T02:10:13.187+0000] {logging_mixin.py:151} INFO - [2023-10-21T02:10:13.187+0000] {dag.py:2941} INFO - Sync 1 DAGs
+[2023-10-21T02:10:13.201+0000] {logging_mixin.py:151} INFO - [2023-10-21T02:10:13.201+0000] {dag.py:3722} INFO - Setting next_dagrun for scrap_scryptopanic to 2023-10-21T02:05:13.201408+00:00, run_after=2023-10-21T02:10:13.201408+00:00
+[2023-10-21T02:10:13.212+0000] {processor.py:179} INFO - Processing /opt/airflow/dags/scraping/cryptopanic.py took 0.046 seconds
