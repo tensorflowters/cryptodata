@@ -12,7 +12,7 @@ default_args = {
     'retry_delay': timedelta(minutes=5),
 }
 
-with DAG('scraper_cryptopanic',
+with DAG('scrap_cryptopanic',
          default_args=default_args,
          schedule_interval=timedelta(minutes=5),
          start_date=datetime(2023, 10, 20),
