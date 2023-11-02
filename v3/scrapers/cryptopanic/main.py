@@ -2,9 +2,12 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
+from kafka import KafkaProducer
+
 import hashlib
 import json
 import pendulum
+import os
 
 
 def get_sha256_hash(url):
@@ -37,6 +40,11 @@ try:
 
     # Select all the news rows
     target_news_rows = target_main_section.find_elements(By.CLASS_NAME, "news-row")
+
+    producer = KafkaProducer(
+        bootstrap_servers=[os.environ.get('KAFKA_BROKER')],
+        value_serializer=lambda m: json.dumps(m).encode('ascii')
+    )
 
     # Loop through the news rows
     for news_row in target_news_rows:
@@ -116,12 +124,14 @@ try:
                 "source_domain": source_domain,
                 "title": title
             }
-
+            producer.send('scraped_news', scraped_news)
+            producer.flush()
             # Convert the news object to json
             scraped_news_to_json = json.dumps(scraped_news)
 
             # Output the news object
             print(scraped_news_to_json)
+
         else:
             print("Invalid scraped data")
 finally:
