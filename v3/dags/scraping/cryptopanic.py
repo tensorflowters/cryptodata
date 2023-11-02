@@ -20,7 +20,7 @@ with DAG('scraper_cryptopanic',
 
     run_scraper_task = DockerOperator(
         task_id='run_scraper_task',
-        image='scraper:latest',   # The name of the image you've built for the scraper
+        image='v3-scraper:latest',   # The name of the image you've built for the scraper
         api_version='auto',
         command="python main.py",  # or whatever command you need to run your scraper
         docker_url="unix://var/run/docker.sock",
