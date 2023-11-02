@@ -1,6 +1,7 @@
-from datetime import datetime, timedelta
+from datetime import timedelta, datetime
 from airflow import DAG
-from airflow.operators.bash_operator import BashOperator
+from airflow.providers.docker.operators.docker import DockerOperator
+
 
 default_args = {
     'owner': 'airflow',
@@ -11,17 +12,17 @@ default_args = {
     'retry_delay': timedelta(minutes=5),
 }
 
-dag = DAG(
-    'scrap_scryptopanic',
-    default_args=default_args,
-    description='Run Selenium to scrape crypto news every 5 minutes',
-    schedule_interval=timedelta(minutes=5),  # Override to whatever interval you need
-    start_date=datetime(2023, 10, 20),
-    catchup=False,
-)
+with DAG('scraper_cryptopanic',
+         default_args=default_args,
+         schedule_interval=timedelta(minutes=5),
+         start_date=datetime(2023, 10, 20),
+         catchup=False) as dag:
 
-t1 = BashOperator(
-    task_id='run_selenium',
-    bash_command='./start.sh',
-    dag=dag,
-)
+    run_scraper_task = DockerOperator(
+        task_id='run_scraper_task',
+        image='v3-scraper:latest',
+        api_version='auto',
+        command="python main.py",
+        docker_url="unix://var/run/docker.sock",
+        network_mode="bridge"
+    )
