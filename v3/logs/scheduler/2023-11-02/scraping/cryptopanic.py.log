@@ -363,3 +363,31 @@
 [2023-11-02T09:10:17.133+0000] {logging_mixin.py:151} INFO - [2023-11-02T09:10:17.133+0000] {dag.py:2941} INFO - Sync 1 DAGs
 [2023-11-02T09:10:17.156+0000] {logging_mixin.py:151} INFO - [2023-11-02T09:10:17.156+0000] {dag.py:3722} INFO - Setting next_dagrun for scraper_cryptopanic to 2023-11-02T09:07:43.650715+00:00, run_after=2023-11-02T09:12:43.650715+00:00
 [2023-11-02T09:10:17.172+0000] {processor.py:179} INFO - Processing /opt/airflow/dags/scraping/cryptopanic.py took 0.096 seconds
+[2023-11-02T09:10:47.718+0000] {processor.py:157} INFO - Started process (PID=413) to work on /opt/airflow/dags/scraping/cryptopanic.py
+[2023-11-02T09:10:47.719+0000] {processor.py:829} INFO - Processing file /opt/airflow/dags/scraping/cryptopanic.py for tasks to queue
+[2023-11-02T09:10:47.726+0000] {logging_mixin.py:151} INFO - [2023-11-02T09:10:47.725+0000] {dagbag.py:536} INFO - Filling up the DagBag from /opt/airflow/dags/scraping/cryptopanic.py
+[2023-11-02T09:10:47.736+0000] {processor.py:839} INFO - DAG(s) dict_keys(['scraper_cryptopanic']) retrieved from /opt/airflow/dags/scraping/cryptopanic.py
+[2023-11-02T09:10:47.762+0000] {logging_mixin.py:151} INFO - [2023-11-02T09:10:47.762+0000] {dag.py:2941} INFO - Sync 1 DAGs
+[2023-11-02T09:10:47.787+0000] {logging_mixin.py:151} INFO - [2023-11-02T09:10:47.787+0000] {dag.py:3722} INFO - Setting next_dagrun for scraper_cryptopanic to 2023-11-02T09:07:43.650715+00:00, run_after=2023-11-02T09:12:43.650715+00:00
+[2023-11-02T09:10:47.802+0000] {processor.py:179} INFO - Processing /opt/airflow/dags/scraping/cryptopanic.py took 0.092 seconds
+[2023-11-02T09:11:18.007+0000] {processor.py:157} INFO - Started process (PID=468) to work on /opt/airflow/dags/scraping/cryptopanic.py
+[2023-11-02T09:11:18.008+0000] {processor.py:829} INFO - Processing file /opt/airflow/dags/scraping/cryptopanic.py for tasks to queue
+[2023-11-02T09:11:18.013+0000] {logging_mixin.py:151} INFO - [2023-11-02T09:11:18.012+0000] {dagbag.py:536} INFO - Filling up the DagBag from /opt/airflow/dags/scraping/cryptopanic.py
+[2023-11-02T09:11:18.026+0000] {processor.py:839} INFO - DAG(s) dict_keys(['scraper_cryptopanic']) retrieved from /opt/airflow/dags/scraping/cryptopanic.py
+[2023-11-02T09:11:18.051+0000] {logging_mixin.py:151} INFO - [2023-11-02T09:11:18.051+0000] {dag.py:2941} INFO - Sync 1 DAGs
+[2023-11-02T09:11:18.079+0000] {logging_mixin.py:151} INFO - [2023-11-02T09:11:18.079+0000] {dag.py:3722} INFO - Setting next_dagrun for scraper_cryptopanic to 2023-11-02T09:07:43.650715+00:00, run_after=2023-11-02T09:12:43.650715+00:00
+[2023-11-02T09:11:18.094+0000] {processor.py:179} INFO - Processing /opt/airflow/dags/scraping/cryptopanic.py took 0.091 seconds
+[2023-11-02T09:11:48.145+0000] {processor.py:157} INFO - Started process (PID=523) to work on /opt/airflow/dags/scraping/cryptopanic.py
+[2023-11-02T09:11:48.147+0000] {processor.py:829} INFO - Processing file /opt/airflow/dags/scraping/cryptopanic.py for tasks to queue
+[2023-11-02T09:11:48.155+0000] {logging_mixin.py:151} INFO - [2023-11-02T09:11:48.154+0000] {dagbag.py:536} INFO - Filling up the DagBag from /opt/airflow/dags/scraping/cryptopanic.py
+[2023-11-02T09:11:48.174+0000] {processor.py:839} INFO - DAG(s) dict_keys(['scraper_cryptopanic']) retrieved from /opt/airflow/dags/scraping/cryptopanic.py
+[2023-11-02T09:11:48.199+0000] {logging_mixin.py:151} INFO - [2023-11-02T09:11:48.199+0000] {dag.py:2941} INFO - Sync 1 DAGs
+[2023-11-02T09:11:48.221+0000] {logging_mixin.py:151} INFO - [2023-11-02T09:11:48.221+0000] {dag.py:3722} INFO - Setting next_dagrun for scraper_cryptopanic to 2023-11-02T09:07:43.650715+00:00, run_after=2023-11-02T09:12:43.650715+00:00
+[2023-11-02T09:11:48.235+0000] {processor.py:179} INFO - Processing /opt/airflow/dags/scraping/cryptopanic.py took 0.101 seconds
+[2023-11-02T09:11:57.002+0000] {processor.py:157} INFO - Started process (PID=549) to work on /opt/airflow/dags/scraping/cryptopanic.py
+[2023-11-02T09:11:57.002+0000] {processor.py:829} INFO - Processing file /opt/airflow/dags/scraping/cryptopanic.py for tasks to queue
+[2023-11-02T09:11:57.005+0000] {logging_mixin.py:151} INFO - [2023-11-02T09:11:57.004+0000] {dagbag.py:536} INFO - Filling up the DagBag from /opt/airflow/dags/scraping/cryptopanic.py
+[2023-11-02T09:11:57.014+0000] {processor.py:839} INFO - DAG(s) dict_keys(['scraper_cryptopanic']) retrieved from /opt/airflow/dags/scraping/cryptopanic.py
+[2023-11-02T09:11:57.036+0000] {logging_mixin.py:151} INFO - [2023-11-02T09:11:57.036+0000] {dag.py:2941} INFO - Sync 1 DAGs
+[2023-11-02T09:11:57.060+0000] {logging_mixin.py:151} INFO - [2023-11-02T09:11:57.059+0000] {dag.py:3722} INFO - Setting next_dagrun for scraper_cryptopanic to 2023-11-02T09:07:43.650715+00:00, run_after=2023-11-02T09:12:43.650715+00:00
+[2023-11-02T09:11:57.072+0000] {processor.py:179} INFO - Processing /opt/airflow/dags/scraping/cryptopanic.py took 0.073 seconds
