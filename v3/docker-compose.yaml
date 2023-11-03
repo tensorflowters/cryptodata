@@ -35,6 +35,8 @@ x-airflow-common: &airflow-common
             condition: service_healthy
         postgres:
             condition: service_healthy
+        kafka:
+            condition: service_started
 
 services:
     postgres:
@@ -236,5 +238,36 @@ services:
         volumes:
             - ./scrapers/cryptopanic/main.py:/home/scraper/main.py
 
+    zookeeper:
+        image: confluentinc/cp-zookeeper:latest
+        environment:
+            ZOOKEEPER_CLIENT_PORT: 2181
+            ZOOKEEPER_TICK_TIME: 2000
+
+    kafka:
+        image: confluentinc/cp-kafka:latest
+        depends_on:
+            - zookeeper
+        ports:
+            - "9092:9092" # Only expose one port that will be used both internally and externally if needed
+        environment:
+            KAFKA_BROKER_ID: 1
+            KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+            KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT
+            KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+            KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092
+            KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+
+    example_kafka_consumer:
+        build:
+            context: ./consumers/example
+            dockerfile: example_consumer.Dockerfile
+        command: [ "python", "main.py" ]
+        tty: true
+        depends_on:
+            - kafka
+        volumes:
+            - ./consumers/example/main.py:/home/consumer/main.py
 volumes:
     postgres-db-volume:
+    kafka_data:

@@ -24,5 +24,9 @@ with DAG('scrap_cryptopanic',
         api_version='auto',
         command="python main.py",
         docker_url="unix://var/run/docker.sock",
-        network_mode="bridge"
+        network_mode="v3_default",
+        auto_remove="force",
+        environment={
+            'KAFKA_BROKER': 'kafka:9092'
+        }
     )
