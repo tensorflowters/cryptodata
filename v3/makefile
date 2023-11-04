@@ -1,5 +1,6 @@
 # To launch a command line, type: make [target] [options].
 # You need to have make installed on your system.
+exportenv: var_docker_to_test_path=
 
 devup:
 	@echo "Starting project..."
