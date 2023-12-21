@@ -307,6 +307,25 @@ services:
         volumes:
             - ./consumers/example/main.py:/home/consumer/main.py
 
+    cryptopanic_consumer:
+        build:
+            context: ./consumers/cryptopanic
+            dockerfile: cryptopanic.Dockerfile
+        command: [ "python", "main.py" ]
+        tty: true
+        environment:
+            POSTGRES_DB: "client"
+            POSTGRES_PASSWORD: "client"
+            POSTGRES_USER: "client"
+        depends_on:
+            kafka:
+                condition: service_healthy
+            client_db:
+                condition: service_healthy
+        volumes:
+            - ./consumers/cryptopanic:/home/consumer
+
+
     spark:
         build:
             context: ./spark
