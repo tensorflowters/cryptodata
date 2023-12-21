@@ -257,6 +257,11 @@ services:
             KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
             KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092
             KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+        healthcheck:
+          test: kafka-topics --bootstrap-server kafka:9092 --list
+          interval: 10s
+          timeout: 10s
+          retries: 3
 
     example_kafka_consumer:
         build:
@@ -265,7 +270,8 @@ services:
         command: [ "python", "main.py" ]
         tty: true
         depends_on:
-            - kafka
+            kafka:
+                condition: service_healthy
         volumes:
             - ./consumers/example/main.py:/home/consumer/main.py
 
