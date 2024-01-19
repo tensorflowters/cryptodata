@@ -39,6 +39,14 @@ x-airflow-common: &airflow-common
             condition: service_started
 
 services:
+    docker-proxy:
+        image: bobrik/socat
+        command: "TCP4-LISTEN:2375,fork,reuseaddr UNIX-CONNECT:/var/run/docker.sock"
+        ports:
+        - "2376:2375"
+        volumes:
+        - /var/run/docker.sock:/var/run/docker.sock
+
     postgres:
         image: postgres:13
         environment:
@@ -63,7 +71,7 @@ services:
         volumes:
             - client-db-volume:/var/lib/postgresql/data
         healthcheck:
-            test: [ "CMD", "pg_isready", "-U", "airflow" ]
+            test: [ "CMD", "pg_isready", "-U", "client" ]
             interval: 10s
             retries: 5
             start_period: 5s
@@ -293,20 +301,6 @@ services:
           timeout: 10s
           retries: 3
 
-    example_kafka_consumer:
-        build:
-            context: ./consumers/example
-            dockerfile: example_consumer.Dockerfile
-        command: [ "python", "main.py" ]
-        tty: true
-        depends_on:
-            kafka:
-                condition: service_healthy
-            client_db:
-                condition: service_healthy
-        volumes:
-            - ./consumers/example/main.py:/home/consumer/main.py
-
     cryptopanic_consumer:
         build:
             context: ./consumers/cryptopanic
@@ -325,7 +319,6 @@ services:
         volumes:
             - ./consumers/cryptopanic:/home/consumer
 
-
     spark:
         build:
             context: ./spark
@@ -333,6 +326,7 @@ services:
         ports:
             - "8880:8080"
             - "7077:7077"
+
 volumes:
     postgres-db-volume:
     client-db-volume:
