@@ -11,21 +11,22 @@ poethepoet = "^0.24.4"
 
 
 [tool.poetry.group.scraper.dependencies]
-selenium = "4.14.0"
-pendulum = "2.1.2"
+selenium = "^4.14.0"
+pendulum = "^3.0.0"
+webdriver-manager = "^4.0.1"
 
 
 [tool.poetry.group.kafka.dependencies]
-kafka-python = "2.0.2"
+kafka-python = "^2.0.2"
 
 
 [tool.poetry.group.db.dependencies]
-sqlalchemy = "1.4.28"
-psycopg2-binary = "2.9.9"
+sqlalchemy = "^1.4.28"
+psycopg2-binary = "^2.9.9"
 
 [tool.poetry.group.airflow.dependencies]
-apache-airflow-providers-docker = "3.9.1"
-apache-airflow-providers-http = "4.6.0"
+apache-airflow-providers-docker = "^3.9.1"
+apache-airflow-providers-http = "^4.6.0"
 
 [tool.poetry.group.format.dependencies]
 black = "^23.9.1"

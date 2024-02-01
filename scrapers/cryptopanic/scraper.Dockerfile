@@ -1,31 +1,22 @@
-FROM python:3.10.13-alpine3.18 as builder
+FROM python:3.10.13-alpine3.18
 
-RUN apk add --no-cache \
-    wget \
-    tar \
-    firefox
+# Install dependencies
+RUN apk update
+RUN apk add --no-cache wget tar firefox 
+RUN apk add --no-cache gcc musl-dev libffi-dev openssl-dev
 
-RUN wget https://github.com/mozilla/geckodriver/releases/download/v0.33.0/geckodriver-v0.33.0-linux64.tar.gz \
-    && tar -xvzf geckodriver* \
-    && chmod +x geckodriver \
-    && mv geckodriver /usr/local/bin/
+# Create application directory
+RUN mkdir /srv/app
+WORKDIR /srv/app
 
+# Copy application files
+COPY ./scrapers/cryptopanic .
 
-# Create a new user and switch to it
-RUN adduser -D -h /home/scraper scraper
-
-USER scraper
-
-WORKDIR /home/scraper
-
-COPY . .
-
+# Install Python packages
 RUN pip install --upgrade pip
-RUN pip install -r requirements.txt
+RUN pip install poetry
+COPY ./pyproject.toml ./poetry.lock ./
 
-USER root
-
-RUN chown -R scraper:scraper /home/scraper
-RUN chmod -R 755 /home/scraper
-
-USER scraper
+# Install project dependencies
+RUN poetry config virtualenvs.create false \
+    && poetry install --only scraper,kafka --no-interaction --no-ansi --no-root
