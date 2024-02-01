@@ -1,0 +1,52 @@
+[tool.poetry]
+name = "cryptodata"
+version = "0.1.0"
+description = ""
+authors = []
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = ">3.9, <=3.13"
+poethepoet = "^0.24.4"
+
+
+[tool.poetry.group.scraper.dependencies]
+selenium = "4.14.0"
+pendulum = "2.1.2"
+
+
+[tool.poetry.group.kafka.dependencies]
+kafka-python = "2.0.2"
+
+
+[tool.poetry.group.db.dependencies]
+sqlalchemy = "1.4.28"
+psycopg2-binary = "2.9.9"
+
+[tool.poetry.group.airflow.dependencies]
+apache-airflow-providers-docker = "3.9.1"
+apache-airflow-providers-http = "4.6.0"
+
+[tool.poetry.group.format.dependencies]
+black = "^23.9.1"
+autoflake = "^2.2.1"
+isort = "^5.13.2"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+
+[tool.isort]
+multi_line_output = 3
+include_trailing_comma = true
+force_grid_wrap = 0
+line_length = 88
+use_parentheses = true
+
+
+[tool.poe.tasks]
+autoflake =  "autoflake --remove-all-unused-imports --recursive --remove-unused-variables --in-place ./ --exclude=__init__.py"
+black = "black ./"
+isort = "isort ./"
+format = ["autoflake", "black", "isort"]
