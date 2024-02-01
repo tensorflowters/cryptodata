@@ -28,7 +28,6 @@ x-airflow-common: &airflow-common
         - ${AIRFLOW_PROJ_DIR:-.}/logs:/opt/airflow/logs
         - ${AIRFLOW_PROJ_DIR:-.}/config:/opt/airflow/config
         - ${AIRFLOW_PROJ_DIR:-.}/plugins:/opt/airflow/plugins
-        - ${DOCKER_SOCK}:/var/run/docker.sock
     user: "${AIRFLOW_UID:-50000}:0"
     depends_on: &airflow-common-depends-on
         redis:
@@ -41,7 +40,7 @@ x-airflow-common: &airflow-common
 services:
     docker-proxy:
         image: bobrik/socat
-        command: "TCP4-LISTEN:2375,fork,reuseaddr UNIX-CONNECT:/var/run/docker.sock"
+        command: socat TCP4-LISTEN:2375,fork,reuseaddr UNIX-CONNECT:/var/run/docker.sock
         ports:
         - "2376:2375"
         volumes:
@@ -79,8 +78,8 @@ services:
 
     client_initdb:
         build:
-            context: ./db
-            dockerfile: initdb.Dockerfile
+            context: .
+            dockerfile: ./db/initdb.Dockerfile
         command: [ "python", "initdb.py" ]
         volumes:
             - ./db:/home/initdb
@@ -269,12 +268,8 @@ services:
 
     scraper:
         build:
-            context: ./scrapers/cryptopanic
-            dockerfile: scraper.Dockerfile
-        # If uncommented scrapper run on start (not managed by airflow)
-        # command: ["python", "main.py"]
-        volumes:
-            - ./scrapers/cryptopanic/main.py:/home/scraper/main.py
+            context: .
+            dockerfile: ./scrapers/cryptopanic/scraper.Dockerfile
 
     zookeeper:
         image: confluentinc/cp-zookeeper:latest
@@ -303,8 +298,8 @@ services:
 
     cryptopanic_consumer:
         build:
-            context: ./consumers/cryptopanic
-            dockerfile: cryptopanic.Dockerfile
+            context: .
+            dockerfile: ./consumers/cryptopanic/cryptopanic.Dockerfile
         command: [ "python", "main.py" ]
         tty: true
         environment:

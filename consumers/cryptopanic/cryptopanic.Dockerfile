@@ -1,10 +1,18 @@
-FROM python:3.10.13
+FROM python:3.10.13-alpine3.18
 
-RUN mkdir /home/consumer
 
-WORKDIR /home/consumer
+RUN apk update \
+    && apk add --no-cache gcc musl-dev libffi-dev openssl-dev
 
-COPY . .
+RUN mkdir /srv/app
+
+WORKDIR /srv/app
+
+COPY ./consumers/cryptopanic .
 
 RUN pip install --upgrade pip
-RUN pip install -r requirements.txt
+RUN pip install poetry
+COPY ./pyproject.toml ./poetry.lock ./
+
+RUN poetry config virtualenvs.create false \
+    && poetry install --only db,kafka --no-interaction --no-ansi --no-root

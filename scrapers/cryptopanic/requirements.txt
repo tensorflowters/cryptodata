@@ -1,3 +1,0 @@
-selenium==4.14.0
-pendulum==2.1.2
-kafka-python==2.0.2
