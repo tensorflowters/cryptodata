@@ -272,6 +272,14 @@ services:
             dockerfile: ./scrapers/cryptopanic/scraper.Dockerfile
         environment:
             GH_TOKEN: ${GH_TOKEN}
+    
+    binance-scraper:
+        build:
+            context: .
+            dockerfile: ./scrapers/cryptopanic/scraper.Dockerfile
+        environment:
+            GH_TOKEN: ${GH_TOKEN}
+    
 
     zookeeper:
         image: confluentinc/cp-zookeeper:latest
@@ -298,10 +306,10 @@ services:
           timeout: 10s
           retries: 3
 
-    cryptopanic_consumer:
+    scraped_consumer:
         build:
             context: .
-            dockerfile: ./consumers/cryptopanic/cryptopanic.Dockerfile
+            dockerfile: ./consumers/scraped/scraped.Dockerfile
         command: [ "python", "main.py" ]
         tty: true
         environment:
@@ -314,7 +322,7 @@ services:
             client_db:
                 condition: service_healthy
         volumes:
-            - ./consumers/cryptopanic:/home/consumer
+            - ./consumers/scraped:/home/consumer
 
     spark:
         build:
@@ -338,6 +346,6 @@ services:
 volumes:
     postgres-db-volume:
     client-db-volume:
-    grafana-data:
     grafana-conf:
-    kafka_data:
+    grafana-data:
+    kafka-data:

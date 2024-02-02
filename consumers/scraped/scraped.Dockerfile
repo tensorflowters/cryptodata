@@ -8,7 +8,7 @@ RUN mkdir /srv/app
 
 WORKDIR /srv/app
 
-COPY ./consumers/cryptopanic .
+COPY ./consumers/scraped .
 
 RUN pip install --upgrade pip
 RUN pip install poetry
