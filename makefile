@@ -7,7 +7,7 @@ devup:
 	@docker compose up -d --build
 
 devclean:
-	@docker compose down --volumes --remove-orphans
+	@docker compose down --volumes --remove-orphans --rmi local
 
 initdb:
 	@docker compose up airflow-init

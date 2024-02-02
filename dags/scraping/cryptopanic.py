@@ -1,3 +1,4 @@
+import os
 from datetime import datetime, timedelta
 
 from airflow import DAG
@@ -28,5 +29,5 @@ with DAG(
         docker_url="tcp://docker-proxy:2375",
         network_mode="cryptodata_default",
         auto_remove="force",
-        environment={"KAFKA_BROKER": "kafka:9092"},
+        environment={"KAFKA_BROKER": "kafka:9092", "GH_TOKEN": os.getenv("GH_TOKEN")},
     )

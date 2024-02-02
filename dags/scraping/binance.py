@@ -1,3 +1,4 @@
+import os
 from datetime import datetime, timedelta
 
 from airflow import DAG
@@ -16,7 +17,7 @@ default_args = {
 with DAG(
     "scrap_binance",
     default_args=default_args,
-    schedule_interval=timedelta(minutes=5),
+    schedule_interval=timedelta(minutes=2),
     start_date=datetime(2023, 10, 20),
     catchup=False,
 ) as dag:
@@ -28,5 +29,5 @@ with DAG(
         docker_url="tcp://docker-proxy:2375",
         network_mode="cryptodata_default",
         auto_remove="force",
-        environment={"KAFKA_BROKER": "kafka:9092"},
+        environment={"KAFKA_BROKER": "kafka:9092", "GH_TOKEN": os.getenv("GH_TOKEN")},
     )

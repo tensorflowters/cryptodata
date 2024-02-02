@@ -10,7 +10,7 @@ RUN mkdir /srv/app
 WORKDIR /srv/app
 
 # Copy application files
-COPY ./scrapers/cryptopanic .
+COPY ./scrapers/binance .
 
 # Install Python packages
 RUN pip install --upgrade pip
