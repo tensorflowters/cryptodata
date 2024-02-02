@@ -270,6 +270,8 @@ services:
         build:
             context: .
             dockerfile: ./scrapers/cryptopanic/scraper.Dockerfile
+        environment:
+            GH_TOKEN: ${GH_TOKEN}
 
     zookeeper:
         image: confluentinc/cp-zookeeper:latest
@@ -329,11 +331,13 @@ services:
         environment:
             GF_SECURITY_ADMIN_USER: admin
             GF_SECURITY_ADMIN_PASSWORD: admin
-        # volumes:
-        #     - ./grafana/provisioning:/etc/grafana/provisioning
-        #     - ./grafana/dashboards:/var/lib/grafana/dashboards
+        volumes:
+            - grafana-data:/var/lib/grafana
+            - grafana-conf:/etc/grafana
 
 volumes:
     postgres-db-volume:
     client-db-volume:
+    grafana-data:
+    grafana-conf:
     kafka_data:
