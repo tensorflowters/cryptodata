@@ -40,7 +40,7 @@ x-airflow-common: &airflow-common
 services:
     docker-proxy:
         image: bobrik/socat
-        command: socat TCP4-LISTEN:2375,fork,reuseaddr UNIX-CONNECT:/var/run/docker.sock
+        command: "TCP4-LISTEN:2375,fork,reuseaddr UNIX-CONNECT:/var/run/docker.sock"
         ports:
         - "2376:2375"
         volumes:
