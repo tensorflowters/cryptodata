@@ -1,5 +1,15 @@
 # Cryptodata
 
+## Notes
+### Scraping
+- You need to pass in a `GH_TOKEN` env value (A github token) to be able to scrap websites
+
+### Live data
+To run the WSS script and feed live data to the database:
+- You need to create a [blockchain account](https://www.exchange.blockchain.com) and get an api key
+- You need to pass in a `BLOCKCHAIN_API_KEY` env value
+- You need to then run `./run wss` to start the websocket script
+
 ## Sytem Design
 
 ### Web scrapper

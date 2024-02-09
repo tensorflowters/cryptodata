@@ -23,6 +23,7 @@ x-airflow-common: &airflow-common
         # WARNING: Use _PIP_ADDITIONAL_REQUIREMENTS option ONLY for a quick checks
         # for other purpose (development, test and especially production usage) build/extend Airflow image.
         _PIP_ADDITIONAL_REQUIREMENTS: ${_PIP_ADDITIONAL_REQUIREMENTS:-}
+        GH_TOKEN: ${GH_TOKEN}
     volumes:
         - ${AIRFLOW_PROJ_DIR:-.}/dags:/opt/airflow/dags
         - ${AIRFLOW_PROJ_DIR:-.}/logs:/opt/airflow/logs
@@ -60,36 +61,6 @@ services:
             retries: 5
             start_period: 5s
         restart: always
-
-    client_db:
-        image: postgres:13
-        environment:
-            POSTGRES_USER: client
-            POSTGRES_PASSWORD: client
-            POSTGRES_DB: client
-        volumes:
-            - client-db-volume:/var/lib/postgresql/data
-        healthcheck:
-            test: [ "CMD", "pg_isready", "-U", "client" ]
-            interval: 10s
-            retries: 5
-            start_period: 5s
-        restart: always
-
-    client_initdb:
-        build:
-            context: .
-            dockerfile: ./db/initdb.Dockerfile
-        command: [ "python", "initdb.py" ]
-        volumes:
-            - ./db:/home/initdb
-        environment:
-            POSTGRES_DB: "client"
-            POSTGRES_PASSWORD: "client"
-            POSTGRES_USER: "client"
-        depends_on:
-            client_db:
-                condition: service_healthy
 
     redis:
         image: redis:latest
@@ -266,11 +237,6 @@ services:
             - -c
             - airflow
 
-    scraper:
-        build:
-            context: .
-            dockerfile: ./scrapers/cryptopanic/scraper.Dockerfile
-
     zookeeper:
         image: confluentinc/cp-zookeeper:latest
         environment:
@@ -296,10 +262,50 @@ services:
           timeout: 10s
           retries: 3
 
-    cryptopanic_consumer:
+    client_db:
+        image: postgres:13
+        environment:
+            POSTGRES_USER: client
+            POSTGRES_PASSWORD: client
+            POSTGRES_DB: client
+        volumes:
+            - client-db-volume:/var/lib/postgresql/data
+        healthcheck:
+            test: [ "CMD", "pg_isready", "-U", "client" ]
+            interval: 10s
+            retries: 5
+            start_period: 5s
+        restart: always
+
+    client_initdb:
         build:
             context: .
-            dockerfile: ./consumers/cryptopanic/cryptopanic.Dockerfile
+            dockerfile: ./db/initdb.Dockerfile
+        command: [ "python", "initdb.py" ]
+        volumes:
+            - ./db:/home/initdb
+        environment:
+            POSTGRES_DB: "client"
+            POSTGRES_PASSWORD: "client"
+            POSTGRES_USER: "client"
+        depends_on:
+            client_db:
+                condition: service_healthy
+    
+    cryptopanic-scraper:
+        build:
+            context: .
+            dockerfile: ./scrapers/cryptopanic/scraper.Dockerfile
+    
+    binance-scraper:
+        build:
+            context: .
+            dockerfile: ./scrapers/binance/scraper.Dockerfile
+
+    scraped_consumer:
+        build:
+            context: .
+            dockerfile: ./consumers/scraped/scraped.Dockerfile
         command: [ "python", "main.py" ]
         tty: true
         environment:
@@ -312,7 +318,7 @@ services:
             client_db:
                 condition: service_healthy
         volumes:
-            - ./consumers/cryptopanic:/home/consumer
+            - ./consumers/scraped:/home/consumer
 
     spark:
         build:
@@ -329,11 +335,26 @@ services:
         environment:
             GF_SECURITY_ADMIN_USER: admin
             GF_SECURITY_ADMIN_PASSWORD: admin
-        # volumes:
-        #     - ./grafana/provisioning:/etc/grafana/provisioning
-        #     - ./grafana/dashboards:/var/lib/grafana/dashboards
+        volumes:
+            - ./grafana/data:/var/lib/grafana
+            - ./grafana/conf:/etc/grafana
+    
+    wss:
+        build:
+            context: .
+            dockerfile: ./crypto-wss/wss.Dockerfile
+        volumes: 
+            - ./crypto-wss:/srv/app
+        tty: true
+        depends_on:
+          client_db:
+            condition: service_healthy
+        environment:
+            BLOCKCHAIN_API_KEY: ${BLOCKCHAIN_API_KEY}
+            POSTGRES_USER: client
+            POSTGRES_PASSWORD: client
+            POSTGRES_DB: client
 
 volumes:
     postgres-db-volume:
     client-db-volume:
-    kafka_data:

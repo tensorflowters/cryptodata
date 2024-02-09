@@ -1,3 +1,4 @@
+import os
 from datetime import datetime, timedelta
 
 from airflow import DAG
@@ -21,12 +22,12 @@ with DAG(
     catchup=False,
 ) as dag:
     run_scraper_task = DockerOperator(
-        task_id="run_scraper_task",
-        image="cryptodata-scraper:latest",
+        task_id="run_cryptopanic_scraper_task",
+        image="cryptodata-cryptopanic-scraper:latest",
         api_version="auto",
         command="python main.py",
         docker_url="tcp://docker-proxy:2375",
         network_mode="cryptodata_default",
         auto_remove="force",
-        environment={"KAFKA_BROKER": "kafka:9092"},
+        environment={"KAFKA_BROKER": "kafka:9092", "GH_TOKEN": os.getenv("GH_TOKEN")},
     )
