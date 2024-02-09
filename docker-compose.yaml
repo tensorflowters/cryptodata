@@ -346,6 +346,9 @@ services:
         volumes: 
             - ./crypto-wss:/srv/app
         tty: true
+        depends_on:
+          client_db:
+            condition: service_healthy
         environment:
             BLOCKCHAIN_API_KEY: ${BLOCKCHAIN_API_KEY}
             POSTGRES_USER: client
