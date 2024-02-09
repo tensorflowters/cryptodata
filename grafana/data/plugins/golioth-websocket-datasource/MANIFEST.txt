@@ -1,0 +1,44 @@
+
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA512
+
+{
+  "manifestVersion": "2.0.0",
+  "signatureType": "community",
+  "signedByOrg": "golioth",
+  "signedByOrgName": "Golioth",
+  "plugin": "golioth-websocket-datasource",
+  "version": "1.0.2",
+  "time": 1669216996762,
+  "keyId": "7e4d0c6a708866e7",
+  "files": {
+    "module.js.LICENSE.txt": "0d8f66cd4afb566cb5b7e1540c68f43b939d3eba12ace290f18abc4f4cb53ed0",
+    "module.js.map": "ee2bcedd7d328c21d9d855175302e86c5fe29f06cb58ed4266f803d2c1babcb2",
+    "LICENSE": "b40930bbcf80744c86c46a12bc9da056641d722716c378f5659b9e555ef833e1",
+    "gpx_websocket_windows_amd64.exe": "e8bf82b6e58dc102c0ed4bcc786334ca9e267efdf066c296d9a112c36dab252e",
+    "gpx_websocket_darwin_arm64": "abaab4116c4817e5d6813747cee811437bd18d71b1b5b6c81f497a7bbd80289c",
+    "README.md": "03c861ad3755a111beba75b35c154102a04d2625fc379c51ea4235b6c22b5425",
+    "gpx_websocket_linux_arm": "8ede95db6a8ecdd80281e48b3c6ba28dd66bf6ea7c44f091c57e521ed7b01260",
+    "plugin.json": "2cbef1fff1c74e9c820326073aa249c9acd7a06d9e667d61e2c78af2cdbbacdd",
+    "gpx_websocket_linux_arm64": "66816d3a0b7419aefd88a928c41a47e3887f3b5191a75959f179a691e4cc5c18",
+    "gpx_websocket_linux_amd64": "490b7e397d7cbdf3c1fe6c6aabb839339fdebd7115ef6997fb0140c7f09a3bce",
+    "gpx_websocket_darwin_amd64": "e11fcaaf750fe12adec1fe0de1561814e08079b51cac7a7d1d4d110ac849655c",
+    "module.js": "cc1aca893db746b736ac002e4b196f40afd4c258e2295644e284700597b23082",
+    "CHANGELOG.md": "8c5bf269cc73f908e7716bebaab4fa757bd92d62ea89cba04c928fdc3fc5400e",
+    "img/logo.svg": "06a7e6d1b63fe898552a29459603509202f0027a7ace90d3edd3b198cc7842a4",
+    "img/assets/grafana-websockets-graphing.png": "6cbfd9d00441133a17d520d49490b8e47a09a4c66bb18c098698e18e40074fe6",
+    "img/assets/grafana-websockets-plugin-streaming.png": "9a6f28d7acc3ef918e6ac87118c6c1924ce2c5888b875ff06f8eaf802dacb8d5",
+    "img/assets/golioth-grafana-websockets-plugin-datasource.png": "088efff6e86e46351c64d399a806036357b08a5b95b9aa5cbc35a34ccedb52b5"
+  }
+}
+-----BEGIN PGP SIGNATURE-----
+Version: OpenPGP.js v4.10.10
+Comment: https://openpgpjs.org
+
+wrgEARMKAAYFAmN+OuUAIQkQfk0ManCIZucWIQTzOyW2kQdOhGNlcPN+TQxq
+cIhm535+AgkB0dBkH0A8Dd2gwymYTTMw2g84v4Q98NZdBgQuCgwpIgl7PaKk
+Ot3JvhlreI7gKTM3zwnyZfRE41Kk30k4GCN8yVUCB1F/W9BmckOKQ1qO5FOf
+NFkargisQEPKNnIA3oZaabr8djxsi1qVXibn//QwV0pB4QncvDY8Z1SIBiDv
+JBG3Fdr8
+=+1If
+-----END PGP SIGNATURE-----

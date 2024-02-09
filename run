@@ -1,0 +1,16 @@
+#!/bin/sh
+readonly project_name=$(basename "${PWD}")
+
+exec_app() {
+  if [[ $1 ]]; then tty="-it"; else tty=""; fi
+  echo "docker exec ${tty} ${project_name}-$2-1"
+}
+
+function wss() {
+  $(exec_app 0 wss) \
+		python main.py
+}
+
+cmd=$1
+shift
+$cmd "$@"

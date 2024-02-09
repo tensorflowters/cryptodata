@@ -39,6 +39,7 @@ def consume_messages():
             hashed_url = message.value.get("hashed_url", None)
             link_page = message.value.get("link_page", None)
             published_at = message.value.get("published_at", None)
+            published_at_timestamp = message.value.get("published_at_timestamp", None)
             publish_from_when_scraped = message.value.get(
                 "publish_from_when_scraped", None
             )
@@ -50,6 +51,7 @@ def consume_messages():
                 hashed_url=hashed_url,
                 link_page=link_page,
                 published_at=published_at,
+                published_at_timestamp=published_at_timestamp,
                 publish_from_when_scraped=publish_from_when_scraped,
                 source_domain=source_domain,
                 title=title,

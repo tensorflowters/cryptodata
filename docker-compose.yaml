@@ -62,36 +62,6 @@ services:
             start_period: 5s
         restart: always
 
-    client_db:
-        image: postgres:13
-        environment:
-            POSTGRES_USER: client
-            POSTGRES_PASSWORD: client
-            POSTGRES_DB: client
-        volumes:
-            - client-db-volume:/var/lib/postgresql/data
-        healthcheck:
-            test: [ "CMD", "pg_isready", "-U", "client" ]
-            interval: 10s
-            retries: 5
-            start_period: 5s
-        restart: always
-
-    client_initdb:
-        build:
-            context: .
-            dockerfile: ./db/initdb.Dockerfile
-        command: [ "python", "initdb.py" ]
-        volumes:
-            - ./db:/home/initdb
-        environment:
-            POSTGRES_DB: "client"
-            POSTGRES_PASSWORD: "client"
-            POSTGRES_USER: "client"
-        depends_on:
-            client_db:
-                condition: service_healthy
-
     redis:
         image: redis:latest
         expose:
@@ -267,17 +237,6 @@ services:
             - -c
             - airflow
 
-    scraper:
-        build:
-            context: .
-            dockerfile: ./scrapers/cryptopanic/scraper.Dockerfile
-    
-    binance-scraper:
-        build:
-            context: .
-            dockerfile: ./scrapers/binance/scraper.Dockerfile
-    
-
     zookeeper:
         image: confluentinc/cp-zookeeper:latest
         environment:
@@ -302,6 +261,46 @@ services:
           interval: 10s
           timeout: 10s
           retries: 3
+
+    client_db:
+        image: postgres:13
+        environment:
+            POSTGRES_USER: client
+            POSTGRES_PASSWORD: client
+            POSTGRES_DB: client
+        volumes:
+            - client-db-volume:/var/lib/postgresql/data
+        healthcheck:
+            test: [ "CMD", "pg_isready", "-U", "client" ]
+            interval: 10s
+            retries: 5
+            start_period: 5s
+        restart: always
+
+    client_initdb:
+        build:
+            context: .
+            dockerfile: ./db/initdb.Dockerfile
+        command: [ "python", "initdb.py" ]
+        volumes:
+            - ./db:/home/initdb
+        environment:
+            POSTGRES_DB: "client"
+            POSTGRES_PASSWORD: "client"
+            POSTGRES_USER: "client"
+        depends_on:
+            client_db:
+                condition: service_healthy
+    
+    cryptopanic-scraper:
+        build:
+            context: .
+            dockerfile: ./scrapers/cryptopanic/scraper.Dockerfile
+    
+    binance-scraper:
+        build:
+            context: .
+            dockerfile: ./scrapers/binance/scraper.Dockerfile
 
     scraped_consumer:
         build:
@@ -339,6 +338,19 @@ services:
         volumes:
             - ./grafana/data:/var/lib/grafana
             - ./grafana/conf:/etc/grafana
+    
+    wss:
+        build:
+            context: .
+            dockerfile: ./crypto-wss/wss.Dockerfile
+        volumes: 
+            - ./crypto-wss:/srv/app
+        tty: true
+        environment:
+            BLOCKCHAIN_API_KEY: ${BLOCKCHAIN_API_KEY}
+            POSTGRES_USER: client
+            POSTGRES_PASSWORD: client
+            POSTGRES_DB: client
 
 volumes:
     postgres-db-volume:

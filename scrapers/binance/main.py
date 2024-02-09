@@ -59,6 +59,7 @@ try:
         hashed_url = None
         link_page = None
         published_at = None
+        published_at_timestamp = None
         publish_from_when_scraped = None
         source_domain = None
         title = None
@@ -81,12 +82,14 @@ try:
                     )
                     if dt is not None:
                         published_at = dt.to_rfc850_string()
+                        published_at_timestamp = int(dt.timestamp() * 1000)
                 elif "min" in publish_from_when_scraped:
                     dt = now.subtract(
                         minutes=int(publish_from_when_scraped.split("m")[0])
                     )
                     if dt is not None:
                         published_at = dt.to_rfc850_string()
+                        published_at_timestamp = int(dt.timestamp() * 1000)
 
         # Extract the source domain of the news
         source_domain_element = news_card.find_element(
@@ -135,6 +138,7 @@ try:
                 "hashed_url": hashed_url,
                 "link_page": link_page,
                 "published_at": published_at,
+                "published_at_timestamp": published_at_timestamp,
                 "publish_from_when_scraped": publish_from_when_scraped,
                 "source_domain": source_domain,
                 "title": title,
