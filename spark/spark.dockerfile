@@ -36,7 +36,7 @@ RUN apk update && \
 
 WORKDIR /home/spark
 
-COPY spark-entrypoint.sh /entrypoint.sh
+COPY ./spark/spark-entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
 ENV SPARK_HOME=/home/spark

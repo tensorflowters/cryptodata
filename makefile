@@ -1,45 +1,23 @@
 # To launch a command line, type: make [target] [options].
 # You need to have make installed on your system.
-exportenv: var_docker_to_test_path=
+
+MAKE_EXECUTOR_ENV=make -f commands/dev.mk
+MAKE_EXECUTOR_REGISTERY=make -f commands/docker-build.mk
 
 devup:
-	@echo "Starting project..."
-	@docker compose up -d --build
+	@${MAKE_EXECUTOR_ENV} devup
+
+devuprm:
+	@${MAKE_EXECUTOR_ENV} devuprm
 
 devclean:
-	@docker compose down --volumes --remove-orphans --rmi local
+	@${MAKE_EXECUTOR_ENV} devclean
 
-initdb:
-	@docker compose up airflow-init
-
-airflow_info:
-	@ ./airflow.sh info
-
-airflow_migrate:
-	@ ./airflow.sh db migrate
-
-airflow_dag_list:
-	@./airflow.sh dags list
-
-airflow_dag_scrapin_cryptopanic_list:
-	@./airflow.sh tasks list scrap_cryptopanic
-
-airflow_dag_scrapin_cryptopanic_list_tree:
-	@./airflow.sh tasks list scrap_cryptopanic --tree
-
-# testing print_date
-airflow_test_scrap_cryptopanic_print_date:
-	@./airflow.sh tasks test scrap_cryptopanic print_date 2015-06-01
-
-# testing sleep
-airflow_test_scrap_cryptopanic_print_sleep:
-	@./airflow.sh tasks test scrap_cryptopanic sleep 2015-06-01
-
-# optional, start a web server in debug mode in the background
-# airflow webserver --debug &
-
-# start your backfill on a date range
-airflow_backfill_scrap_cryptopanic:
-	@./airflow dags backfill scrap_cryptopanic \
-    	--start-date 2015-06-01 \
-    	--end-date 2015-06-07
+build_registery_all:
+	@${MAKE_EXECUTOR_REGISTERY} build_cryptodata-cryptopanic-scraper
+	@${MAKE_EXECUTOR_REGISTERY} build_cryptodata-binance-scraper
+	@${MAKE_EXECUTOR_REGISTERY} build_cryptodata-airflow
+	@${MAKE_EXECUTOR_REGISTERY} build_cryptodata-scraped_consumer
+	@${MAKE_EXECUTOR_REGISTERY} build_cryptodata-wss
+	@${MAKE_EXECUTOR_REGISTERY} build_cryptodata-spark
+	@${MAKE_EXECUTOR_REGISTERY} build_cryptodata-client_initdb
