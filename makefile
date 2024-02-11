@@ -3,6 +3,7 @@
 
 MAKE_EXECUTOR_ENV=make -f commands/dev.mk
 MAKE_EXECUTOR_REGISTERY=make -f commands/docker-build.mk
+MAKE_EXECUTOR_DEPLOY=make -f commands/deploy.mk
 
 devup:
 	@${MAKE_EXECUTOR_ENV} devup
@@ -21,3 +22,10 @@ build_registery_all:
 	@${MAKE_EXECUTOR_REGISTERY} build_cryptodata-wss
 	@${MAKE_EXECUTOR_REGISTERY} build_cryptodata-spark
 	@${MAKE_EXECUTOR_REGISTERY} build_cryptodata-client_initdb
+
+
+print_ansible_home:
+	@${MAKE_EXECUTOR_DEPLOY} print_ansible_home
+
+prod_check_py_hosts:
+	@${MAKE_EXECUTOR_DEPLOY} check_host_python

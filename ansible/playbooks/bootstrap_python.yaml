@@ -1,0 +1,19 @@
+---
+- name: Bootstrap Python
+  hosts: k8s_cluster_01
+  gather_facts: false
+
+  tasks:
+    - name: Updating pacman cache
+      ansible.builtin.raw: "pacman -Sy"
+      changed_when: false
+      failed_when: false
+      become: true
+
+    - name: Install Python
+      ansible.builtin.raw: |
+        pacman -S --noconfirm python
+      args:
+        executable: "/bin/bash"
+      changed_when: false
+      become: true

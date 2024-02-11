@@ -1,0 +1,17 @@
+k8s_cluster_01:
+  hosts:
+    192.168.1.95:
+      ansible_port: 22
+      ansible_user: "deploy"
+      ansible_become: true
+      ansible_python_interpreter: "/usr/bin/python3"
+    192.168.1.50:
+      ansible_port: 22
+      ansible_user: "deploy"
+      ansible_become: true
+      ansible_python_interpreter: "/usr/bin/python3"
+    192.168.1.144:
+      ansible_port: 22
+      ansible_user: "deploy"
+      ansible_become: true
+      ansible_python_interpreter: "/usr/bin/python3"
