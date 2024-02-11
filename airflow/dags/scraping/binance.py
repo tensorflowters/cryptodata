@@ -23,7 +23,7 @@ with DAG(
 ) as dag:
     run_scraper_task = DockerOperator(
         task_id="run_binance_scraper_task",
-        image="cryptodata-binance-scraper:latest",
+        image="epitechuser2077/cryptodata:cryptodata-binance-scraper",
         api_version="auto",
         command="python main.py",
         docker_url="tcp://docker-proxy:2375",
