@@ -10,7 +10,7 @@ RUN apt-get update \
 
 USER airflow
 
-RUN pip install poetry
+RUN pip install poetry redis
 
 RUN poetry config virtualenvs.create true \
     && poetry config virtualenvs.in-project true \

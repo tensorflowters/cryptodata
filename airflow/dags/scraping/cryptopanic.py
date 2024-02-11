@@ -15,15 +15,15 @@ default_args = {
 
 
 with DAG(
-    "scrap_binance",
+    "scrap_cryptopanic",
     default_args=default_args,
-    schedule_interval=timedelta(minutes=2),
+    schedule_interval=timedelta(minutes=5),
     start_date=datetime(2023, 10, 20),
     catchup=False,
 ) as dag:
     run_scraper_task = DockerOperator(
-        task_id="run_binance_scraper_task",
-        image="cryptodata-binance-scraper:latest",
+        task_id="run_cryptopanic_scraper_task",
+        image="cryptodata:cryptodata-cryptopanic-scraper",
         api_version="auto",
         command="python main.py",
         docker_url="tcp://docker-proxy:2375",
