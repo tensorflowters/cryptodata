@@ -20,11 +20,17 @@ spec:
         - containerPort: 5432
         envFrom:
         - secretRef:
-            name: airflow-db-secret
+            name: airflow-db-secrets
         volumeMounts:
-        - name: postgres-storage
-          mountPath: /var/lib/postgresql/data
+        - mountPath: /var/lib/postgresql/data
+          name: postgres-data
+        livenessProbe:
+          exec:
+            command: ["pg_isready", "-U", "airflow_db_user_placeholder"]
+          initialDelaySeconds: 5
+          periodSeconds: 10
+          failureThreshold: 5
       volumes:
-      - name: postgres-storage
+      - name: postgres-data
         persistentVolumeClaim:
           claimName: airflow-db-pvc

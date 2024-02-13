@@ -8,3 +8,5 @@ data:
   AIRFLOW__CORE__LOAD_EXAMPLES: "false"
   AIRFLOW__API__AUTH_BACKENDS: "airflow.api.auth.backend.basic_auth,airflow.api.auth.backend.session"
   AIRFLOW__SCHEDULER__ENABLE_HEALTH_CHECK: "true"
+  DUMB_INIT_SETSID: "0"
+  CONNECTION_CHECK_MAX_COUNT: "0"
