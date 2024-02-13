@@ -56,3 +56,8 @@ k8s_apply_kafka:
 k8s_apply_scrappers:
 	@kubectl apply -f cryptopanic-scraper-deployment.yml
 	@kubectl apply -f binance-scraper-deployment.yml
+
+k8s_apply_scrapper_consumer:
+	@kubectl apply -f scraped-consumer-secrets.yml
+	@kubectl apply -f scraped-consumer-pvc.yml
+	@kubectl apply -f scraped-consumer-deployment.yml
