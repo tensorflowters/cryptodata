@@ -68,3 +68,8 @@ k8s_apply_grafana:
 	@kubectl apply -f grafana-deployment.yml
 	@kubectl apply -f grafana-service.yml
 	@kubectl apply -f grafana-ingress.yml
+
+k8s_apply_wss:
+	@kubectl apply -f wss-secrets.yml
+	@kubectl apply -f wss-pvc.yml
+	@kubectl apply -f wss-deployment.yml

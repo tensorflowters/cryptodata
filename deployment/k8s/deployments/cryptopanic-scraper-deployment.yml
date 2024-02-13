@@ -16,6 +16,10 @@ spec:
       - name: cryptopanic-scraper
         image: epitechuser2077/cryptodata:cryptodata-cryptopanic-scraper
         command: ["tail", "-f", "/dev/null"]
+        env:
+        - name: AIRFLOW_ENV
+          value: "PROD"
+        # Example livenes
         # Example liveness probe; adjust according to actual health check logic
         livenessProbe:
           exec:
