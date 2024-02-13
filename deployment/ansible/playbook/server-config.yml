@@ -36,6 +36,7 @@
           - make
           - pkg-config
           - python3-setuptools
+          - snapd
           - software-properties-common
           - wget
 
