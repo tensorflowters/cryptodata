@@ -61,3 +61,10 @@ k8s_apply_scrapper_consumer:
 	@kubectl apply -f scraped-consumer-secrets.yml
 	@kubectl apply -f scraped-consumer-pvc.yml
 	@kubectl apply -f scraped-consumer-deployment.yml
+
+k8s_apply_grafana:
+	@kubectl apply -f grafana-secrets.yml
+	@kubectl apply -f grafana-pvcs.yml
+	@kubectl apply -f grafana-deployment.yml
+	@kubectl apply -f grafana-service.yml
+	@kubectl apply -f grafana-ingress.yml
