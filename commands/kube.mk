@@ -35,3 +35,9 @@ k8s_apply_client_db:
 	@kubectl apply -f client-db-deployment.yml
 	@kubectl apply -f client-db-service.yml
 	@kubectl apply -f client-db-init-job.yml
+
+k8s_apply_redis:
+	@kubectl apply -f redis-deployment.yml
+	@kubectl apply -f redis-service.yml
+	@kubectl apply -f redis-pvc.yml
+	@kubectl apply -f redis-secrets.yml
