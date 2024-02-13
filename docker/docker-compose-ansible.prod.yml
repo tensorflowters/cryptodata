@@ -8,8 +8,8 @@ networks:
 services:
   ansible_builder:
     build:
-      context: ../deployment/ansible/cryptodata-deployment
-      dockerfile: Dockerfile
+      context: ../deployment/ansible
+      dockerfile: ansible.dockerfile
     env_file:
       - '${ENV}'
     networks:

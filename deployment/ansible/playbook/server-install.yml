@@ -1,0 +1,12 @@
+---
+- name: Install and configure service on host
+  hosts: all
+  become: yes
+  gather_facts: yes
+  remote_user: "{{ ansible_user }}"
+  vars:
+      ansible_become_pass: "{{ lookup('ansible.builtin.env', 'SERVER_03100_SUDO_PASS') }}"
+      ansible_ssh_host_key_checking: accept-new
+      arch: "{{ lookup('ansible.builtin.env', 'SERVER_03100_ARCH') }}"
+      distro: "{{ lookup('ansible.builtin.env', 'SERVER_03100_DISTRO') }}"
+  tasks:

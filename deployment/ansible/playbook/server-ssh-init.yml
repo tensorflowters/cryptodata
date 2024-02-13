@@ -1,0 +1,22 @@
+---
+- name: Add SSH keys to servers before configuring anythings
+  hosts: all
+  gather_facts: yes
+  remote_user: "{{ ansible_user }}"
+  vars:
+    ansible_become_pass: "{{ lookup('ansible.builtin.env', 'SERVER_03100_SUDO_PASS') }}"
+    ssh_public_key_path: "{{ lookup('ansible.builtin.env', 'CONTROL_NODE_SSH_PUBLIC_KEY_LOCATION') }}"
+    ansible_ssh_host_key_checking: false
+  tasks:
+    - name: 1/2 - Ensure that sshpass package is installed and that hosts are from the Debian family
+      ansible.builtin.apt:
+        name: sshpass
+        state: present
+      when: ansible_os_family == 'Debian'
+      become: yes
+
+    - name: 2/2 - Add private key from control node to tensorpods
+      ansible.posix.authorized_key:
+        user: "{{ ansible_user }}"
+        state: present
+        key: "{{ lookup('file', '{{ ssh_public_key_path }}') }}"
