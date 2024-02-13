@@ -41,3 +41,9 @@ k8s_apply_redis:
 	@kubectl apply -f redis-service.yml
 	@kubectl apply -f redis-pvc.yml
 	@kubectl apply -f redis-secrets.yml
+
+k8s_apply_redis:
+	@kubectl apply -f zookeeper-configmap.yml
+	@kubectl apply -f zookeeper-pvc.yml
+	@kubectl apply -f zookeeper-deployment.yml
+	@kubectl apply -f zookeeper-service.yml
