@@ -40,5 +40,6 @@ logs
 *.env.dockerhub
 *.env.local
 .env
-*.env.prod*
+*.env.*.prod
 *.mypy_cache*
+**/.ssh_config/**

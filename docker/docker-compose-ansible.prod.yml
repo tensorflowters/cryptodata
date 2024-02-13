@@ -1,0 +1,19 @@
+version: '3.9'
+
+networks:
+  cryptodata_deployment_net:
+    driver: bridge
+    name: cryptodata_deployment_net
+
+services:
+  ansible_builder:
+    build:
+      context: ../deployment/ansible/cryptodata-deployment
+      dockerfile: Dockerfile
+    env_file:
+      - '${ENV}'
+    networks:
+      - cryptodata_deployment_net
+    restart: "no"
+    volumes:
+      - ../deployment/ansible/.ssh_config:/home/ansible-controller/.ssh:ro
