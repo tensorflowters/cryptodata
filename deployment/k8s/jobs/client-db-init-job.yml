@@ -1,0 +1,23 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: client-initdb
+spec:
+  template:
+    spec:
+      containers:
+      - name: init-db
+        image: epitechuser2077/cryptodata:cryptodata-client_initdb
+        command: ["python", "initdb.py"]
+        envFrom:
+        - secretRef:
+            name: client-db-secrets
+        volumeMounts:
+        - mountPath: /home/initdb
+          name: init-script
+      restartPolicy: OnFailure
+      volumes:
+      - name: init-script
+        hostPath:
+          path: ../../../db
+          type: Directory

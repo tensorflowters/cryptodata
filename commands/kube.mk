@@ -28,3 +28,10 @@ k8s_apply_airflow_db:
 	@kubectl apply -f airflow-db-pvc.yml
 	@kubectl apply -f airflow-db-deployment.yml
 	@kubectl apply -f airflow-db-service.yml
+
+k8s_apply_client_db:
+	@kubectl apply -f client-db-secrets.yml
+	@kubectl apply -f client-db-pvc.yml
+	@kubectl apply -f client-db-deployment.yml
+	@kubectl apply -f client-db-service.yml
+	@kubectl apply -f client-db-init-job.yml
