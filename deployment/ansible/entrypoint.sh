@@ -17,7 +17,7 @@ eval $(ssh-agent -s)
 spawn ssh-add $CONTROL_NODE_SSH_PRIVATE_KEY_LOCATION
 expect {
     "Enter passphrase for $CONTROL_NODE_SSH_PRIVATE_KEY_LOCATION:" {
-        send "$SERVER_USER_SSH_PASS\r";
+        send "$SERVER_03100_USER_SSH_PASS\r";
         exp_continue;
     }
     eof {
@@ -35,7 +35,7 @@ eval $(ssh-agent -s)
 spawn ssh-add $CONTROL_NODE_SSH_PRIVATE_KEY_LOCATION
 expect {
     "Enter passphrase for $CONTROL_NODE_SSH_PRIVATE_KEY_LOCATION:" {
-        send "$SERVER_USER_SSH_PASS\r";
+        send "$SERVER_03100_USER_SSH_PASS\r";
         exp_continue;
     }
     eof {
@@ -53,7 +53,7 @@ eval $(ssh-agent -s)
 spawn ssh-add $CONTROL_NODE_SSH_PRIVATE_KEY_LOCATION
 expect {
     "Enter passphrase for $CONTROL_NODE_SSH_PRIVATE_KEY_LOCATION:" {
-        send "$SERVER_USER_SSH_PASS\r";
+        send "$SERVER_03100_USER_SSH_PASS\r";
         exp_continue;
     }
     eof {

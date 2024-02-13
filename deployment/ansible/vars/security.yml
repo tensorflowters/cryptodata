@@ -13,7 +13,7 @@ security_ssh_gss_api_authentication: "no"
 security_ssh_password_authentication: "no"
 security_ssh_permit_empty_password: "yes"
 security_ssh_permit_root_login: "no"
-security_ssh_port: "{{ lookup('env', 'SERVER_SSH_PORT') }}"
+security_ssh_port: "{{ lookup('env', 'SERVER_03100_SSH_PORT') }}"
 security_ssh_restart_handler_state: restarted
 security_ssh_usedns: "no"
 security_ssh_x11_forwarding: "no"
