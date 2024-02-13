@@ -52,3 +52,7 @@ k8s_apply_kafka:
 	@kubectl apply -f kafka-configmap.yml
 	@kubectl apply -f kafka-deployment.yml
 	@kubectl apply -f kafka-service.yml
+
+k8s_apply_scrappers:
+	@kubectl apply -f cryptopanic-scraper-deployment.yml
+	@kubectl apply -f binance-scraper-deployment.yml

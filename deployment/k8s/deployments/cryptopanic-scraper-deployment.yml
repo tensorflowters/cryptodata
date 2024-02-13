@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cryptopanic-scraper
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cryptopanic-scraper
+  template:
+    metadata:
+      labels:
+        app: cryptopanic-scraper
+    spec:
+      containers:
+      - name: cryptopanic-scraper
+        image: epitechuser2077/cryptodata:cryptodata-cryptopanic-scraper
+        command: ["tail", "-f", "/dev/null"]
+        # Example liveness probe; adjust according to actual health check logic
+        livenessProbe:
+          exec:
+            command:
+            - echo
+            - "alive"
+          initialDelaySeconds: 10
+          periodSeconds: 30
