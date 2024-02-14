@@ -1,0 +1,12 @@
+datacenters:
+  children:
+    homelab:
+      children:
+        pve-03:
+          hosts:
+            server-03100:
+              ansible_host: "{{ lookup('env', 'SERVER_03100_HOST') }}"
+              ansible_port: "{{ lookup('env', 'SERVER_03100_SSH_PORT') }}"
+              ansible_ssh_private_key_file: "{{ lookup('env', 'SERVER_03100_SSH_PRIVATE_KEY_FILE') }}"
+              ansible_ssh_public_key_file: "{{ lookup('env', 'SERVER_03100_SSH_PUBLIC_KEY_FILE') }}"
+              ansible_user: "{{ lookup('env', 'SERVER_03100_USER') }}"

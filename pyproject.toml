@@ -6,8 +6,9 @@ authors = []
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = ">3.9, <=3.13"
+python = ">3.10, <=3.13"
 poethepoet = "^0.24.4"
+ansible = "^9.2.0"
 
 
 [tool.poetry.group.scraper.dependencies]

@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: airflow-db
+spec:
+  selector:
+    matchLabels:
+      app: airflow-db
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: airflow-db
+    spec:
+      containers:
+      - name: postgres
+        image: postgres:13
+        ports:
+        - containerPort: 5432
+        envFrom:
+        - secretRef:
+            name: airflow-db-secrets
+        volumeMounts:
+        - mountPath: /var/lib/postgresql/data
+          name: postgres-data
+        livenessProbe:
+          exec:
+            command: ["pg_isready", "-U", "airflow_db_user_placeholder"]
+          initialDelaySeconds: 5
+          periodSeconds: 10
+          failureThreshold: 5
+      volumes:
+      - name: postgres-data
+        persistentVolumeClaim:
+          claimName: airflow-db-pvc
