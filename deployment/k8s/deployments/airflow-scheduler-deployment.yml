@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: airflow-scheduler
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      component: scheduler
+  template:
+    metadata:
+      labels:
+        component: scheduler
+    spec:
+      containers:
+      - name: airflow-scheduler
+        image: epitechuser2077/cryptodata:cryptodata-airflow
+        command: ["airflow", "scheduler"]
+        envFrom:
+        - configMapRef:
+            name: airflow-config
+        - secretRef:
+            name: airflow-secrets
+        readinessProbe:
+          exec:
+            command:
+            - curl
+            - --fail
+            - http://localhost:8080/health
+          initialDelaySeconds: 30
+          periodSeconds: 30
+          timeoutSeconds: 10
+          successThreshold: 1
+          failureThreshold: 5
+        volumeMounts:
+        - name: dags
+          mountPath: /opt/airflow/dags
+        - name: logs
+          mountPath: /opt/airflow/logs
+        - name: config
+          mountPath: /opt/airflow/config
+        - name: plugins
+          mountPath: /opt/airflow/plugins
+      volumes:
+      - name: dags
+        persistentVolumeClaim:
+          claimName: airflow-dags-pvc
+      - name: logs
+        persistentVolumeClaim:
+          claimName: airflow-logs-pvc
+      - name: config
+        persistentVolumeClaim:
+          claimName: airflow-config-pvc
+      - name: plugins
+        persistentVolumeClaim:
+          claimName: airflow-plugins-pvc

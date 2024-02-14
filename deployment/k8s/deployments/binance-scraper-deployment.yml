@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: binance-scraper
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: binance-scraper
+  template:
+    metadata:
+      labels:
+        app: binance-scraper
+    spec:
+      containers:
+      - name: binance-scraper
+        image: epitechuser2077/cryptodata:cryptodata-binance-scraper
+        command: ["tail", "-f", "/dev/null"]
+        env:
+        - name: AIRFLOW_ENV
+          value: "PROD"
+        # Example liveness probe; adjust according to actual health check logic
+        livenessProbe:
+          exec:
+            command:
+            - echo
+            - "alive"
+          initialDelaySeconds: 10
+          periodSeconds: 30

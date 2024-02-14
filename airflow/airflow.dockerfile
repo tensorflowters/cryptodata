@@ -10,7 +10,7 @@ RUN apt-get update \
 
 USER airflow
 
-RUN pip install poetry redis
+RUN pip install poetry redis apache-airflow-providers-cncf-kubernetes
 
 RUN poetry config virtualenvs.create true \
     && poetry config virtualenvs.in-project true \
