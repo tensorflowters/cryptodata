@@ -22,7 +22,7 @@ spec:
           mountPath: /var/lib/postgresql/data
         livenessProbe:
           exec:
-            command: ["pg_isready", "-U", "${CLIENT_DB_USER}"]
+            command: ["pg_isready", "-U", "client"]
           initialDelaySeconds: 5
           periodSeconds: 10
       volumes:
