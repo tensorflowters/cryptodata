@@ -8,16 +8,12 @@ spec:
       containers:
       - name: init-db
         image: epitechuser2077/cryptodata:cryptodata-client_initdb
-        command: ["python", "initdb.py"]
-        envFrom:
-        - secretRef:
-            name: client-db-secrets
+        command: ["python3", "/srv/app/initdb.py"]
         volumeMounts:
-        - mountPath: /home/initdb
-          name: init-script
+        - mountPath: /srv/app
+          name: init-script-volume
       restartPolicy: OnFailure
       volumes:
-      - name: init-script
-        hostPath:
-          path: ../../../db
-          type: Directory
+      - name: init-script-volume
+        configMap:
+          name: initdb-script
