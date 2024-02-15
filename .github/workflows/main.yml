@@ -9,9 +9,77 @@ jobs:
     runs-on: self-hosted
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-
-      - name: Stop Old Docker Compose Environment
-        run:  |
-          echo "Hello World"
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Create Kubernetes Airflow database secrets
+        env:
+          AIRFLOW_DB_USER: ${{ secrets.PROD_AIRFLOW_DB_USER }}
+          AIRFLOW_DB_PASSWD: ${{ secrets.PROD_AIRFLOW_DB_PASSWD }}
+          AIRFLOW_DB_NAME: ${{ secrets.PROD_AIRFLOW_DB_NAME }}
+        run: |
+          kubectl create secret generic airflow-db-secret \
+            --from-literal=POSTGRES_USER=$AIRFLOW_DB_USER \
+            --from-literal=POSTGRES_PASSWORD=$AIRFLOW_DB_PASSWD \
+            --from-literal=POSTGRES_DB=$AIRFLOW_DB_NAME
+      - name: Create Kubernetes airflow services secrets
+        env:
+          AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: ${{ secrets.PROD_AIRFLOW__DATABASE__SQL_ALCHEMY_CONN }}
+          AIRFLOW__CORE__SQL_ALCHEMY_CONN: ${{ secrets.PROD_AIRFLOW__CORE__SQL_ALCHEMY_CONN }}
+          AIRFLOW__CELERY__RESULT_BACKEND: ${{ secrets.PROD_AIRFLOW__CELERY__RESULT_BACKEND }}
+          AIRFLOW__CELERY__BROKER_URL: ${{ secrets.PROD_AIRFLOW__CELERY__BROKER_URL }}
+          GH_TOKEN: ${{ secrets.PROD_AIRFLOW_GH_TOKEN }}
+          AIRFLOW_UID: ${{ secrets.PROD_AIRFLOW_UID}}
+        run: |
+          kubectl create secret generic airflow-secrets \
+            --from-literal=AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=$AIRFLOW__DATABASE__SQL_ALCHEMY_CONN \
+            --from-literal=AIRFLOW__CORE__SQL_ALCHEMY_CONN=$AIRFLOW__CORE__SQL_ALCHEMY_CONN \
+            --from-literal=AIRFLOW__CELERY__RESULT_BACKEND=$AIRFLOW__CELERY__RESULT_BACKEND \
+            --from-literal=AIRFLOW__CELERY__BROKER_URL=$AIRFLOW__CELERY__BROKER_URL \
+            --from-literal=GH_TOKEN=$GH_TOKEN \
+            --from-literal=AIRFLOW_UID=$AIRFLOW_UID
+      - name: Create Kubernetes client database secrets
+        env:
+          CLIENT_DB_PASSWD: ${{ secrets.PROD_CLIENT_DB_PASSWD }}
+          CLIENT_DB_USER: ${{ secrets.PROD_CLIENT_DB_USER }}
+          CLIENT_DB_NAME: ${{ secrets.PROD_CLIENT_DB_NAME }}
+        run: |
+          kubectl create secret generic client-db-secrets \
+            --from-literal=POSTGRES_PASSWORD=$CLIENT_DB_PASSWD \
+            --from-literal=POSTGRES_USER=$CLIENT_DB_USER \
+            --from-literal=POSTGRES_DB=$CLIENT_DB_NAME
+      - name: Create Kubernetes grafana  secrets
+        env:
+          GRAFANA_SECURITY_ADMIN_USER: ${{ secrets.PROD_GRAFANA_SECURITY_ADMIN_USER }}
+          GRAFANA_SECURITY_ADMIN_PASSWORD: ${{ secrets.PROD_GRAFANA_SECURITY_ADMIN_PASSWORD }}
+        run: |
+          kubectl create secret generic grafana-secrets \
+            --from-literal=GF_SECURITY_ADMIN_USER=$GRAFANA_SECURITY_ADMIN_USER \
+            --from-literal=GF_SECURITY_ADMIN_PASSWORD=$GRAFANA_SECURITY_ADMIN_PASSWORD
+      - name: Create Kubernetes redis secrets
+        env:
+          REDIS_PASSWORD: ${{ secrets.PROD_REDIS_PASSWORD }}
+        run: |
+          kubectl create secret generic redis-secrets \
+            --from-literal=redis-password=$REDIS_PASSWORD
+      - name: Create Kubernetes scraped consumer secrets
+        env:
+          CLIENT_DB_PASSWD: ${{ secrets.PROD_CLIENT_DB_PASSWD }}
+          CLIENT_DB_USER: ${{ secrets.PROD_CLIENT_DB_USER }}
+          CLIENT_DB_NAME: ${{ secrets.PROD_CLIENT_DB_NAME }}
+        run: |
+          kubectl create secret generic scraped-consumer-secrets \
+            --from-literal=POSTGRES_PASSWORD=$CLIENT_DB_PASSWD \
+            --from-literal=POSTGRES_USER=$CLIENT_DB_USER \
+            --from-literal=POSTGRES_DB=$CLIENT_DB_NAME
+      - name: Create Kubernetes wss sccraper secrets
+        env:
+          BLOCKCHAIN_API_KEY: ${{ secrets.PROD_BLOCKCHAIN_API_KEY }}
+          CLIENT_DB_PASSWD: ${{ secrets.PROD_CLIENT_DB_PASSWD }}
+          CLIENT_DB_USER: ${{ secrets.PROD_CLIENT_DB_USER }}
+          CLIENT_DB_NAME: ${{ secrets.PROD_CLIENT_DB_NAME }}
+        run: |
+          kubectl create secret generic wss-secrets \
+            --from-literal=BLOCKCHAIN_API_KEY=$BLOCKCHAIN_API_KEY \
+            --from-literal=POSTGRES_PASSWORD=$CLIENT_DB_PASSWD \
+            --from-literal=POSTGRES_USER=$CLIENT_DB_USER \
+            --from-literal=POSTGRES_DB=$CLIENT_DB_NAME
