@@ -29,7 +29,6 @@ prod_run:
 
 prod_apply_deployment:
 	@microk8s kubectl apply -f deployment/k8s/configmaps
-	@microk8s kubectl apply -f deployment/k8s/secrets
 	@microk8s kubectl apply -f deployment/k8s/pvcs
 	@microk8s kubectl apply -f deployment/k8s/jobs
 	@microk8s kubectl apply -f deployment/k8s/deployments
