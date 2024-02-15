@@ -14,4 +14,4 @@ spec:
             name: airflow-config
         - secretRef:
             name: airflow-secrets
-      restartPolicy: Never
+      restartPolicy: OnFailure
