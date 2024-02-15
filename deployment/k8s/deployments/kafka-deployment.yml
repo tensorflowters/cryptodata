@@ -14,8 +14,6 @@ spec:
       containers:
       - name: kafka
         image: confluentinc/cp-kafka:latest
-        ports:
-        - containerPort: 9092
         envFrom:
         - configMapRef:
             name: kafka-config
