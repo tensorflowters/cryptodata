@@ -17,7 +17,7 @@ jobs:
           AIRFLOW_DB_PASSWD: ${{ secrets.PROD_AIRFLOW_DB_PASSWD }}
           AIRFLOW_DB_NAME: ${{ secrets.PROD_AIRFLOW_DB_NAME }}
         run: |
-          kubectl create secret generic airflow-db-secret \
+          microk8s kubectl create secret generic airflow-db-secret \
             --from-literal=POSTGRES_USER=$AIRFLOW_DB_USER \
             --from-literal=POSTGRES_PASSWORD=$AIRFLOW_DB_PASSWD \
             --from-literal=POSTGRES_DB=$AIRFLOW_DB_NAME
@@ -30,7 +30,7 @@ jobs:
           GH_TOKEN: ${{ secrets.PROD_AIRFLOW_GH_TOKEN }}
           AIRFLOW_UID: ${{ secrets.PROD_AIRFLOW_UID}}
         run: |
-          kubectl create secret generic airflow-secrets \
+          microk8s kubectl create secret generic airflow-secrets \
             --from-literal=AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=$AIRFLOW__DATABASE__SQL_ALCHEMY_CONN \
             --from-literal=AIRFLOW__CORE__SQL_ALCHEMY_CONN=$AIRFLOW__CORE__SQL_ALCHEMY_CONN \
             --from-literal=AIRFLOW__CELERY__RESULT_BACKEND=$AIRFLOW__CELERY__RESULT_BACKEND \
@@ -43,7 +43,7 @@ jobs:
           CLIENT_DB_USER: ${{ secrets.PROD_CLIENT_DB_USER }}
           CLIENT_DB_NAME: ${{ secrets.PROD_CLIENT_DB_NAME }}
         run: |
-          kubectl create secret generic client-db-secrets \
+          microk8s kubectl create secret generic client-db-secrets \
             --from-literal=POSTGRES_PASSWORD=$CLIENT_DB_PASSWD \
             --from-literal=POSTGRES_USER=$CLIENT_DB_USER \
             --from-literal=POSTGRES_DB=$CLIENT_DB_NAME
@@ -52,14 +52,14 @@ jobs:
           GRAFANA_SECURITY_ADMIN_USER: ${{ secrets.PROD_GRAFANA_SECURITY_ADMIN_USER }}
           GRAFANA_SECURITY_ADMIN_PASSWORD: ${{ secrets.PROD_GRAFANA_SECURITY_ADMIN_PASSWORD }}
         run: |
-          kubectl create secret generic grafana-secrets \
+          microk8s kubectl create secret generic grafana-secrets \
             --from-literal=GF_SECURITY_ADMIN_USER=$GRAFANA_SECURITY_ADMIN_USER \
             --from-literal=GF_SECURITY_ADMIN_PASSWORD=$GRAFANA_SECURITY_ADMIN_PASSWORD
       - name: Create Kubernetes redis secrets
         env:
           REDIS_PASSWORD: ${{ secrets.PROD_REDIS_PASSWORD }}
         run: |
-          kubectl create secret generic redis-secrets \
+          microk8s kubectl create secret generic redis-secrets \
             --from-literal=redis-password=$REDIS_PASSWORD
       - name: Create Kubernetes scraped consumer secrets
         env:
@@ -67,7 +67,7 @@ jobs:
           CLIENT_DB_USER: ${{ secrets.PROD_CLIENT_DB_USER }}
           CLIENT_DB_NAME: ${{ secrets.PROD_CLIENT_DB_NAME }}
         run: |
-          kubectl create secret generic scraped-consumer-secrets \
+          microk8s kubectl create secret generic scraped-consumer-secrets \
             --from-literal=POSTGRES_PASSWORD=$CLIENT_DB_PASSWD \
             --from-literal=POSTGRES_USER=$CLIENT_DB_USER \
             --from-literal=POSTGRES_DB=$CLIENT_DB_NAME
@@ -78,7 +78,7 @@ jobs:
           CLIENT_DB_USER: ${{ secrets.PROD_CLIENT_DB_USER }}
           CLIENT_DB_NAME: ${{ secrets.PROD_CLIENT_DB_NAME }}
         run: |
-          kubectl create secret generic wss-secrets \
+          microk8s kubectl create secret generic wss-secrets \
             --from-literal=BLOCKCHAIN_API_KEY=$BLOCKCHAIN_API_KEY \
             --from-literal=POSTGRES_PASSWORD=$CLIENT_DB_PASSWD \
             --from-literal=POSTGRES_USER=$CLIENT_DB_USER \
