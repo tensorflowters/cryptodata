@@ -8,4 +8,4 @@ spec:
   resources:
     requests:
       storage: 1Gi
-  storageClassName: ceph-rbd
+  storageClassName: microk8s-hostpath
