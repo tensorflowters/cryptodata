@@ -16,7 +16,11 @@ WORKDIR /home/ansible-controller
 
 ENV PATH="/home/ansible-controller/.local/bin:$PATH"
 
-COPY --chown=1000 --chmod=755 . ./ansible-deployment/
+COPY --chown=1000 --chmod=755 . .
+
+COPY ./entrypoint.sh /entrypoint.sh
+
+RUN chmod +x /entrypoint.sh
 
 USER ansible-controller
 
@@ -30,4 +34,4 @@ RUN python3 -m pip install --upgrade pip && \
     ansible-galaxy install geerlingguy.security && \
     ansible-galaxy install l3d.no_sleep
 
-ENTRYPOINT [ "./ansible-deployment/entrypoint.sh" ]
+ENTRYPOINT [ "./entrypoint.sh" ]

@@ -11,7 +11,7 @@ services:
       context: ../deployment/ansible
       dockerfile: ansible.dockerfile
     env_file:
-      - '${ENV}'
+      - ../env-vars/.env.ansible.prod
     networks:
       - cryptodata_deployment_net
     restart: "no"

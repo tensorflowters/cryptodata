@@ -2,9 +2,9 @@
 - name: Add SSH keys to servers before configuring anythings
   hosts: all
   gather_facts: yes
-  remote_user: "{{ ansible_user }}"
+  remote_user: "{{ lookup('ansible.builtin.env', 'SERVER_03100_USER') }}"
   vars:
-    ansible_become_pass: "{{ lookup('ansible.builtin.env', 'SERVER_03100_SUDO_PASS') }}"
+    ansible_become_pass: "{{ lookup('ansible.builtin.env', 'SERVER_03100_USER_SSH_PASS') }}"
     ssh_public_key_path: "{{ lookup('ansible.builtin.env', 'CONTROL_NODE_SSH_PUBLIC_KEY_LOCATION') }}"
     ansible_ssh_host_key_checking: false
   tasks:
@@ -15,8 +15,8 @@
       when: ansible_os_family == 'Debian'
       become: yes
 
-    - name: 2/2 - Add private key from control node to tensorpods
+    - name: 2/2 - Add private key from control node to server
       ansible.posix.authorized_key:
-        user: "{{ ansible_user }}"
+        user: "{{ lookup('ansible.builtin.env', 'SERVER_03100_USER') }}"
         state: present
         key: "{{ lookup('file', '{{ ssh_public_key_path }}') }}"
