@@ -24,8 +24,5 @@ build_registery_all:
 	@${MAKE_EXECUTOR_REGISTERY} build_cryptodata-client_initdb
 
 
-print_ansible_home:
-	@${MAKE_EXECUTOR_DEPLOY} print_ansible_home
-
-prod_check_py_hosts:
-	@${MAKE_EXECUTOR_DEPLOY} check_host_python
+prod_run:
+	@${MAKE_EXECUTOR_DEPLOY} prod_run
