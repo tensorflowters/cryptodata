@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: kafka
+  namespace: default
 spec:
   selector:
     matchLabels:
@@ -17,20 +18,13 @@ spec:
         envFrom:
         - configMapRef:
             name: kafka-config
+        ports:
+        - containerPort: 9092
         livenessProbe:
           tcpSocket:
             port: 9092
-          initialDelaySeconds: 120  # Adjust based on your observation
+          initialDelaySeconds: 120
           periodSeconds: 10
-          # exec:
-          #   command:
-          #   - sh
-          #   - -c
-          #   - "kafka-topics --bootstrap-server localhost:9092 --list"
-          # initialDelaySeconds: 60
-          # periodSeconds: 10
-          # timeoutSeconds: 5
-          # failureThreshold: 8
         resources:
           requests:
             memory: "1Gi"
@@ -38,3 +32,10 @@ spec:
           limits:
             memory: "2Gi"
             cpu: "1000m"
+        volumeMounts:
+        - name: kafka-data
+          mountPath: /var/lib/kafka/data
+      volumes:
+      - name: kafka-data
+        persistentVolumeClaim:
+          claimName: kafka-data-pvc
