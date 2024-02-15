@@ -99,3 +99,8 @@ jobs:
             --from-literal=POSTGRES_USER="${{ env.CLIENT_DB_USER }}" \
             --from-literal=POSTGRES_DB="${{ env.CLIENT_DB_NAME }}" \
             --dry-run=client -o yaml | kubectl apply -f -
+      
+      - name: Deploy to production
+        run: |
+          make prod_apply_deployment
+        

@@ -26,3 +26,12 @@ build_registery_all:
 
 prod_run:
 	@${MAKE_EXECUTOR_DEPLOY} prod_run
+
+prod_apply_deployment:
+	@microk8s kubectl apply -f deployment/k8s/configmaps
+	@microk8s kubectl apply -f deployment/k8s/secrets
+	@microk8s kubectl apply -f deployment/k8s/pvcs
+	@microk8s kubectl apply -f deployment/k8s/jobs
+	@microk8s kubectl apply -f deployment/k8s/deployments
+	@microk8s kubectl apply -f deployment/k8s/services
+	@microk8s kubectl apply -f deployment/k8s/ingress
