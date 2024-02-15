@@ -1,0 +1,17 @@
+name: Cryptodata development continuous delivery
+
+on:
+  push:
+    branches: [ "release/1.0.0-production" ]
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Stop Old Docker Compose Environment
+        run:  |
+          echo "Hello World"
