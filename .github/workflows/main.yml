@@ -11,12 +11,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-
-      # Setup kubectl command (assuming microk8s is used)
-      - name: Setup MicroK8s kubectl
-        run: |
-          sudo snap alias microk8s.kubectl kubectl
-
       # Handle Airflow database secrets
       - name: Manage Kubernetes Airflow database secrets
         env:
