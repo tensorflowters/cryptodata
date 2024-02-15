@@ -1,0 +1,11 @@
+datacenters:
+  children:
+    homelab:
+      children:
+        pve-03:
+          hosts:
+            server-03100:
+              ansible_host: "{{ lookup('ansible.builtin.env', 'SERVER_03100_HOST') }}"
+              ansible_port: "{{ lookup('ansible.builtin.env', 'SERVER_03100_SSH_DEFAULT_PORT') }}"
+              ansible_ssh_pass: "{{ lookup('ansible.builtin.env', 'SERVER_03100_USER_SSH_PASS') }}"
+              ansible_user: "{{ lookup('ansible.builtin.env', 'SERVER_03100_USER') }}"

@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: wss
+spec:
+  selector:
+    matchLabels:
+      app: wss
+  template:
+    metadata:
+      labels:
+        app: wss
+    spec:
+      containers:
+      - name: wss
+        image: epitechuser2077/cryptodata:cryptodata-wss
+        envFrom:
+        - secretRef:
+            name: wss-secrets
+        volumeMounts:
+        - name: app-data
+          mountPath: /srv/app
+      volumes:
+      - name: app-data
+        persistentVolumeClaim:
+          claimName: wss-data-pvc
