@@ -24,13 +24,14 @@ build_registery_all:
 	@${MAKE_EXECUTOR_REGISTERY} build_cryptodata-client_initdb
 
 
-prod_run:
-	@${MAKE_EXECUTOR_DEPLOY} prod_run
+prod_stop:
+	@${MAKE_EXECUTOR_DEPLOY} prod_stop
 
-prod_apply_deployment:
-	@kubectl apply -f deployment/k8s/configmaps
-	@kubectl apply -f deployment/k8s/pvcs
-	@kubectl apply -f deployment/k8s/jobs
-	@kubectl apply -f deployment/k8s/deployments
-	@kubectl apply -f deployment/k8s/services
-	@kubectl apply -f deployment/k8s/ingress
+prod_build:
+	@${MAKE_EXECUTOR_DEPLOY} prod_build
+
+prod_up:
+	@${MAKE_EXECUTOR_DEPLOY} prod_up
+
+prod_clean:
+	@${MAKE_EXECUTOR_DEPLOY} prod_rm
