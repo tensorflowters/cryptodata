@@ -43,3 +43,4 @@ logs
 *.env.*.prod
 *.mypy_cache*
 **/.ssh_config/**
+.history
