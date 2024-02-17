@@ -1,9 +1,7 @@
 version: "3.9"
 
 x-airflow-common: &airflow-common
-    build:
-        context: ../airflow
-        dockerfile: airflow.dockerfile
+    image: epitechuser2077/cryptodata:cryptodata-airflow
     depends_on: &airflow-common-depends-on
         redis:
             condition: service_healthy
@@ -12,18 +10,18 @@ x-airflow-common: &airflow-common
         kafka:
             condition: service_started
     environment: &airflow-common-env
-        AIRFLOW__CORE__EXECUTOR: CeleryExecutor
-        AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@airflow_db/airflow
-        AIRFLOW__CORE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@airflow_db/airflow
-        AIRFLOW__CELERY__RESULT_BACKEND: db+postgresql://airflow:airflow@airflow_db/airflow
-        AIRFLOW__CELERY__BROKER_URL: redis://:@redis:6379/0
-        AIRFLOW__CORE__FERNET_KEY: ""
-        AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION: "true"
-        AIRFLOW__CORE__LOAD_EXAMPLES: "false"
         AIRFLOW__API__AUTH_BACKENDS: "airflow.api.auth.backend.basic_auth,airflow.api.auth.backend.session"
+        AIRFLOW__CELERY__BROKER_URL: ${PROD_AIRFLOW__CELERY__BROKER_URL}
+        AIRFLOW__CELERY__RESULT_BACKEND: ${PROD_AIRFLOW__CELERY__RESULT_BACKEND}
+        AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION: "true"
+        AIRFLOW__CORE__EXECUTOR: CeleryExecutor
+        AIRFLOW__CORE__FERNET_KEY: ""
+        AIRFLOW__CORE__LOAD_EXAMPLES: "false"
+        AIRFLOW__CORE__SQL_ALCHEMY_CONN: ${PROD_AIRFLOW__DATABASE__SQL_ALCHEMY_CONN}
+        AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: ${PROD_AIRFLOW__DATABASE__SQL_ALCHEMY_CONN}
         AIRFLOW__SCHEDULER__ENABLE_HEALTH_CHECK: "true"
-        GH_TOKEN: ${AIRFLOW_GH_TOKEN}
-    user: "${AIRFLOW_UID:-50000}:0"
+        GH_TOKEN: ${PROD_AIRFLOW_GH_TOKEN}
+    user: "${PROD_AIRFLOW_UID:-50000}:0"
     volumes:
         - ${AIRFLOW_DIR:-.}/dags:/opt/airflow/dags
         - ${AIRFLOW_DIR:-.}/logs:/opt/airflow/logs
@@ -45,7 +43,7 @@ services:
             test: ["CMD", "curl", "--fail", "${AIRFLOW_WEBSERVER_TEST_CMD_URL}"]
             timeout: 10s
         ports:
-            - "${AIRFLOW_WEBSERVER_PORT}:8080"
+            - "${PROD_AIRFLOW_WEBSERVER_PORT}:8080"
         restart: always
 
     airflow-scheduler:
@@ -171,6 +169,7 @@ services:
         # yamllint enable rule:line-length
         environment:
             <<: *airflow-common-env
+            RATELIMIT_STORAGE_URI: redis://redis:6379/0
             _AIRFLOW_DB_MIGRATE: "true"
             _AIRFLOW_WWW_USER_CREATE: "true"
             _AIRFLOW_WWW_USER_USERNAME: ${_AIRFLOW_WWW_USER_USERNAME:-airflow}
@@ -178,7 +177,7 @@ services:
             _PIP_ADDITIONAL_REQUIREMENTS: ""
         user: "0:0"
         volumes:
-            - ${AIRFLOW_PROJ_DIR:-.}:/sources
+            - ${AIRFLOW_DIR:-.}:/sources
 
     airflow-cli:
         <<: *airflow-common
@@ -196,11 +195,11 @@ services:
     airflow_db:
         image: postgres:13
         environment:
-            POSTGRES_USER: $AIRFLOW_DB_USER
-            POSTGRES_PASSWORD: $AIRFLOW_DB_PASSWD
-            POSTGRES_DB: $AIRFLOW_DB_NAME
+            POSTGRES_DB: ${PROD_AIRFLOW_DB_NAME}
+            POSTGRES_PASSWORD: ${PROD_AIRFLOW_DB_PASSWD}
+            POSTGRES_USER: ${PROD_AIRFLOW_DB_USER}
         healthcheck:
-            test: ["CMD", "pg_isready", "-U", "${AIRFLOW_DB_USER}"]
+            test: ["CMD", "pg_isready", "-U", "${PROD_AIRFLOW_DB_USER}"]
             interval: 10s
             retries: 5
             start_period: 5s
@@ -211,9 +210,9 @@ services:
     client_db:
         image: postgres:13
         environment:
-            POSTGRES_USER: $CLIENT_DB_USER
-            POSTGRES_PASSWORD: $CLIENT_DB_PASSWD
-            POSTGRES_DB: $CLIENT_DB_NAME
+            POSTGRES_DB: ${PROD_CLIENT_DB_NAME}
+            POSTGRES_PASSWORD: ${PROD_CLIENT_DB_PASSWD}
+            POSTGRES_USER: ${PROD_CLIENT_DB_USER}
         healthcheck:
             test: [ "CMD", "pg_isready", "-U", "${CLIENT_DB_USER}" ]
             interval: 10s
@@ -224,14 +223,12 @@ services:
             - client-db-volume:/var/lib/postgresql/data
 
     client_initdb:
-        build:
-            context: ../db
-            dockerfile: initdb.dockerfile
+        image: epitechuser2077/cryptodata:cryptodata-client_initdb
         command: [ "python", "initdb.py" ]
         environment:
-            POSTGRES_DB: INIT_CLIENT_DB_USER
-            POSTGRES_PASSWORD: INIT_CLIENT_DB_PASSWD
-            POSTGRES_USER: INIT_CLIENT_DB_NAME
+            POSTGRES_DB: ${PROD_CLIENT_DB_NAME}
+            POSTGRES_PASSWORD: ${PROD_CLIENT_DB_PASSWD}
+            POSTGRES_USER: ${PROD_CLIENT_DB_USER}
         depends_on:
             client_db:
                 condition: service_healthy
@@ -240,8 +237,6 @@ services:
 
     redis:
         image: redis:latest
-        expose:
-            - 6379
         healthcheck:
             test: ["CMD", "redis-cli", "ping"]
             interval: 10s
@@ -253,8 +248,8 @@ services:
     zookeeper:
         image: confluentinc/cp-zookeeper:latest
         environment:
-            ZOOKEEPER_CLIENT_PORT: $ZOOKEEPER_CLIENT_PORT
-            ZOOKEEPER_TICK_TIME: $ZOOKEEPER_TICK_TIME
+            ZOOKEEPER_CLIENT_PORT: ${PROD_ZOOKEEPER_CLIENT_PORT}
+            ZOOKEEPER_TICK_TIME: ${PROD_ZOOKEEPER_TICK_TIME}
 
     kafka:
         image: confluentinc/cp-kafka:latest
@@ -263,32 +258,28 @@ services:
         ports:
             - "${KAFKA_PORT}:9092" # Only expose one port that will be used both internally and externally if needed
         environment:
-            KAFKA_BROKER_ID: $KAFKA_BROKER_ID
-            KAFKA_ZOOKEEPER_CONNECT: $KAFKA_ZOOKEEPER_CONNECT
-            KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: $KAFKA_LISTENER_SECURITY_PROTOCOL_MAP
-            KAFKA_ADVERTISED_LISTENERS: $KAFKA_ADVERTISED_LISTENERS
-            KAFKA_LISTENERS: $KAFKA_LISTENERS
-            KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: $KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR
+            KAFKA_BROKER_ID: ${PROD_KAFKA_BROKER_ID}
+            KAFKA_ZOOKEEPER_CONNECT: ${PROD_KAFKA_ZOOKEEPER_CONNECT}
+            KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: ${PROD_KAFKA_LISTENER_SECURITY_PROTOCOL_MAP}
+            KAFKA_ADVERTISED_LISTENERS: ${PROD_KAFKA_ADVERTISED_LISTENERS}
+            KAFKA_LISTENERS: ${PROD_KAFKA_LISTENERS}
+            KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: ${PROD_KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR}
         healthcheck:
-          test: kafka-topics --bootstrap-server kafka:${KAFKA_PORT} --list
+          test: kafka-topics --bootstrap-server kafka:${PROD_KAFKA_PORT} --list
           interval: 10s
           timeout: 10s
           retries: 3
 
     cryptopanic-scraper:
-        build:
-            context: ../scrapers
-            dockerfile: cryptopanic/scraper.dockerfile
+        image: epitechuser2077/cryptodata:cryptodata-cryptopanic-scraper
+        command: ["tail", "-f", "/dev/null"]
 
     binance-scraper:
-        build:
-            context: ../scrapers
-            dockerfile: binance/scraper.dockerfile
+        image: epitechuser2077/cryptodata:cryptodata-binance-scraper
+        command: ["tail", "-f", "/dev/null"]
 
     scraped_consumer:
-        build:
-            context: ../consumers
-            dockerfile: scraped/scraped.dockerfile
+        image: epitechuser2077/cryptodata:cryptodata-scraped_consumer
         command: [ "python", "main.py" ]
         depends_on:
             kafka:
@@ -296,17 +287,15 @@ services:
             client_db:
                 condition: service_healthy
         environment:
-            POSTGRES_DB: "${CLIENT_DB_NAME}"
-            POSTGRES_PASSWORD: "${CLIENT_DB_PASSWD}"
-            POSTGRES_USER: "${CLIENT_DB_USER}"
+            POSTGRES_DB: "${PROD_CLIENT_DB_NAME}"
+            POSTGRES_PASSWORD: "${PROD_CLIENT_DB_PASSWD}"
+            POSTGRES_USER: "${PROD_CLIENT_DB_USER}"
         tty: true
         volumes:
             - ../consumers/scraped:/home/consumer
 
     spark:
-        build:
-            context: ../spark
-            dockerfile: spark.dockerfile
+        image: epitechuser2077/cryptodata:cryptodata-spark
         ports:
             - "${SPARK_UI_PORT}:8080"
             - "${SPARK_WORKER_PORT}:7077"
@@ -314,18 +303,18 @@ services:
     grafana:
         image: grafana/grafana-oss:latest
         ports:
-            - "${GRAFANA_PORT}:3000"
+            - "${PROD_GRAFANA_PORT}:3000"
         environment:
-            GF_SECURITY_ADMIN_USER: $GRAFANA_SECURITY_ADMIN_USER
-            GF_SECURITY_ADMIN_PASSWORD: $GRAFANA_SECURITY_ADMIN_PASSWORD
+            GF_SECURITY_ADMIN_USER: ${GRAFANA_SECURITY_ADMIN_USER}
+            GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_SECURITY_ADMIN_PASSWORD}
+        user: "0:0"
         volumes:
-            - ../grafana/data:/var/lib/grafana
-            - ../grafana/conf:/etc/grafana
+            - ../grafana/conf/grafana.ini:/etc/grafana/grafana.ini
+            - ../grafana/conf/ladp.toml:/etc/grafana/ladp.toml
+            - ../grafana/data:/var/lib/grafana:rw
 
     wss:
-        build:
-            context: ../crypto-wss
-            dockerfile: wss.dockerfile
+        image: epitechuser2077/cryptodata:cryptodata-wss
         volumes:
             - ../crypto-wss:/srv/app
         tty: true
@@ -333,10 +322,10 @@ services:
           client_db:
             condition: service_healthy
         environment:
-            BLOCKCHAIN_API_KEY: ${BLOCKCHAIN_API_KEY}
-            POSTGRES_USER: ${CLIENT_DB_USER}
-            POSTGRES_PASSWORD: ${CLIENT_DB_PASSWD}
-            POSTGRES_DB: ${CLIENT_DB_NAME}
+            BLOCKCHAIN_API_KEY: ${PROD_BLOCKCHAIN_API_KEY}
+            POSTGRES_DB: ${PROD_CLIENT_DB_NAME}
+            POSTGRES_PASSWORD: ${PROD_CLIENT_DB_PASSWD}
+            POSTGRES_USER: ${PROD_CLIENT_DB_USER}
 
     docker-proxy:
         image: bobrik/socat
