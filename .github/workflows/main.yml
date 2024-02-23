@@ -14,7 +14,7 @@ jobs:
       - name: Print GitHub context
         env:
           GITHUB_CONTEXT: ${{ toJson(github) }}
-        run: export "$GITHUB_CONTEXT"
+        run: echo "$GITHUB_CONTEXT" > /tmp/github-context.json
 
       - name: Stop Old Docker Compose Environment
         if: github.event.ref == 'refs/heads/pre-production'
