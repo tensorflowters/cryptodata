@@ -5,84 +5,97 @@ on:
         branches: ["release/1.0.0-production"]
 
 jobs:
-    deploy:
-        runs-on: self-hosted
-        steps:
-            - name: Checkout code
-              uses: actions/checkout@v2
+  build:
+    runs-on: self-hosted
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
 
-            - name: Stop Old Docker Compose Environment
-              run:  |
-                make prod_stop
+      - name: Print GitHub context
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+        run: export "$GITHUB_CONTEXT"
 
-            - name: Set up Docker compose environment
-              env:
-                  PROD_AIRFLOW__CELERY__BROKER_URL: ${{ secrets.PROD_AIRFLOW__CELERY__BROKER_URL }}
-                  PROD_AIRFLOW__CELERY__RESULT_BACKEND: ${{ secrets.PROD_AIRFLOW__CELERY__RESULT_BACKEND }}
-                  PROD_AIRFLOW__CORE__SQL_ALCHEMY_CONN: ${{ secrets.PROD_AIRFLOW__CORE__SQL_ALCHEMY_CONN }}
-                  PROD_AIRFLOW__CORE__FERNET_KEY: ${{ secrets.PROD_AIRFLOW__CORE__FERNET_KEY }}
-                  PROD_AIRFLOW_CLI: ${{ secrets.PROD_AIRFLOW_CLI }}
-                  PROD_AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: ${{ secrets.PROD_AIRFLOW__DATABASE__SQL_ALCHEMY_CONN }}
-                  PROD_AIRFLOW_DB_NAME: ${{ secrets.PROD_AIRFLOW_DB_NAME }}
-                  PROD_AIRFLOW_DB_PASSWD: ${{ secrets.PROD_AIRFLOW_DB_PASSWD }}
-                  PROD_AIRFLOW_DB_USER: ${{ secrets.PROD_AIRFLOW_DB_USER }}
-                  PROD_AIRFLOW_GH_TOKEN: ${{ secrets.PROD_AIRFLOW_GH_TOKEN }}
-                  PROD_AIRFLOW_UID: ${{ secrets.PROD_AIRFLOW_UID }}
-                  PROD_AIRFLOW_WEBSERVER_PORT: ${{ secrets.PROD_AIRFLOW_WEBSERVER_PORT }}
-                  PROD_BLOCKCHAIN_API_KEY: ${{ secrets.PROD_BLOCKCHAIN_API_KEY }}
-                  PROD_CLIENT_DB_NAME: ${{ secrets.PROD_CLIENT_DB_NAME }}
-                  PROD_CLIENT_DB_PASSWD: ${{ secrets.PROD_CLIENT_DB_PASSWD }}
-                  PROD_CLIENT_DB_USER: ${{ secrets.PROD_CLIENT_DB_USER }}
-                  PROD_GRAFANA_SECURITY_ADMIN_PASSWORD: ${{ secrets.PROD_GRAFANA_SECURITY_ADMIN_PASSWORD }}
-                  PROD_GRAFANA_SECURITY_ADMIN_USER: ${{ secrets.PROD_GRAFANA_SECURITY_ADMIN_USER }}
-                  PROD_GRAFANA_PORT: ${{ secrets.PROD_GRAFANA_PORT }}
-                  PROD_KAFKA_ADVERTISED_LISTENERS: ${{ secrets.PROD_KAFKA_ADVERTISED_LISTENERS }}
-                  PROD_KAFKA_BROKER_ID: ${{ secrets.PROD_KAFKA_BROKER_ID }}
-                  PROD_KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: ${{ secrets.PROD_KAFKA_LISTENER_SECURITY_PROTOCOL_MAP }}
-                  PROD_KAFKA_LISTENERS: ${{ secrets.PROD_KAFKA_LISTENERS }}
-                  PROD_KAFKA_PORT: ${{ secrets.PROD_KAFKA_PORT }}
-                  PROD_KAFKA_ZOOKEEPER_CONNECT: ${{ secrets.PROD_KAFKA_ZOOKEEPER_CONNECT }}
-                  PROD_KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: ${{ secrets.PROD_KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR }}
-                  PROD_REDIS_PASSWORD: ${{ secrets.PROD_REDIS_PASSWORD }}
-                  PROD_ZOOKEEPER_CLIENT_PORT: ${{ secrets.PROD_ZOOKEEPER_CLIENT_PORT }}
-                  PROD_ZOOKEEPER_TICK_TIME: ${{ secrets.PROD_ZOOKEEPER_TICK_TIME }}
-              run: |
-                  echo "PROD_AIRFLOW__CELERY__BROKER_URL=${PROD_AIRFLOW__CELERY__BROKER_URL}" > .env
-                  echo "PROD_AIRFLOW__CORE__SQL_ALCHEMY_CONN=${PROD_AIRFLOW__CORE__SQL_ALCHEMY_CONN}" > .env
-                  echo "PROD_AIRFLOW__CORE__FERNET_KEY=${PROD_AIRFLOW__CORE__FERNET_KEY}" > .env
-                  echo "PROD_AIRFLOW_CLI=${PROD_AIRFLOW_CLI}" > .env
-                  echo "PROD_AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=${PROD_AIRFLOW__DATABASE__SQL_ALCHEMY_CONN}" > .env
-                  echo "PROD_AIRFLOW_DB_NAME=${PROD_AIRFLOW_DB_NAME}" > .env
-                  echo "PROD_AIRFLOW_DB_PASSWD=${PROD_AIRFLOW_DB_PASSWD}" > .env
-                  echo "PROD_AIRFLOW_DB_USER=${PROD_AIRFLOW_DB_USER}" > .env
-                  echo "PROD_AIRFLOW_GH_TOKEN=${PROD_AIRFLOW_GH_TOKEN}" > .env
-                  echo "PROD_AIRFLOW_UID=${PROD_AIRFLOW_UID}" > .env
-                  echo "PROD_AIRFLOW_WEBSERVER_PORT=${PROD_AIRFLOW_WEBSERVER_PORT}" > .env
-                  echo "PROD_BLOCKCHAIN_API_KEY=${PROD_BLOCKCHAIN_API_KEY}" > .env
-                  echo "PROD_CLIENT_DB_NAME=${PROD_CLIENT_DB_NAME}" > .env
-                  echo "PROD_CLIENT_DB_PASSWD=${PROD_CLIENT_DB_PASSWD}" > .env
-                  echo "PROD_CLIENT_DB_USER=${PROD_CLIENT_DB_USER}" > .env
-                  echo "PROD_GRAFANA_SECURITY_ADMIN_PASSWORD=${PROD_GRAFANA_SECURITY_ADMIN_PASSWORD}" > .env
-                  echo "PROD_GRAFANA_SECURITY_ADMIN_USER=${PROD_GRAFANA_SECURITY_ADMIN_USER}" > .env
-                  echo "PROD_GRAFANA_PORT=${PROD_GRAFANA_PORT}" > .env
-                  echo "PROD_KAFKA_ADVERTISED_LISTENERS=${PROD_GPROD_KAFKA_ADVERTISED_LISTENERSRAFANA_PORT}" > .env
-                  echo "PROD_KAFKA_BROKER_ID=${PROD_KAFKA_BROKER_ID}" > .env
-                  echo "PROD_KAFKA_LISTENER_SECURITY_PROTOCOL_MAP=${PROD_KAFKA_LISTENER_SECURITY_PROTOCOL_MAP}" > .env
-                  echo "PROD_KAFKA_BROKER_ID=${PROD_KAFKA_BROKER_ID}" > .env
-                  echo "PROD_KAFKA_LISTENERS=${PROD_KAFKA_LISTENERS}" > .env
-                  echo "PROD_KAFKA_PORT=${PROD_KAFKA_PORT}" > .env
-                  echo "PROD_KAFKA_ZOOKEEPER_CONNECT=${PROD_KAFKA_ZOOKEEPER_CONNECT}" > .env
-                  echo "PROD_KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR=${PROD_KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR}" > .env
-                  echo "PROD_REDIS_PASSWORD=${PROD_REDIS_PASSWORD}" > .env
-                  echo "PROD_ZOOKEEPER_CLIENT_PORT=${PROD_ZOOKEEPER_CLIENT_PORT}" > .env
-                  echo "PROD_ZOOKEEPER_TICK_TIME=${PROD_ZOOKEEPER_TICK_TIME}" > .env
-                  make prod_build
+      - name: Stop Old Docker Compose Environment
+        if: github.event.ref == 'refs/heads/pre-production'
+        run:  |
+          make prod_stop
 
-            - name: Run Updated Docker Compose Environment
-              run: |
-                prod_up
+      - name: Set up Docker compose environment
+        if: github.ref == 'refs/heads/pre-production'
+        env:
+            PROD_AIRFLOW__CELERY__BROKER_URL: ${{ secrets.PROD_AIRFLOW__CELERY__BROKER_URL }}
+            PROD_AIRFLOW__CELERY__RESULT_BACKEND: ${{ secrets.PROD_AIRFLOW__CELERY__RESULT_BACKEND }}
+            PROD_AIRFLOW__CORE__SQL_ALCHEMY_CONN: ${{ secrets.PROD_AIRFLOW__CORE__SQL_ALCHEMY_CONN }}
+            PROD_AIRFLOW__CORE__FERNET_KEY: ${{ secrets.PROD_AIRFLOW__CORE__FERNET_KEY }}
+            PROD_AIRFLOW_CLI: ${{ secrets.PROD_AIRFLOW_CLI_PROFILE }}           }}
+            PROD_AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: ${{ secrets.PROD_AIRFLOW__DATABASE__SQL_ALCHEMY_CONN }}
+            PROD_AIRFLOW_DB_NAME: ${{ secrets.PROD_AIRFLOW_DB_NAME }}
+            PROD_AIRFLOW_DB_PASSWD: ${{ secrets.PROD_AIRFLOW_DB_PASSWD }}
+            PROD_AIRFLOW_DB_USER: ${{ secrets.PROD_AIRFLOW_DB_USER }}
+            PROD_AIRFLOW_DIR: ${{ secrets.PROD_AIRFLOW_DIR }}
+            PROD_AIRFLOW_GH_TOKEN: ${{ secrets.PROD_AIRFLOW_GH_TOKEN }}
+            PROD_AIRFLOW_UID: ${{ secrets.PROD_AIRFLOW_UID }}
+            PROD_AIRFLOW_WEBSERVER_PORT: ${{ secrets.PROD_AIRFLOW_WEBSERVER_PORT }}
+            PROD_AIRFLOW_WEBSERVER_TEST_CMD_URL: ${{ secrets.PROD_AIRFLOW_WEBSERVER_TEST_CMD_URL }}
+            PROD_BLOCKCHAIN_API_KEY: ${{ secrets.PROD_BLOCKCHAIN_API_KEY }}
+            PROD_CLIENT_DB_NAME: ${{ secrets.PROD_CLIENT_DB_NAME }}
+            PROD_CLIENT_DB_PASSWD: ${{ secrets.PROD_CLIENT_DB_PASSWD }}
+            PROD_CLIENT_DB_USER: ${{ secrets.PROD_CLIENT_DB_USER }}
+            PROD_GRAFANA_SECURITY_ADMIN_PASSWORD: ${{ secrets.PROD_GRAFANA_SECURITY_ADMIN_PASSWORD }}
+            PROD_GRAFANA_SECURITY_ADMIN_USER: ${{ secrets.PROD_GRAFANA_SECURITY_ADMIN_USER }}
+            PROD_GRAFANA_PORT: ${{ secrets.PROD_GRAFANA_PORT }}
+            PROD_KAFKA_ADVERTISED_LISTENERS: ${{ secrets.PROD_KAFKA_ADVERTISED_LISTENERS }}
+            PROD_KAFKA_BROKER_ID: ${{ secrets.PROD_KAFKA_BROKER_ID }}
+            KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: ${{ secrets.KAFKA_LISTENER_SECURITY_PROTOCOL_MAP }}
+            PROD_KAFKA_LISTENERS: ${{ secrets.PROD_KAFKA_LISTENERS}}
+            PROD_KAFKA_PORT: ${{ secrets.PROD_KAFKA_PORT }}
+            PROD_KAFKA_ZOOKEEPER_CONNECT: ${{ secrets.PROD_KAFKA_ZOOKEEPER_CONNECT }}
+            PROD_KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: ${{ secrets.PROD_KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR }}
+            PROD_REDIS_PASSWORD: ${{ secrets.PROD_REDIS_PASSWORD }}
+            PROD_ZOOKEEPER_CLIENT_PORT: ${{ secrets.PROD_ZOOKEEPER_CLIENT_PORT }}
+            PROD_ZOOKEEPER_TICK_TIME: ${{ secrets.PROD_ZOOKEEPER_TICK_TIME }}
+        run: |
+            echo "PROD_AIRFLOW__CELERY__BROKER_URL=${PROD_AIRFLOW__CELERY__BROKER_URL}" > .env
+            echo "PROD_AIRFLOW__CORE__SQL_ALCHEMY_CONN=${PROD_AIRFLOW__CORE__SQL_ALCHEMY_CONN}" > .env
+            echo "PROD_AIRFLOW__CORE__FERNET_KEY=${PROD_AIRFLOW__CORE__FERNET_KEY}" > .env
+            echo "PROD_AIRFLOW_CLI=${PROD_AIRFLOW_CLI}" > .env
+            echo "PROD_AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=${PROD_AIRFLOW__DATABASE__SQL_ALCHEMY_CONN}" > .env
+            echo "PROD_AIRFLOW_DB_NAME=${PROD_AIRFLOW_DB_NAME}" > .env
+            echo "PROD_AIRFLOW_DB_PASSWD=${PROD_AIRFLOW_DB_PASSWD}" > .env
+            echo "PROD_AIRFLOW_DB_USER=${PROD_AIRFLOW_DB_USER}" > .env
+            echo "PROD_AIRFLOW_DIR=${PROD_AIRFLOW_DIR}" > .env
+            echo "PROD_AIRFLOW_GH_TOKEN=${PROD_AIRFLOW_GH_TOKEN}" > .env
+            echo "PROD_AIRFLOW_UID=${PROD_AIRFLOW_UID}" > .env
+            echo "PROD_AIRFLOW_WEBSERVER_PORT=${PROD_AIRFLOW_WEBSERVER_PORT}" > .env
+            echo "PROD_AIRFLOW_WEBSERVER_TEST_CMD_URL=${PROD_AIRFLOW_WEBSERVER_TEST_CMD_URL}" > .env
+            echo "PROD_BLOCKCHAIN_API_KEY=${PROD_BLOCKCHAIN_API_KEY}" > .env
+            echo "PROD_CLIENT_DB_NAME=${PROD_CLIENT_DB_NAME}" > .env
+            echo "PROD_CLIENT_DB_PASSWD=${PROD_CLIENT_DB_PASSWD}" > .env
+            echo "PROD_CLIENT_DB_USER=${PROD_CLIENT_DB_USER}" > .env
+            echo "PROD_GRAFANA_SECURITY_ADMIN_PASSWORD=${PROD_GRAFANA_SECURITY_ADMIN_PASSWORD}" > .env
+            echo "PROD_GRAFANA_SECURITY_ADMIN_USER=${PROD_GRAFANA_SECURITY_ADMIN_USER}" > .env
+            echo "PROD_GRAFANA_PORT=${PROD_GRAFANA_PORT}" > .env
+            echo "PROD_KAFKA_ADVERTISED_LISTENERS=${PROD_GPROD_KAFKA_ADVERTISED_LISTENERSRAFANA_PORT}" > .env
+            echo "PROD_KAFKA_BROKER_ID=${PROD_KAFKA_BROKER_ID}" > .env
+            echo "PROD_KAFKA_LISTENER_SECURITY_PROTOCOL_MAP=${PROD_KAFKA_LISTENER_SECURITY_PROTOCOL_MAP}" > .env
+            echo "PROD_KAFKA_BROKER_ID=${PROD_KAFKA_BROKER_ID}" > .env
+            echo "PROD_KAFKA_LISTENERS=${PROD_KAFKA_LISTENERS}" > .env
+            echo "PROD_KAFKA_PORT=${PROD_KAFKA_PORT}" > .env
+            echo "PROD_KAFKA_ZOOKEEPER_CONNECT=${PROD_KAFKA_ZOOKEEPER_CONNECT}" > .env
+            echo "PROD_KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR=${PROD_KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR}" > .env
+            echo "PROD_REDIS_PASSWORD=${PROD_REDIS_PASSWORD}" > .env
+            echo "PROD_ZOOKEEPER_CLIENT_PORT=${PROD_ZOOKEEPER_CLIENT_PORT}" > .env
+            echo "PROD_ZOOKEEPER_TICK_TIME=${PROD_ZOOKEEPER_TICK_TIME}" > .env
+            make prod_build
 
-            - name: Remove Unused Docker Compose Environment
-              run: |
-                make prod_clean
+      - name: Run Updated Docker Compose Environment
+        if: github.ref == 'refs/heads/pre-production'
+        run: |
+          prod_up
+
+      - name: Remove Unused Docker Compose Environment
+        if: github.ref == 'refs/heads/pre-production'
+        run: |
+          make prod_clean
 

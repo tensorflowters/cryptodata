@@ -192,7 +192,7 @@ services:
             <<: *airflow-common-env
             CONNECTION_CHECK_MAX_COUNT: "0"
         profiles:
-            - ${AIRFLOW_CLI_PROFILE}
+            - ${PROD_AIRFLOW_CLI}
 
     airflow_db:
         image: postgres:13
@@ -313,17 +313,16 @@ services:
     #         - "${SPARK_WORKER_PORT}:7077"
 
     grafana:
-        image: grafana/grafana-oss:latest
+        image: grafana/grafana-oss:10.2.4-ubuntu
         ports:
             - "${GRAFANA_PORT}:3000"
         environment:
             GF_SECURITY_ADMIN_USER: ${GRAFANA_SECURITY_ADMIN_USER}
             GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_SECURITY_ADMIN_PASSWORD}
-        user: "0:0"
+        user: "0"
         volumes:
-            - ../grafana/conf/grafana.ini:/etc/grafana/grafana.ini
-            - ../grafana/conf/ladp.toml:/etc/grafana/ladp.toml
-            - ../grafana/data:/var/lib/grafana:rw
+            - ../grafana/conf:/etc/grafana
+            - ../grafana/data:/var/lib/grafana
 
     wss:
         build:
