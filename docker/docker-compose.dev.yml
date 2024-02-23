@@ -1,7 +1,9 @@
 version: "3.9"
 
 x-airflow-common: &airflow-common
-    image: epitechuser2077/cryptodata:cryptodata-airflow
+    build:
+        context: ../
+        dockerfile: ./airflow/airflow.dockerfile
     depends_on: &airflow-common-depends-on
         redis:
             condition: service_healthy
@@ -190,7 +192,7 @@ services:
             <<: *airflow-common-env
             CONNECTION_CHECK_MAX_COUNT: "0"
         profiles:
-            - ${AIRFLOW_CLI_PROFILE}
+            - ${PROD_AIRFLOW_CLI}
 
     airflow_db:
         image: postgres:13
@@ -223,7 +225,9 @@ services:
             - client-db-volume:/var/lib/postgresql/data
 
     client_initdb:
-        image: epitechuser2077/cryptodata:cryptodata-client_initdb
+        build:
+            context: ../
+            dockerfile: ./db/initdb.dockerfile
         command: [ "python", "initdb.py" ]
         environment:
             POSTGRES_DB: $INIT_CLIENT_DB_USER
@@ -273,15 +277,19 @@ services:
           retries: 3
 
     cryptopanic-scraper:
-        image: epitechuser2077/cryptodata:cryptodata-cryptopanic-scraper
-        command: ["tail", "-f", "/dev/null"]
+        build:
+            context: ../
+            dockerfile: ./scrapers/cryptopanic/scraper.dockerfile
 
     binance-scraper:
-        image: epitechuser2077/cryptodata:cryptodata-binance-scraper
-        command: ["tail", "-f", "/dev/null"]
+        build:
+            context: ../
+            dockerfile: scrapers/binance/scraper.dockerfile
 
     scraped_consumer:
-        image: epitechuser2077/cryptodata:cryptodata-scraped_consumer
+        build:
+            context: ../
+            dockerfile: ./consumers/scraped/scraped.dockerfile
         command: [ "python", "main.py" ]
         depends_on:
             kafka:
@@ -296,27 +304,30 @@ services:
         volumes:
             - ../consumers/scraped:/home/consumer
 
-    spark:
-        image: epitechuser2077/cryptodata:cryptodata-spark
-        ports:
-            - "${SPARK_UI_PORT}:8080"
-            - "${SPARK_WORKER_PORT}:7077"
+    # spark:
+    #     build:
+    #         context: ../
+    #         dockerfile: ./spark/spark.dockerfile
+    #     ports:
+    #         - "${SPARK_UI_PORT}:8080"
+    #         - "${SPARK_WORKER_PORT}:7077"
 
     grafana:
-        image: grafana/grafana-oss:latest
+        image: grafana/grafana-oss:10.2.4-ubuntu
         ports:
             - "${GRAFANA_PORT}:3000"
         environment:
             GF_SECURITY_ADMIN_USER: ${GRAFANA_SECURITY_ADMIN_USER}
             GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_SECURITY_ADMIN_PASSWORD}
-        user: "0:0"
+        user: "0"
         volumes:
-            - ../grafana/conf/grafana.ini:/etc/grafana/grafana.ini
-            - ../grafana/conf/ladp.toml:/etc/grafana/ladp.toml
-            - ../grafana/data:/var/lib/grafana:rw
+            - ../grafana/conf:/etc/grafana
+            - ../grafana/data:/var/lib/grafana
 
     wss:
-        image: epitechuser2077/cryptodata:cryptodata-wss
+        build:
+            context: ../
+            dockerfile: ./crypto-wss/wss.dockerfile
         volumes:
             - ../crypto-wss:/srv/app
         tty: true

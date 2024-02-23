@@ -35,3 +35,7 @@ prod_up:
 
 prod_clean:
 	@${MAKE_EXECUTOR_DEPLOY} prod_rm
+
+
+fix_grafana_permissions:
+	@${MAKE_EXECUTOR_ENV} fix_grafana_permissions
