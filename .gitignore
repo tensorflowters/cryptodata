@@ -39,6 +39,8 @@ logs
 *.env.prod
 *.env.dockerhub
 *.env.local
+*.env.dev.local
+*.env.prod.local
 .env
 *.env.*.prod
 *.mypy_cache*

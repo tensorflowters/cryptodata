@@ -1,8 +1,8 @@
-include env-vars/.env.dev.local
-export $(shell sed 's/=.*//' env-vars/.env.dev.local)
+include env-vars/.env.prod.local
+export $(shell sed 's/=.*//' env-vars/.env.prod.local)
 
 AIRFLOW_EXECUTOR=airflow/airflow.sh
-DOCKER_EXECUTOR=docker compose -f docker/docker-compose.dev.yml -p cryptodata --env-file env-vars/.env.dev
+DOCKER_EXECUTOR=docker compose -f docker/docker-compose.local.yml -p cryptodata
 
 devup:
 	@${DOCKER_EXECUTOR} up -d --build

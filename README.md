@@ -39,13 +39,12 @@ Depending on the volume and nature of our data, we should consider using a combi
 
 The following tools will be use to real-time data processing, especially if wz expect high volumes of data.
 
-- [Apache Spark](https://spark.apache.org/)
 - [Apache Kafka](https://kafka.apache.org/)
 
 It can also handle batch processing, so it offers flexibility.
 
-Apache Kafka can be used in conjunction with Spark to handle real-time data ingestion and processing.
-Kafka can act as a buffer to store the scraped data and Spark can then pick it up for processing.
+Apache Kafka can be used in conjunction with pytorch to handle real-time data ingestion and processing.
+Kafka can act as a buffer to store the scraped data.
 Depending on the kind of analytics we're running, a time-series database like InfluxDB or TimescaleDB might be beneficial.
 
 ### Monitoring & Error Handling
