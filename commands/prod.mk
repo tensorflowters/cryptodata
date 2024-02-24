@@ -1,13 +1,13 @@
-DOCKER_EXECUTOR=docker compose -f docker/docker-compose.prod.yml -p cryptodata
+DOCKER_EXECUTOR=docker compose -f docker/docker-compose.prod.yml -p cryptodata --env-file ./.env
 
 prod_stop:
 	@${DOCKER_EXECUTOR} stop
 
 prod_build:
-	@${DOCKER_EXECUTOR} --env-file ./.env build --no-cache
+	@${DOCKER_EXECUTOR} build --no-cache
 
 prod_up:
-	@${DOCKER_EXECUTOR} --env-file ./.env up -d
+	@${DOCKER_EXECUTOR} up -d
 
 prod_rm:
 	@docker container prune -f
