@@ -185,8 +185,8 @@ services:
             RATELIMIT_STORAGE_URI: redis://redis:6379/0
             _AIRFLOW_DB_MIGRATE: "true"
             _AIRFLOW_WWW_USER_CREATE: "true"
-            _AIRFLOW_WWW_USER_USERNAME: ${_AIRFLOW_WWW_USER_USERNAME:-airflow}
             _AIRFLOW_WWW_USER_PASSWORD: ${_AIRFLOW_WWW_USER_PASSWORD:-airflow}
+            _AIRFLOW_WWW_USER_USERNAME: ${_AIRFLOW_WWW_USER_USERNAME:-airflow}
             _PIP_ADDITIONAL_REQUIREMENTS: ""
         networks:
             - cryptodata_net

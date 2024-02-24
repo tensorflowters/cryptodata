@@ -37,6 +37,8 @@ jobs:
             AIRFLOW_SCHEDULER_TEST_CMD_URL: ${{ secrets.PROD_AIRFLOW_SCHEDULER_TEST_CMD_URL }}
             AIRFLOW_WEBSERVER_PORT: ${{ secrets.PROD_AIRFLOW_WEBSERVER_PORT }}
             AIRFLOW_WEBSERVER_TEST_CMD_URL: ${{ secrets.PROD_AIRFLOW_WEBSERVER_TEST_CMD_URL }}
+            _AIRFLOW_WWW_USER_PASSWORD: ${{ secrets.PROD__AIRFLOW_WWW_USER_PASSWORD }}
+            _AIRFLOW_WWW_USER_USERNAME: ${{ secrets.PROD__AIRFLOW_WWW_USER_USERNAME }}
             BLOCKCHAIN_API_KEY: ${{ secrets.PROD_BLOCKCHAIN_API_KEY }}
             CLIENT_DB_NAME: ${{ secrets.PROD_CLIENT_DB_NAME }}
             CLIENT_DB_PASSWD: ${{ secrets.PROD_CLIENT_DB_PASSWD }}
@@ -133,6 +135,16 @@ jobs:
                 sed -i "s|^AIRFLOW_WEBSERVER_TEST_CMD_URL=.*|AIRFLOW_WEBSERVER_TEST_CMD_URL=${AIRFLOW_WEBSERVER_TEST_CMD_URL}|" ".env"
             else
                 echo "AIRFLOW_WEBSERVER_TEST_CMD_URL=${AIRFLOW_WEBSERVER_TEST_CMD_URL}" >> ".env"
+            fi
+            if grep -q "^_AIRFLOW_WWW_USER_PASSWORD=" ".env"; then
+                sed -i "s|^_AIRFLOW_WWW_USER_PASSWORD=.*|_AIRFLOW_WWW_USER_PASSWORD=${_AIRFLOW_WWW_USER_PASSWORD}|" ".env"
+            else
+                echo "_AIRFLOW_WWW_USER_PASSWORD=${_AIRFLOW_WWW_USER_PASSWORD}" >> ".env"
+            fi
+            if grep -q "^_AIRFLOW_WWW_USER_USERNAME=" ".env"; then
+                sed -i "s|^_AIRFLOW_WWW_USER_USERNAME=.*|_AIRFLOW_WWW_USER_USERNAME=${_AIRFLOW_WWW_USER_USERNAME}|" ".env"
+            else
+                echo "_AIRFLOW_WWW_USER_USERNAME=${_AIRFLOW_WWW_USER_USERNAME}" >> ".env"
             fi
             if grep -q "^BLOCKCHAIN_API_KEY=" ".env"; then
                 sed -i "s|^BLOCKCHAIN_API_KEY=.*|BLOCKCHAIN_API_KEY=${BLOCKCHAIN_API_KEY}|" ".env"
