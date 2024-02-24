@@ -24,7 +24,7 @@ x-airflow-common: &airflow-common
     AIRFLOW__SCHEDULER__ENABLE_HEALTH_CHECK: "true"
     AIRFLOW_MODE: ${AIRFLOW_MODE}
     GH_TOKEN: ${AIRFLOW_GH_TOKEN}
-  user: "${AIRFLOW_UID:-50000}:0"
+  user: "${AIRFLOW_UID:-1001}:0"
   volumes:
     - ${AIRFLOW_DIR:-.}/config:/opt/airflow/config
     - ${AIRFLOW_DIR:-.}/dags:/opt/airflow/dags
@@ -34,7 +34,7 @@ x-airflow-common: &airflow-common
 networks:
   cryptodata_net:
     driver: bridge
-    name: ${CRYPTODATA_NET}
+    name: cryptodata_net
 
 services:
   airflow-webserver:
@@ -203,6 +203,7 @@ services:
         fi
         mkdir -p /sources/logs /sources/dags /sources/plugins
         chown -R "${AIRFLOW_UID}:0" /sources/{logs,dags,plugins}
+        chmod -R 777 /sources/{logs,dags,plugins}
         exec /entrypoint airflow version
     # yamllint enable rule:line-length
     environment:
@@ -241,13 +242,7 @@ services:
       POSTGRES_PASSWORD: $AIRFLOW_DB_PASSWD
       POSTGRES_USER: $AIRFLOW_DB_USER
     healthcheck:
-      test:
-        [
-          "CMD",
-          "pg_isready",
-          "-U",
-          "airflow",
-        ]
+      test: [ "CMD", "pg_isready", "-U", "airflow" ]
       interval: 10s
       retries: 5
       start_period: 5s
@@ -260,9 +255,9 @@ services:
   client_db:
     image: postgres:16.2-alpine3.18
     environment:
-      POSTGRES_USER: $CLIENT_DB_USER
-      POSTGRES_PASSWORD: $CLIENT_DB_PASSWD
-      POSTGRES_DB: $CLIENT_DB_NAME
+      POSTGRES_DB: ${CLIENT_DB_NAME}
+      POSTGRES_PASSWORD: ${CLIENT_DB_PASSWD}
+      POSTGRES_USER: ${CLIENT_DB_USER}
     healthcheck:
       test: [ "CMD", "pg_isready", "-U", "${CLIENT_DB_USER}" ]
       interval: 10s
@@ -292,7 +287,7 @@ services:
       - ../db:/home/initdb
 
   redis:
-    image: redis:latest
+    image: redis:7.2.4-alpine
     environment:
       - REDIS_AOF_ENABLED=no
       - REDIS_DISABLE_COMMANDS=FLUSHDB,FLUSHALL,CONFIG
@@ -331,9 +326,11 @@ services:
       test: kafka-topics --bootstrap-server kafka:${KAFKA_PORT} --list
       interval: 10s
       timeout: 10s
-      retries: 3
+      retries: 5
     networks:
       - cryptodata_net
+    ports:
+      - "${KAFKA_PORT}:9092"
 
   cryptopanic-scraper:
     build:

@@ -22,6 +22,8 @@ jobs:
 
             - name: Set up Docker compose environment
               env:
+                  _AIRFLOW_WWW_USER_PASSWORD: ${{ secrets.PROD__AIRFLOW_WWW_USER_PASSWORD }}
+                  _AIRFLOW_WWW_USER_USERNAME: ${{ secrets.PROD__AIRFLOW_WWW_USER_USERNAME }}
                   AIRFLOW__CELERY__BROKER_URL: ${{ secrets.PROD_AIRFLOW__CELERY__BROKER_URL }}
                   AIRFLOW__CELERY__RESULT_BACKEND: ${{ secrets.PROD_AIRFLOW__CELERY__RESULT_BACKEND }}
                   AIRFLOW__CORE__FERNET_KEY: ${{ secrets.PROD_AIRFLOW__CORE__FERNET_KEY }}
@@ -32,19 +34,17 @@ jobs:
                   AIRFLOW_DB_PASSWD: ${{ secrets.PROD_AIRFLOW_DB_PASSWD }}
                   AIRFLOW_DB_USER: ${{ secrets.PROD_AIRFLOW_DB_USER }}
                   AIRFLOW_DIR: ${{ secrets.PROD_AIRFLOW_DIR }}
-                  GH_TOKEN: ${{ secrets.PROD_AIRFLOW_GH_TOKEN }}
                   AIRFLOW_MODE: ${{ secrets.PROD_AIRFLOW_MODE }}
-                  AIRFLOW_UID: ${{ secrets.PROD_AIRFLOW_UID }}
                   AIRFLOW_SCHEDULER_TEST_CMD_URL: ${{ secrets.PROD_AIRFLOW_SCHEDULER_TEST_CMD_URL }}
+                  AIRFLOW_UID: ${{ secrets.PROD_AIRFLOW_UID }}
                   AIRFLOW_WEBSERVER_PORT: ${{ secrets.PROD_AIRFLOW_WEBSERVER_PORT }}
                   AIRFLOW_WEBSERVER_TEST_CMD_URL: ${{ secrets.PROD_AIRFLOW_WEBSERVER_TEST_CMD_URL }}
-                  _AIRFLOW_WWW_USER_PASSWORD: ${{ secrets.PROD__AIRFLOW_WWW_USER_PASSWORD }}
-                  _AIRFLOW_WWW_USER_USERNAME: ${{ secrets.PROD__AIRFLOW_WWW_USER_USERNAME }}
                   BLOCKCHAIN_API_KEY: ${{ secrets.PROD_BLOCKCHAIN_API_KEY }}
                   CLIENT_DB_NAME: ${{ secrets.PROD_CLIENT_DB_NAME }}
                   CLIENT_DB_PASSWD: ${{ secrets.PROD_CLIENT_DB_PASSWD }}
                   CLIENT_DB_USER: ${{ secrets.PROD_CLIENT_DB_USER }}
                   ENV_LOCATION: ${{ secrets.PROD_ENV_LOCATION }}
+                  GH_TOKEN: ${{ secrets.PROD_AIRFLOW_GH_TOKEN }}
                   GRAFANA_PORT: ${{ secrets.PROD_GRAFANA_PORT }}
                   GRAFANA_SECURITY_ADMIN_PASSWORD: ${{ secrets.PROD_GRAFANA_SECURITY_ADMIN_PASSWORD }}
                   GRAFANA_SECURITY_ADMIN_USER: ${{ secrets.PROD_GRAFANA_SECURITY_ADMIN_USER }}
@@ -55,7 +55,7 @@ jobs:
                   KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: ${{ secrets.PROD_KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR }}
                   KAFKA_PORT: ${{ secrets.PROD_KAFKA_PORT }}
                   KAFKA_ZOOKEEPER_CONNECT: ${{ secrets.PROD_KAFKA_ZOOKEEPER_CONNECT }}
-                  REDIS_PASSWORD: ${{ secrets.PROD_REDIS_PASSWORD }}
+                  PROXY_PORT: ${{ secrets.PROD_PROXY_PORT }}
                   ZOOKEEPER_CLIENT_PORT: ${{ secrets.PROD_ZOOKEEPER_CLIENT_PORT }}
                   ZOOKEEPER_TICK_TIME: ${{ secrets.PROD_ZOOKEEPER_TICK_TIME }}
               run: |
@@ -220,10 +220,10 @@ jobs:
                   else
                       echo "KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR=${KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR}" >> ".env"
                   fi
-                  if grep -q "^REDIS_PASSWORD=" ".env"; then
-                      sed -i "s|^REDIS_PASSWORD=.*|REDIS_PASSWORD=${REDIS_PASSWORD}|" ".env"
+                  if grep -q "^PROXY_PORT=" ".env"; then
+                      sed -i "s|^PROXY_PORT=.*|PROXY_PORT=${PROXY_PORT}|" ".env"
                   else
-                      echo "REDIS_PASSWORD=${REDIS_PASSWORD}" >> ".env"
+                      echo "PROXY_PORT=${PROXY_PORT}" >> ".env"
                   fi
                   if grep -q "^ZOOKEEPER_CLIENT_PORT=" ".env"; then
                       sed -i "s|^ZOOKEEPER_CLIENT_PORT=.*|ZOOKEEPER_CLIENT_PORT=${ZOOKEEPER_CLIENT_PORT}|" ".env"
