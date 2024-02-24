@@ -211,7 +211,7 @@ jobs:
             else
                 echo "${PROD_ZOOKEEPER_TICK_TIME}=${PROD_ZOOKEEPER_TICK_TIME}" >> ".env"
             fi
-            export $(shell sed 's/=.*//' .env)
+            export $(shell sed 's|=.*|' .env)
             make prod_build
 
       - name: Run Updated Docker Compose Environment
