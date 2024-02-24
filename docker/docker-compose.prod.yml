@@ -30,7 +30,7 @@ x-airflow-common: &airflow-common
 
 networks:
     cryptodata_net:
-        driver: host
+        driver: bridge
         name: cryptodata_net
 
 services:
