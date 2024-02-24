@@ -246,7 +246,7 @@ services:
           "CMD",
           "pg_isready",
           "-U",
-          "postgres",
+          "airflow",
         ]
       interval: 10s
       retries: 5
