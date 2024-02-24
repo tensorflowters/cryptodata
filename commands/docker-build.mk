@@ -8,10 +8,6 @@ build_img:
 	@docker login -p ${DOCKERHUB_PASSWD} -u ${DOCKERHUB_LOGIN}
 	@docker push ${DOCKERHUB_LOGIN}/cryptodata:${img}:${tag}
 
-build_cryptodata-spark:
-	@docker build -f $(PWD)/spark/spark.dockerfile -t ${DOCKERHUB_LOGIN}/cryptodata:cryptodata-spark .
-	@docker login -p ${DOCKERHUB_PASSWD} -u ${DOCKERHUB_LOGIN}
-	@docker push ${DOCKERHUB_LOGIN}/cryptodata:cryptodata-spark
 build_cryptodata-wss:
 	@docker build -f $(PWD)/crypto-wss/wss.dockerfile -t ${DOCKERHUB_LOGIN}/cryptodata:cryptodata-wss .
 	@docker login -p ${DOCKERHUB_PASSWD} -u ${DOCKERHUB_LOGIN}
@@ -36,3 +32,8 @@ build_cryptodata-client_initdb:
 	@docker build -f $(PWD)/db/initdb.dockerfile -t ${DOCKERHUB_LOGIN}/cryptodata:cryptodata-client_initdb .
 	@docker login -p ${DOCKERHUB_PASSWD} -u ${DOCKERHUB_LOGIN}
 	@docker push ${DOCKERHUB_LOGIN}/cryptodata:cryptodata-client_initdb
+
+build_cryptodata-sentiment_analysis:
+	@docker build -f $(PWD)/sentiment_analysis/sa.dockerfile -t ${DOCKERHUB_LOGIN}/cryptodata:cryptodata-sentiment_analysis .
+	@docker login -p ${DOCKERHUB_PASSWD} -u ${DOCKERHUB_LOGIN}
+	@docker push ${DOCKERHUB_LOGIN}/cryptodata:cryptodata-sentiment_analysis

@@ -20,9 +20,8 @@ x-airflow-common: &airflow-common
         AIRFLOW__CORE__SQL_ALCHEMY_CONN: ${AIRFLOW__DATABASE__SQL_ALCHEMY_CONN}
         AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: ${AIRFLOW__DATABASE__SQL_ALCHEMY_CONN}
         AIRFLOW__SCHEDULER__ENABLE_HEALTH_CHECK: "true"
-        AIRFLOW_MODE: ${AIRFLOW_MODE}
         GH_TOKEN: ${AIRFLOW_GH_TOKEN}
-        AIRFLOW__WEBSERVER__SESSION_BACKEND: securecookie
+        AIRFLOW_MODE: ${AIRFLOW_MODE}
     user: "${AIRFLOW_UID:-50000}:0"
     volumes:
         - ${AIRFLOW_DIR:-.}/config:/opt/airflow/config
@@ -285,12 +284,12 @@ services:
         depends_on:
             - zookeeper
         environment:
-            KAFKA_ADVERTISED_LISTENERS: ${KAFKA_ADVERTISED_LISTENERS}
             KAFKA_BROKER_ID: ${KAFKA_BROKER_ID}
+            KAFKA_ZOOKEEPER_CONNECT: ${KAFKA_ZOOKEEPER_CONNECT}
             KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: ${KAFKA_LISTENER_SECURITY_PROTOCOL_MAP}
+            KAFKA_ADVERTISED_LISTENERS: ${KAFKA_ADVERTISED_LISTENERS}
             KAFKA_LISTENERS: ${KAFKA_LISTENERS}
             KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: ${KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR}
-            KAFKA_ZOOKEEPER_CONNECT: ${KAFKA_ZOOKEEPER_CONNECT}
         healthcheck:
             test: kafka-topics --bootstrap-server kafka:${KAFKA_PORT} --list
             interval: 10s
@@ -358,6 +357,19 @@ services:
         tty: true
         volumes:
             - ../crypto-wss:/srv/app
+
+    sentiment_analysis:
+        image: epitechuser2077/cryptodata:cryptodata-sentiment_analysis
+        volumes:
+            - ../sentiment_analysis:/srv/app
+        tty: true
+        depends_on:
+            client_db:
+            condition: service_healthy
+        environment:
+            POSTGRES_USER: ${CLIENT_DB_USER}
+            POSTGRES_PASSWORD: ${CLIENT_DB_PASSWD}
+            POSTGRES_DB: ${CLIENT_DB_NAME}
 
     docker-proxy:
         image: bobrik/socat
