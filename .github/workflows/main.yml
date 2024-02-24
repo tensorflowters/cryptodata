@@ -79,10 +79,10 @@ jobs:
             else
                 echo "AIRFLOW__CORE__FERNET_KEY=${AIRFLOW__CORE__FERNET_KEY}" >> ".env"
             fi
-            if grep -q "^AIRFLOW_CLI=" ".env"; then
-                sed -i "s|^AIRFLOW_CLI=.*|AIRFLOW_CLI=${AIRFLOW_CLI}|" ".env"
+            if grep -q "^AIRFLOW_CLI_PROFILE=" ".env"; then
+                sed -i "s|^AIRFLOW_CLI_PROFILE=.*|AIRFLOW_CLI_PROFILE=${AIRFLOW_CLI_PROFILE}|" ".env"
             else
-                echo "AIRFLOW_CLI=${AIRFLOW_CLI}" >> ".env"
+                echo "AIRFLOW_CLI_PROFILE=${AIRFLOW_CLI_PROFILE}" >> ".env"
             fi
             if grep -q "^AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=" ".env"; then
                 sed -i "s|^AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=.*|AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=${AIRFLOW__DATABASE__SQL_ALCHEMY_CONN}|" ".env"
@@ -118,6 +118,11 @@ jobs:
                 sed -i "s|^AIRFLOW_UID=.*|AIRFLOW_UID=${AIRFLOW_UID}|" ".env"
             else
                 echo "AIRFLOW_UID=${AIRFLOW_UID}" >> ".env"
+            fi
+            if grep -q "^AIRFLOW_SCHEDULER_TEST_CMD_URL=" ".env"; then
+                sed -i "s|^AIRFLOW_SCHEDULER_TEST_CMD_URL=.*|AIRFLOW_SCHEDULER_TEST_CMD_URL=${AIRFLOW_SCHEDULER_TEST_CMD_URL}|" ".env"
+            else
+                echo "AIRFLOW_SCHEDULER_TEST_CMD_URL=${AIRFLOW_SCHEDULER_TEST_CMD_URL}" >> ".env"
             fi
             if grep -q "^AIRFLOW_WEBSERVER_PORT=" ".env"; then
                 sed -i "s|^AIRFLOW_WEBSERVER_PORT=.*|AIRFLOW_WEBSERVER_PORT=${AIRFLOW_WEBSERVER_PORT}|" ".env"
@@ -198,6 +203,16 @@ jobs:
                 sed -i "s|^KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR=.*|KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR=${KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR}|" ".env"
             else
                 echo "KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR=${KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR}" >> ".env"
+            fi
+            if grep -q "^SPARK_UI_PORT=" ".env"; then
+                sed -i "s|^SPARK_UI_PORT=.*|SPARK_UI_PORT=${SPARK_UI_PORT}|" ".env"
+            else
+                echo "SPARK_UI_PORT=${SPARK_UI_PORT}" >> ".env"
+            fi
+            if grep -q "^SPARK_WORKER_PORT=" ".env"; then
+                sed -i "s|^SPARK_WORKER_PORT=.*|SPARK_WORKER_PORT=${SPARK_WORKER_PORT}|" ".env"
+            else
+                echo "SPARK_WORKER_PORT=${SPARK_WORKER_PORT}" >> ".env"
             fi
             if grep -q "^REDIS_PASSWORD=" ".env"; then
                 sed -i "s|^REDIS_PASSWORD=.*|REDIS_PASSWORD=${REDIS_PASSWORD}|" ".env"
