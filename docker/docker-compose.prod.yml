@@ -21,6 +21,7 @@ x-airflow-common: &airflow-common
         AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: ${AIRFLOW__DATABASE__SQL_ALCHEMY_CONN}
         AIRFLOW__SCHEDULER__ENABLE_HEALTH_CHECK: "true"
         GH_TOKEN: ${AIRFLOW_GH_TOKEN}
+        AIRFLOW__WEBSERVER__SESSION_BACKEND: securecookie
     user: "${AIRFLOW_UID:-50000}:0"
     volumes:
         - ${AIRFLOW_DIR:-.}/dags:/opt/airflow/dags
