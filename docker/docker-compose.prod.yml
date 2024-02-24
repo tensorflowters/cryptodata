@@ -23,10 +23,10 @@ x-airflow-common: &airflow-common
         GH_TOKEN: ${AIRFLOW_GH_TOKEN}
     user: "${AIRFLOW_UID:-50000}:0"
     volumes:
-        - ${AIRFLOW_DIR:-.}/dags:/opt/airflow/dags:rw
-        - ${AIRFLOW_DIR:-.}/logs:/opt/airflow/logs:rw
-        - ${AIRFLOW_DIR:-.}/config:/opt/airflow/config:rw
-        - ${AIRFLOW_DIR:-.}/plugins:/opt/airflow/plugins:rw
+        - ${AIRFLOW_DIR:-.}/dags:/opt/airflow/dags
+        - ${AIRFLOW_DIR:-.}/logs:/opt/airflow/logs
+        - ${AIRFLOW_DIR:-.}/config:/opt/airflow/config
+        - ${AIRFLOW_DIR:-.}/plugins:/opt/airflow/plugins
 
 networks:
     cryptodata_net:
