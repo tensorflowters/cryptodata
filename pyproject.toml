@@ -8,6 +8,7 @@ readme = "README.md"
 [tool.poetry.dependencies]
 python = ">3.9, <=3.13"
 poethepoet = "^0.24.4"
+redis = "^5.0.1"
 
 
 [tool.poetry.group.scraper.dependencies]
