@@ -44,7 +44,7 @@ jobs:
                   CLIENT_DB_PASSWD: ${{ secrets.PROD_CLIENT_DB_PASSWD }}
                   CLIENT_DB_USER: ${{ secrets.PROD_CLIENT_DB_USER }}
                   ENV_LOCATION: ${{ secrets.PROD_ENV_LOCATION }}
-                  GH_TOKEN: ${{ secrets.PROD_AIRFLOW_GH_TOKEN }}
+                  AIRFLOW_GH_TOKEN: ${{ secrets.PROD_AIRFLOW_GH_TOKEN }}
                   GRAFANA_PORT: ${{ secrets.PROD_GRAFANA_PORT }}
                   GRAFANA_SECURITY_ADMIN_PASSWORD: ${{ secrets.PROD_GRAFANA_SECURITY_ADMIN_PASSWORD }}
                   GRAFANA_SECURITY_ADMIN_USER: ${{ secrets.PROD_GRAFANA_SECURITY_ADMIN_USER }}
