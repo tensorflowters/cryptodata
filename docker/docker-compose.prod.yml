@@ -5,7 +5,7 @@ x-airflow-common: &airflow-common
     depends_on: &airflow-common-depends-on
         redis:
             condition: service_healthy
-        airflow_db:
+        airflow-db:
             condition: service_healthy
         kafka:
             condition: service_started
@@ -209,12 +209,12 @@ services:
         profiles:
             - ${AIRFLOW_CLI_PROFILE}
 
-    airflow_db:
+    airflow-db:
         image: postgres:13
         environment:
-            POSTGRES_DB: ${AIRFLOW_DB_NAME}
-            POSTGRES_PASSWORD: ${AIRFLOW_DB_PASSWD}
-            POSTGRES_USER: ${AIRFLOW_DB_USER}
+            POSTGRES_DB: $AIRFLOW_DB_NAME
+            POSTGRES_PASSWORD: $AIRFLOW_DB_PASSWD
+            POSTGRES_USER: $AIRFLOW_DB_USER
         healthcheck:
             test: ["CMD", "pg_isready", "-U", "${AIRFLOW_DB_USER}"]
             interval: 10s
@@ -224,7 +224,7 @@ services:
             - cryptodata_net
         restart: always
         volumes:
-            - airflow_db-volume:/var/lib/postgresql/data
+            - airflow-db-volume:/var/lib/postgresql/data
 
     client_db:
         image: postgres:13
@@ -376,5 +376,5 @@ services:
         - /var/run/docker.sock:/var/run/docker.sock
 
 volumes:
-    airflow_db-volume:
+    airflow-db-volume:
     client-db-volume:

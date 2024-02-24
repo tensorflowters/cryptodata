@@ -7,20 +7,20 @@ x-airflow-common: &airflow-common
     depends_on: &airflow-common-depends-on
         redis:
             condition: service_healthy
-        airflow_db:
+        airflow-db:
             condition: service_healthy
         kafka:
             condition: service_started
     environment: &airflow-common-env
-        AIRFLOW__CORE__EXECUTOR: CeleryExecutor
-        AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@airflow_db/airflow
-        AIRFLOW__CORE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@airflow_db/airflow
-        AIRFLOW__CELERY__RESULT_BACKEND: db+postgresql://airflow:airflow@airflow_db/airflow
-        AIRFLOW__CELERY__BROKER_URL: redis://:@redis:6379/0
-        AIRFLOW__CORE__FERNET_KEY: ""
-        AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION: "true"
-        AIRFLOW__CORE__LOAD_EXAMPLES: "false"
         AIRFLOW__API__AUTH_BACKENDS: "airflow.api.auth.backend.basic_auth,airflow.api.auth.backend.session"
+        AIRFLOW__CELERY__BROKER_URL: redis://:@redis:6379/0
+        AIRFLOW__CELERY__RESULT_BACKEND: db+postgresql://airflow:airflow@airflow-db/airflow
+        AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION: "true"
+        AIRFLOW__CORE__EXECUTOR: CeleryExecutor
+        AIRFLOW__CORE__FERNET_KEY: ""
+        AIRFLOW__CORE__LOAD_EXAMPLES: "false"
+        AIRFLOW__CORE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@airflow-db/airflow
+        AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@airflow-db/airflow
         AIRFLOW__SCHEDULER__ENABLE_HEALTH_CHECK: "true"
         GH_TOKEN: ${AIRFLOW_GH_TOKEN}
     user: "${AIRFLOW_UID:-50000}:0"
@@ -194,12 +194,12 @@ services:
         profiles:
             - ${PROD_AIRFLOW_CLI}
 
-    airflow_db:
+    airflow-db:
         image: postgres:13
         environment:
-            POSTGRES_USER: $AIRFLOW_DB_USER
-            POSTGRES_PASSWORD: $AIRFLOW_DB_PASSWD
             POSTGRES_DB: $AIRFLOW_DB_NAME
+            POSTGRES_PASSWORD: $AIRFLOW_DB_PASSWD
+            POSTGRES_USER: $AIRFLOW_DB_USER
         healthcheck:
             test: ["CMD", "pg_isready", "-U", "${AIRFLOW_DB_USER}"]
             interval: 10s
@@ -207,7 +207,7 @@ services:
             start_period: 5s
         restart: always
         volumes:
-            - airflow_db-volume:/var/lib/postgresql/data
+            - airflow-db-volume:/var/lib/postgresql/data
 
     client_db:
         image: postgres:13
@@ -349,5 +349,5 @@ services:
         - /var/run/docker.sock:/var/run/docker.sock
 
 volumes:
-    airflow_db-volume:
+    airflow-db-volume:
     client-db-volume:
