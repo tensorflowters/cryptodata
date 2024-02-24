@@ -41,11 +41,8 @@ services:
     <<: *airflow-common
     command: webserver
     depends_on:
-      <<: *airflow-common-depends-on
       airflow-init:
         condition: service_completed_successfully
-    environment:
-      <<: *airflow-common-env
     healthcheck:
       interval: 30s
       retries: 5
@@ -67,10 +64,7 @@ services:
   airflow-scheduler:
     <<: *airflow-common
     command: scheduler
-    environment:
-      <<: *airflow-common-env
     depends_on:
-      <<: *airflow-common-depends-on
       airflow-init:
         condition: service_completed_successfully
     healthcheck:
@@ -93,11 +87,8 @@ services:
     <<: *airflow-common
     command: celery worker
     depends_on:
-      <<: *airflow-common-depends-on
       airflow-init:
         condition: service_completed_successfully
-    environment:
-      <<: *airflow-common-env
       # Required to handle warm shutdown of the celery workers properly
       # See https://airflow.apache.org/docs/docker-stack/entrypoint.html#signal-propagation
       DUMB_INIT_SETSID: "0"
@@ -118,10 +109,7 @@ services:
   airflow-triggerer:
     <<: *airflow-common
     command: triggerer
-    environment:
-      <<: *airflow-common-env
     depends_on:
-      <<: *airflow-common-depends-on
       airflow-init:
         condition: service_completed_successfully
     healthcheck:
@@ -207,7 +195,6 @@ services:
         exec /entrypoint airflow version
     # yamllint enable rule:line-length
     environment:
-      <<: *airflow-common-env
       RATELIMIT_STORAGE_URI: redis://redis:6379/0
       _AIRFLOW_DB_MIGRATE: "true"
       _AIRFLOW_WWW_USER_CREATE: "true"
@@ -228,7 +215,6 @@ services:
       - -c
       - airflow
     environment:
-      <<: *airflow-common-env
       CONNECTION_CHECK_MAX_COUNT: "0"
     networks:
       - cryptodata_net
