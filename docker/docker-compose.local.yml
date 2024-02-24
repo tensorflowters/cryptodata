@@ -22,7 +22,6 @@ x-airflow-common: &airflow-common
     AIRFLOW__SCHEDULER__ENABLE_HEALTH_CHECK: "true"
     AIRFLOW_MODE: ${AIRFLOW_MODE}
     GH_TOKEN: ${AIRFLOW_GH_TOKEN}
-    AIRFLOW__WEBSERVER__SESSION_BACKEND: securecookie
   user: "${AIRFLOW_UID:-1001}:0"
   volumes:
     - ${AIRFLOW_DIR:-.}/config:/opt/airflow/config

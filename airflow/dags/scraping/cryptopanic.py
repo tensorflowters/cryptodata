@@ -2,9 +2,8 @@ import os
 from datetime import datetime, timedelta
 
 from airflow import DAG
-from airflow.providers.docker.operators.docker import DockerOperator
-from airflow.providers.cncf.kubernetes.operators.kubernetes_pod import KubernetesPodOperator
 from airflow.models import Variable
+from airflow.providers.docker.operators.docker import DockerOperator
 
 default_args = {
     "owner": "airflow",
@@ -24,30 +23,33 @@ with DAG(
     catchup=False,
 ) as dag:
     # Determine the environment; default to 'dev' if not specified
-    env = Variable.get("AIRFLOW_ENV", os.getenv('AIRFLOW_ENV', 'DEV'))
+    env = Variable.get("AIRFLOW_MODE", os.getenv("AIRFLOW_MODE", "dev"))
 
-    if env == "PROD":
-        # Use KubernetesPodOperator in production
-        run_scraper_task = KubernetesPodOperator(
-            task_id="run_cryptopanic_scraper_task",
-            name="cryptopanic-scraper-task",
-            namespace="default",
+    if env == "prod":
+        run_scraper_task = DockerOperator(
+            api_version="auto",
+            auto_remove="force",
+            command="python main.py",
+            docker_url="tcp://docker-proxy:2375",
+            environment={
+                "AIRFLOW_GH_TOKEN": os.getenv("AIRFLOW_GH_TOKEN"),
+                "KAFKA_BROKER": "kafka:9092",
+            },
             image="epitechuser2077/cryptodata:cryptodata-cryptopanic-scraper",
-            cmds=["python", "main.py"],
-            env_vars={"KAFKA_BROKER": "kafka:9092", "GH_TOKEN": os.getenv("GH_TOKEN")},
-            in_cluster=True,  # Assumes Airflow is running within a Kubernetes cluster
-            get_logs=True,
-            image_pull_policy="Always",
-            is_delete_operator_pod=True,
+            network_mode="cryptodata_net",
+            task_id="run_cryptopanic_scraper_task",
         )
     else:
         run_scraper_task = DockerOperator(
-            task_id="run_cryptopanic_scraper_task",
-            image="epitechuser2077/cryptodata:cryptodata-cryptopanic-scraper",
             api_version="auto",
+            auto_remove="force",
             command="python main.py",
             docker_url="tcp://docker-proxy:2375",  # Assumes a docker-proxy setup for local development
-            network_mode="cryptodata_default",
-            auto_remove=True,
-            environment={"KAFKA_BROKER": "kafka:9092", "GH_TOKEN": os.getenv("GH_TOKEN")},
+            environment={
+                "AIRFLOW_GH_TOKEN": os.getenv("AIRFLOW_GH_TOKEN"),
+                "KAFKA_BROKER": "kafka:9092",
+            },
+            image="cryptodata-cryptopanic-scraper:latest",
+            network_mode="cryptodata_net",
+            task_id="run_cryptopanic_scraper_task",
         )

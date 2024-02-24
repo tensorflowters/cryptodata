@@ -3,9 +3,9 @@ import json
 import os
 
 import websockets
-from sqlalchemy import MetaData, create_engine
-from sqlalchemy.exc import IntegrityError
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy import create_engine, MetaData  # type: ignore
+from sqlalchemy.exc import IntegrityError  # type: ignore
+from sqlalchemy.orm import sessionmaker  # type: ignore
 
 # Connect to the database
 db_name = os.getenv("POSTGRES_DB")
@@ -78,7 +78,5 @@ async def fill_db_from_blockhain_ws(token):
         print(f"WebSocket connection failed: {e}")
 
 
-if __name__ == "__main__":
-    print("main")
-    token = os.getenv("BLOCKCHAIN_API_KEY")
-    asyncio.run(fill_db_from_blockhain_ws(token))
+token = os.getenv("BLOCKCHAIN_API_KEY")
+asyncio.run(fill_db_from_blockhain_ws(token))

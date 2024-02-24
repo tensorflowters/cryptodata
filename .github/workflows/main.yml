@@ -5,249 +5,242 @@ on:
         branches: ["release/1.0.0-production"]
 
 jobs:
-  build:
-    runs-on: self-hosted
-    steps:
-      - name: Check out code
-        uses: actions/checkout@v4
+    build:
+        runs-on: self-hosted
+        steps:
+            - name: Check out code
+              uses: actions/checkout@v4
 
-      - name: Print GitHub context
-        env:
-          GITHUB_CONTEXT: ${{ toJson(github) }}
-        run: echo "$GITHUB_CONTEXT" > /tmp/github-context.json
+            - name: Print GitHub context
+              env:
+                  GITHUB_CONTEXT: ${{ toJson(github) }}
+              run: echo "$GITHUB_CONTEXT" > /tmp/github-context.json
 
-      - name: Stop Old Docker Compose Environment
-        run:  |
-          make prod_stop
+            - name: Stop Old Docker Compose Environment
+              run: |
+                  make prod_stop
 
-      - name: Set up Docker compose environment
-        env:
-            AIRFLOW__CELERY__BROKER_URL: ${{ secrets.PROD_AIRFLOW__CELERY__BROKER_URL }}
-            AIRFLOW__CELERY__RESULT_BACKEND: ${{ secrets.PROD_AIRFLOW__CELERY__RESULT_BACKEND }}
-            AIRFLOW__CORE__FERNET_KEY: ${{ secrets.PROD_AIRFLOW__CORE__FERNET_KEY }}
-            AIRFLOW__CORE__SQL_ALCHEMY_CONN: ${{ secrets.PROD_AIRFLOW__CORE__SQL_ALCHEMY_CONN }}
-            AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: ${{ secrets.PROD_AIRFLOW__DATABASE__SQL_ALCHEMY_CONN }}
-            AIRFLOW_CLI_PROFILE: ${{ secrets.PROD_AIRFLOW_CLI_PROFILE }}
-            AIRFLOW_DB_NAME: ${{ secrets.PROD_AIRFLOW_DB_NAME }}
-            AIRFLOW_DB_PASSWD: ${{ secrets.PROD_AIRFLOW_DB_PASSWD }}
-            AIRFLOW_DB_USER: ${{ secrets.PROD_AIRFLOW_DB_USER }}
-            AIRFLOW_DIR: ${{ secrets.PROD_AIRFLOW_DIR }}
-            AIRFLOW_GH_TOKEN: ${{ secrets.PROD_AIRFLOW_GH_TOKEN }}
-            AIRFLOW_UID: ${{ secrets.PROD_AIRFLOW_UID }}
-            AIRFLOW_SCHEDULER_TEST_CMD_URL: ${{ secrets.PROD_AIRFLOW_SCHEDULER_TEST_CMD_URL }}
-            AIRFLOW_WEBSERVER_PORT: ${{ secrets.PROD_AIRFLOW_WEBSERVER_PORT }}
-            AIRFLOW_WEBSERVER_TEST_CMD_URL: ${{ secrets.PROD_AIRFLOW_WEBSERVER_TEST_CMD_URL }}
-            _AIRFLOW_WWW_USER_PASSWORD: ${{ secrets.PROD__AIRFLOW_WWW_USER_PASSWORD }}
-            _AIRFLOW_WWW_USER_USERNAME: ${{ secrets.PROD__AIRFLOW_WWW_USER_USERNAME }}
-            BLOCKCHAIN_API_KEY: ${{ secrets.PROD_BLOCKCHAIN_API_KEY }}
-            CLIENT_DB_NAME: ${{ secrets.PROD_CLIENT_DB_NAME }}
-            CLIENT_DB_PASSWD: ${{ secrets.PROD_CLIENT_DB_PASSWD }}
-            CLIENT_DB_USER: ${{ secrets.PROD_CLIENT_DB_USER }}
-            ENV_LOCATION: ${{ secrets.PROD_ENV_LOCATION }}
-            GRAFANA_PORT: ${{ secrets.PROD_GRAFANA_PORT }}
-            GRAFANA_SECURITY_ADMIN_PASSWORD: ${{ secrets.PROD_GRAFANA_SECURITY_ADMIN_PASSWORD }}
-            GRAFANA_SECURITY_ADMIN_USER: ${{ secrets.PROD_GRAFANA_SECURITY_ADMIN_USER }}
-            KAFKA_ADVERTISED_LISTENERS: ${{ secrets.PROD_KAFKA_ADVERTISED_LISTENERS }}
-            KAFKA_BROKER_ID: ${{ secrets.PROD_KAFKA_BROKER_ID }}
-            KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: ${{ secrets.PROD_KAFKA_LISTENER_SECURITY_PROTOCOL_MAP }}
-            KAFKA_LISTENERS: ${{ secrets.PROD_KAFKA_LISTENERS}}
-            KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: ${{ secrets.PROD_KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR }}
-            KAFKA_PORT: ${{ secrets.PROD_KAFKA_PORT }}
-            KAFKA_ZOOKEEPER_CONNECT: ${{ secrets.PROD_KAFKA_ZOOKEEPER_CONNECT }}
-            SPARK_UI_PORT: ${{ secrets.PROD_SPARK_UI_PORT }}
-            SPARK_WORKER_PORT: ${{ secrets.PROD_SPARK_WORKER_PORT }}
-            REDIS_PASSWORD: ${{ secrets.PROD_REDIS_PASSWORD }}
-            ZOOKEEPER_CLIENT_PORT: ${{ secrets.PROD_ZOOKEEPER_CLIENT_PORT }}
-            ZOOKEEPER_TICK_TIME: ${{ secrets.PROD_ZOOKEEPER_TICK_TIME }}
-        run: |
-            touch .env
-            if grep -q "^AIRFLOW__CELERY__BROKER_URL=" ".env"; then
-                sed -i "s|^AIRFLOW__CELERY__BROKER_URL=.*|AIRFLOW__CELERY__BROKER_URL=${AIRFLOW__CELERY__BROKER_URL}|" ".env"
-            else
-                echo "AIRFLOW__CELERY__BROKER_URL=${AIRFLOW__CELERY__BROKER_URL}" >> ".env"
-            fi
-            if grep -q "^AIRFLOW__CELERY__RESULT_BACKEND=" ".env"; then
-                sed -i "s|^AIRFLOW__CELERY__RESULT_BACKEND=.*|AIRFLOW__CELERY__RESULT_BACKEND=${AIRFLOW__CELERY__RESULT_BACKEND}|" ".env"
-            else
-                echo "AIRFLOW__CELERY__RESULT_BACKEND=${AIRFLOW__CELERY__RESULT_BACKEND}" >> ".env"
-            fi
-            if grep -q "^AIRFLOW__CORE__SQL_ALCHEMY_CONN=" ".env"; then
-                sed -i "s|^AIRFLOW__CORE__SQL_ALCHEMY_CONN=.*|AIRFLOW__CORE__SQL_ALCHEMY_CONN=${AIRFLOW__CORE__SQL_ALCHEMY_CONN}|" ".env"
-            else
-                echo "AIRFLOW__CORE__SQL_ALCHEMY_CONN=${AIRFLOW__CORE__SQL_ALCHEMY_CONN}" >> ".env"
-            fi
-            if grep -q "^AIRFLOW__CORE__FERNET_KEY=" ".env"; then
-                sed -i "s|^AIRFLOW__CORE__FERNET_KEY=.*|AIRFLOW__CORE__FERNET_KEY=${AIRFLOW__CORE__FERNET_KEY}|" ".env"
-            else
-                echo "AIRFLOW__CORE__FERNET_KEY=${AIRFLOW__CORE__FERNET_KEY}" >> ".env"
-            fi
-            if grep -q "^AIRFLOW_CLI_PROFILE=" ".env"; then
-                sed -i "s|^AIRFLOW_CLI_PROFILE=.*|AIRFLOW_CLI_PROFILE=${AIRFLOW_CLI_PROFILE}|" ".env"
-            else
-                echo "AIRFLOW_CLI_PROFILE=${AIRFLOW_CLI_PROFILE}" >> ".env"
-            fi
-            if grep -q "^AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=" ".env"; then
-                sed -i "s|^AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=.*|AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=${AIRFLOW__DATABASE__SQL_ALCHEMY_CONN}|" ".env"
-            else
-                echo "AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=${AIRFLOW__DATABASE__SQL_ALCHEMY_CONN}" >> ".env"
-            fi
-            if grep -q "^AIRFLOW_DB_NAME=" ".env"; then
-                sed -i "s|^AIRFLOW_DB_NAME=.*|AIRFLOW_DB_NAME=${AIRFLOW_DB_NAME}|" ".env"
-            else
-                echo "AIRFLOW_DB_NAME=${AIRFLOW_DB_NAME}" >> ".env"
-            fi
-            if grep -q "^AIRFLOW_DB_PASSWD=" ".env"; then
-                sed -i "s|^AIRFLOW_DB_PASSWD=.*|AIRFLOW_DB_PASSWD=${AIRFLOW_DB_PASSWD}|" ".env"
-            else
-                echo "AIRFLOW_DB_PASSWD=${AIRFLOW_DB_PASSWD}" >> ".env"
-            fi
-            if grep -q "^AIRFLOW_DB_USER=" ".env"; then
-                sed -i "s|^AIRFLOW_DB_USER=.*|AIRFLOW_DB_USER=${AIRFLOW_DB_USER}|" ".env"
-            else
-                echo "AIRFLOW_DB_USER=${AIRFLOW_DB_USER}" >> ".env"
-            fi
-            if grep -q "^AIRFLOW_DIR=" ".env"; then
-                sed -i "s|^AIRFLOW_DIR=.*|AIRFLOW_DIR=${AIRFLOW_DIR}|" ".env"
-            else
-                echo "AIRFLOW_DIR=${AIRFLOW_DIR}" >> ".env"
-            fi
-            if grep -q "^AIRFLOW_GH_TOKEN=" ".env"; then
-                sed -i "s|^AIRFLOW_GH_TOKEN=.*|AIRFLOW_GH_TOKEN=${AIRFLOW_GH_TOKEN}|" ".env"
-            else
-                echo "AIRFLOW_GH_TOKEN=${AIRFLOW_GH_TOKEN}" >> ".env"
-            fi
-            if grep -q "^AIRFLOW_UID=" ".env"; then
-                sed -i "s|^AIRFLOW_UID=.*|AIRFLOW_UID=${AIRFLOW_UID}|" ".env"
-            else
-                echo "AIRFLOW_UID=${AIRFLOW_UID}" >> ".env"
-            fi
-            if grep -q "^AIRFLOW_SCHEDULER_TEST_CMD_URL=" ".env"; then
-                sed -i "s|^AIRFLOW_SCHEDULER_TEST_CMD_URL=.*|AIRFLOW_SCHEDULER_TEST_CMD_URL=${AIRFLOW_SCHEDULER_TEST_CMD_URL}|" ".env"
-            else
-                echo "AIRFLOW_SCHEDULER_TEST_CMD_URL=${AIRFLOW_SCHEDULER_TEST_CMD_URL}" >> ".env"
-            fi
-            if grep -q "^AIRFLOW_WEBSERVER_PORT=" ".env"; then
-                sed -i "s|^AIRFLOW_WEBSERVER_PORT=.*|AIRFLOW_WEBSERVER_PORT=${AIRFLOW_WEBSERVER_PORT}|" ".env"
-            else
-                echo "AIRFLOW_WEBSERVER_PORT=${AIRFLOW_WEBSERVER_PORT}" >> ".env"
-            fi
-            if grep -q "^AIRFLOW_WEBSERVER_TEST_CMD_URL=" ".env"; then
-                sed -i "s|^AIRFLOW_WEBSERVER_TEST_CMD_URL=.*|AIRFLOW_WEBSERVER_TEST_CMD_URL=${AIRFLOW_WEBSERVER_TEST_CMD_URL}|" ".env"
-            else
-                echo "AIRFLOW_WEBSERVER_TEST_CMD_URL=${AIRFLOW_WEBSERVER_TEST_CMD_URL}" >> ".env"
-            fi
-            if grep -q "^_AIRFLOW_WWW_USER_PASSWORD=" ".env"; then
-                sed -i "s|^_AIRFLOW_WWW_USER_PASSWORD=.*|_AIRFLOW_WWW_USER_PASSWORD=${_AIRFLOW_WWW_USER_PASSWORD}|" ".env"
-            else
-                echo "_AIRFLOW_WWW_USER_PASSWORD=${_AIRFLOW_WWW_USER_PASSWORD}" >> ".env"
-            fi
-            if grep -q "^_AIRFLOW_WWW_USER_USERNAME=" ".env"; then
-                sed -i "s|^_AIRFLOW_WWW_USER_USERNAME=.*|_AIRFLOW_WWW_USER_USERNAME=${_AIRFLOW_WWW_USER_USERNAME}|" ".env"
-            else
-                echo "_AIRFLOW_WWW_USER_USERNAME=${_AIRFLOW_WWW_USER_USERNAME}" >> ".env"
-            fi
-            if grep -q "^BLOCKCHAIN_API_KEY=" ".env"; then
-                sed -i "s|^BLOCKCHAIN_API_KEY=.*|BLOCKCHAIN_API_KEY=${BLOCKCHAIN_API_KEY}|" ".env"
-            else
-                echo "BLOCKCHAIN_API_KEY=${BLOCKCHAIN_API_KEY}" >> ".env"
-            fi
-            if grep -q "^CLIENT_DB_NAME=" ".env"; then
-                sed -i "s|^CLIENT_DB_NAME=.*|CLIENT_DB_NAME=${CLIENT_DB_NAME}|" ".env"
-            else
-                echo "CLIENT_DB_NAME=${CLIENT_DB_NAME}" >> ".env"
-            fi
-            if grep -q "^CLIENT_DB_PASSWD=" ".env"; then
-                sed -i "s|^CLIENT_DB_PASSWD=.*|CLIENT_DB_PASSWD=${CLIENT_DB_PASSWD}|" ".env"
-            else
-                echo "CLIENT_DB_PASSWD=${CLIENT_DB_PASSWD}" >> ".env"
-            fi
-            if grep -q "^CLIENT_DB_USER=" ".env"; then
-                sed -i "s|^CLIENT_DB_USER=.*|CLIENT_DB_USER=${CLIENT_DB_USER}|" ".env"
-            else
-                echo "CLIENT_DB_USER=${CLIENT_DB_USER}" >> ".env"
-            fi
-            if grep -q "^GRAFANA_SECURITY_ADMIN_PASSWORD=" ".env"; then
-                sed -i "s|^GRAFANA_SECURITY_ADMIN_PASSWORD=.*|GRAFANA_SECURITY_ADMIN_PASSWORD=${GRAFANA_SECURITY_ADMIN_PASSWORD}|" ".env"
-            else
-                echo "GRAFANA_SECURITY_ADMIN_PASSWORD=${GRAFANA_SECURITY_ADMIN_PASSWORD}" >> ".env"
-            fi
-            if grep -q "^GRAFANA_SECURITY_ADMIN_USER=" ".env"; then
-                sed -i "s|^GRAFANA_SECURITY_ADMIN_USER=.*|GRAFANA_SECURITY_ADMIN_USER=${GRAFANA_SECURITY_ADMIN_USER}|" ".env"
-            else
-                echo "GRAFANA_SECURITY_ADMIN_USER=${GRAFANA_SECURITY_ADMIN_USER}" >> ".env"
-            fi
-            if grep -q "^GRAFANA_PORT=" ".env"; then
-                sed -i "s|^GRAFANA_PORT=.*|GRAFANA_PORT=${GRAFANA_PORT}|" ".env"
-            else
-                echo "GRAFANA_PORT=${GRAFANA_PORT}" >> ".env"
-            fi
-            if grep -q "^KAFKA_ADVERTISED_LISTENERS=" ".env"; then
-                sed -i "s|^KAFKA_ADVERTISED_LISTENERS=.*|KAFKA_ADVERTISED_LISTENERS=${KAFKA_ADVERTISED_LISTENERS}|" ".env"
-            else
-                echo "KAFKA_ADVERTISED_LISTENERS=${KAFKA_ADVERTISED_LISTENERS}" >> ".env"
-            fi
-            if grep -q "^KAFKA_BROKER_ID=" ".env"; then
-                sed -i "s|^KAFKA_BROKER_ID=.*|KAFKA_BROKER_ID=${KAFKA_BROKER_ID}|" ".env"
-            else
-                echo "KAFKA_BROKER_ID=${KAFKA_BROKER_ID}" >> ".env"
-            fi
-            if grep -q "^KAFKA_LISTENER_SECURITY_PROTOCOL_MAP=" ".env"; then
-                sed -i "s|^KAFKA_LISTENER_SECURITY_PROTOCOL_MAP=.*|KAFKA_LISTENER_SECURITY_PROTOCOL_MAP=${KAFKA_LISTENER_SECURITY_PROTOCOL_MAP}|" ".env"
-            else
-                echo "KAFKA_LISTENER_SECURITY_PROTOCOL_MAP=${KAFKA_LISTENER_SECURITY_PROTOCOL_MAP}" >> ".env"
-            fi
-            if grep -q "^KAFKA_LISTENERS=" ".env"; then
-                sed -i "s|^KAFKA_LISTENERS=.*|KAFKA_LISTENERS=${KAFKA_LISTENERS}|" ".env"
-            else
-                echo "KAFKA_LISTENERS=${KAFKA_LISTENERS}" >> ".env"
-            fi
-            if grep -q "^KAFKA_PORT=" ".env"; then
-                sed -i "s|^KAFKA_PORT=.*|KAFKA_PORT=${KAFKA_PORT}|" ".env"
-            else
-                echo "KAFKA_PORT=${KAFKA_PORT}" >> ".env"
-            fi
-            if grep -q "^KAFKA_ZOOKEEPER_CONNECT=" ".env"; then
-                sed -i "s|^KAFKA_ZOOKEEPER_CONNECT=.*|KAFKA_ZOOKEEPER_CONNECT=${KAFKA_ZOOKEEPER_CONNECT}|" ".env"
-            else
-                echo "KAFKA_ZOOKEEPER_CONNECT=${KAFKA_ZOOKEEPER_CONNECT}" >> ".env"
-            fi
-            if grep -q "^KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR=" ".env"; then
-                sed -i "s|^KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR=.*|KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR=${KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR}|" ".env"
-            else
-                echo "KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR=${KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR}" >> ".env"
-            fi
-            if grep -q "^SPARK_UI_PORT=" ".env"; then
-                sed -i "s|^SPARK_UI_PORT=.*|SPARK_UI_PORT=${SPARK_UI_PORT}|" ".env"
-            else
-                echo "SPARK_UI_PORT=${SPARK_UI_PORT}" >> ".env"
-            fi
-            if grep -q "^SPARK_WORKER_PORT=" ".env"; then
-                sed -i "s|^SPARK_WORKER_PORT=.*|SPARK_WORKER_PORT=${SPARK_WORKER_PORT}|" ".env"
-            else
-                echo "SPARK_WORKER_PORT=${SPARK_WORKER_PORT}" >> ".env"
-            fi
-            if grep -q "^REDIS_PASSWORD=" ".env"; then
-                sed -i "s|^REDIS_PASSWORD=.*|REDIS_PASSWORD=${REDIS_PASSWORD}|" ".env"
-            else
-                echo "REDIS_PASSWORD=${REDIS_PASSWORD}" >> ".env"
-            fi
-            if grep -q "^ZOOKEEPER_CLIENT_PORT=" ".env"; then
-                sed -i "s|^ZOOKEEPER_CLIENT_PORT=.*|ZOOKEEPER_CLIENT_PORT=${ZOOKEEPER_CLIENT_PORT}|" ".env"
-            else
-                echo "ZOOKEEPER_CLIENT_PORT=${ZOOKEEPER_CLIENT_PORT}" >> ".env"
-            fi
-            if grep -q "^ZOOKEEPER_TICK_TIME=" ".env"; then
-                sed -i "s|^ZOOKEEPER_TICK_TIME=.*|ZOOKEEPER_TICK_TIME=${ZOOKEEPER_TICK_TIME}|" ".env"
-            else
-                echo "ZOOKEEPER_TICK_TIME=${ZOOKEEPER_TICK_TIME}" >> ".env"
-            fi
-            make prod_build
+            - name: Set up Docker compose environment
+              env:
+                  _AIRFLOW_WWW_USER_PASSWORD: ${{ secrets.PROD__AIRFLOW_WWW_USER_PASSWORD }}
+                  _AIRFLOW_WWW_USER_USERNAME: ${{ secrets.PROD__AIRFLOW_WWW_USER_USERNAME }}
+                  AIRFLOW__CELERY__BROKER_URL: ${{ secrets.PROD_AIRFLOW__CELERY__BROKER_URL }}
+                  AIRFLOW__CELERY__RESULT_BACKEND: ${{ secrets.PROD_AIRFLOW__CELERY__RESULT_BACKEND }}
+                  AIRFLOW__CORE__FERNET_KEY: ${{ secrets.PROD_AIRFLOW__CORE__FERNET_KEY }}
+                  AIRFLOW__CORE__SQL_ALCHEMY_CONN: ${{ secrets.PROD_AIRFLOW__CORE__SQL_ALCHEMY_CONN }}
+                  AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: ${{ secrets.PROD_AIRFLOW__DATABASE__SQL_ALCHEMY_CONN }}
+                  AIRFLOW_CLI_PROFILE: ${{ secrets.PROD_AIRFLOW_CLI_PROFILE }}
+                  AIRFLOW_DB_NAME: ${{ secrets.PROD_AIRFLOW_DB_NAME }}
+                  AIRFLOW_DB_PASSWD: ${{ secrets.PROD_AIRFLOW_DB_PASSWD }}
+                  AIRFLOW_DB_USER: ${{ secrets.PROD_AIRFLOW_DB_USER }}
+                  AIRFLOW_DIR: ${{ secrets.PROD_AIRFLOW_DIR }}
+                  AIRFLOW_MODE: ${{ secrets.PROD_AIRFLOW_MODE }}
+                  AIRFLOW_SCHEDULER_TEST_CMD_URL: ${{ secrets.PROD_AIRFLOW_SCHEDULER_TEST_CMD_URL }}
+                  AIRFLOW_UID: ${{ secrets.PROD_AIRFLOW_UID }}
+                  AIRFLOW_WEBSERVER_PORT: ${{ secrets.PROD_AIRFLOW_WEBSERVER_PORT }}
+                  AIRFLOW_WEBSERVER_TEST_CMD_URL: ${{ secrets.PROD_AIRFLOW_WEBSERVER_TEST_CMD_URL }}
+                  BLOCKCHAIN_API_KEY: ${{ secrets.PROD_BLOCKCHAIN_API_KEY }}
+                  CLIENT_DB_NAME: ${{ secrets.PROD_CLIENT_DB_NAME }}
+                  CLIENT_DB_PASSWD: ${{ secrets.PROD_CLIENT_DB_PASSWD }}
+                  CLIENT_DB_USER: ${{ secrets.PROD_CLIENT_DB_USER }}
+                  ENV_LOCATION: ${{ secrets.PROD_ENV_LOCATION }}
+                  GH_TOKEN: ${{ secrets.PROD_AIRFLOW_GH_TOKEN }}
+                  GRAFANA_PORT: ${{ secrets.PROD_GRAFANA_PORT }}
+                  GRAFANA_SECURITY_ADMIN_PASSWORD: ${{ secrets.PROD_GRAFANA_SECURITY_ADMIN_PASSWORD }}
+                  GRAFANA_SECURITY_ADMIN_USER: ${{ secrets.PROD_GRAFANA_SECURITY_ADMIN_USER }}
+                  KAFKA_ADVERTISED_LISTENERS: ${{ secrets.PROD_KAFKA_ADVERTISED_LISTENERS }}
+                  KAFKA_BROKER_ID: ${{ secrets.PROD_KAFKA_BROKER_ID }}
+                  KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: ${{ secrets.PROD_KAFKA_LISTENER_SECURITY_PROTOCOL_MAP }}
+                  KAFKA_LISTENERS: ${{ secrets.PROD_KAFKA_LISTENERS}}
+                  KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: ${{ secrets.PROD_KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR }}
+                  KAFKA_PORT: ${{ secrets.PROD_KAFKA_PORT }}
+                  KAFKA_ZOOKEEPER_CONNECT: ${{ secrets.PROD_KAFKA_ZOOKEEPER_CONNECT }}
+                  PROXY_PORT: ${{ secrets.PROD_PROXY_PORT }}
+                  ZOOKEEPER_CLIENT_PORT: ${{ secrets.PROD_ZOOKEEPER_CLIENT_PORT }}
+                  ZOOKEEPER_TICK_TIME: ${{ secrets.PROD_ZOOKEEPER_TICK_TIME }}
+              run: |
+                  touch .env
+                  if grep -q "^AIRFLOW__CELERY__BROKER_URL=" ".env"; then
+                      sed -i "s|^AIRFLOW__CELERY__BROKER_URL=.*|AIRFLOW__CELERY__BROKER_URL=${AIRFLOW__CELERY__BROKER_URL}|" ".env"
+                  else
+                      echo "AIRFLOW__CELERY__BROKER_URL=${AIRFLOW__CELERY__BROKER_URL}" >> ".env"
+                  fi
+                  if grep -q "^AIRFLOW__CELERY__RESULT_BACKEND=" ".env"; then
+                      sed -i "s|^AIRFLOW__CELERY__RESULT_BACKEND=.*|AIRFLOW__CELERY__RESULT_BACKEND=${AIRFLOW__CELERY__RESULT_BACKEND}|" ".env"
+                  else
+                      echo "AIRFLOW__CELERY__RESULT_BACKEND=${AIRFLOW__CELERY__RESULT_BACKEND}" >> ".env"
+                  fi
+                  if grep -q "^AIRFLOW__CORE__SQL_ALCHEMY_CONN=" ".env"; then
+                      sed -i "s|^AIRFLOW__CORE__SQL_ALCHEMY_CONN=.*|AIRFLOW__CORE__SQL_ALCHEMY_CONN=${AIRFLOW__CORE__SQL_ALCHEMY_CONN}|" ".env"
+                  else
+                      echo "AIRFLOW__CORE__SQL_ALCHEMY_CONN=${AIRFLOW__CORE__SQL_ALCHEMY_CONN}" >> ".env"
+                  fi
+                  if grep -q "^AIRFLOW__CORE__FERNET_KEY=" ".env"; then
+                      sed -i "s|^AIRFLOW__CORE__FERNET_KEY=.*|AIRFLOW__CORE__FERNET_KEY=${AIRFLOW__CORE__FERNET_KEY}|" ".env"
+                  else
+                      echo "AIRFLOW__CORE__FERNET_KEY=${AIRFLOW__CORE__FERNET_KEY}" >> ".env"
+                  fi
+                  if grep -q "^AIRFLOW_CLI_PROFILE=" ".env"; then
+                      sed -i "s|^AIRFLOW_CLI_PROFILE=.*|AIRFLOW_CLI_PROFILE=${AIRFLOW_CLI_PROFILE}|" ".env"
+                  else
+                      echo "AIRFLOW_CLI_PROFILE=${AIRFLOW_CLI_PROFILE}" >> ".env"
+                  fi
+                  if grep -q "^AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=" ".env"; then
+                      sed -i "s|^AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=.*|AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=${AIRFLOW__DATABASE__SQL_ALCHEMY_CONN}|" ".env"
+                  else
+                      echo "AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=${AIRFLOW__DATABASE__SQL_ALCHEMY_CONN}" >> ".env"
+                  fi
+                  if grep -q "^AIRFLOW_DB_NAME=" ".env"; then
+                      sed -i "s|^AIRFLOW_DB_NAME=.*|AIRFLOW_DB_NAME=${AIRFLOW_DB_NAME}|" ".env"
+                  else
+                      echo "AIRFLOW_DB_NAME=${AIRFLOW_DB_NAME}" >> ".env"
+                  fi
+                  if grep -q "^AIRFLOW_DB_PASSWD=" ".env"; then
+                      sed -i "s|^AIRFLOW_DB_PASSWD=.*|AIRFLOW_DB_PASSWD=${AIRFLOW_DB_PASSWD}|" ".env"
+                  else
+                      echo "AIRFLOW_DB_PASSWD=${AIRFLOW_DB_PASSWD}" >> ".env"
+                  fi
+                  if grep -q "^AIRFLOW_DB_USER=" ".env"; then
+                      sed -i "s|^AIRFLOW_DB_USER=.*|AIRFLOW_DB_USER=${AIRFLOW_DB_USER}|" ".env"
+                  else
+                      echo "AIRFLOW_DB_USER=${AIRFLOW_DB_USER}" >> ".env"
+                  fi
+                  if grep -q "^AIRFLOW_DIR=" ".env"; then
+                      sed -i "s|^AIRFLOW_DIR=.*|AIRFLOW_DIR=${AIRFLOW_DIR}|" ".env"
+                  else
+                      echo "AIRFLOW_DIR=${AIRFLOW_DIR}" >> ".env"
+                  fi
+                  if grep -q "^AIRFLOW_GH_TOKEN=" ".env"; then
+                      sed -i "s|^AIRFLOW_GH_TOKEN=.*|AIRFLOW_GH_TOKEN=${AIRFLOW_GH_TOKEN}|" ".env"
+                  else
+                      echo "AIRFLOW_GH_TOKEN=${AIRFLOW_GH_TOKEN}" >> ".env"
+                  fi
+                  if grep -q "^AIRFLOW_MODE=" ".env"; then
+                      sed -i "s|^AIRFLOW_MODE=.*|AIRFLOW_MODE=${AIRFLOW_MODE}|" ".env"
+                  else
+                      echo "AIRFLOW_MODE=${AIRFLOW_MODE}" >> ".env"
+                  fi
+                  if grep -q "^AIRFLOW_UID=" ".env"; then
+                      sed -i "s|^AIRFLOW_UID=.*|AIRFLOW_UID=${AIRFLOW_UID}|" ".env"
+                  else
+                      echo "AIRFLOW_UID=${AIRFLOW_UID}" >> ".env"
+                  fi
+                  if grep -q "^AIRFLOW_SCHEDULER_TEST_CMD_URL=" ".env"; then
+                      sed -i "s|^AIRFLOW_SCHEDULER_TEST_CMD_URL=.*|AIRFLOW_SCHEDULER_TEST_CMD_URL=${AIRFLOW_SCHEDULER_TEST_CMD_URL}|" ".env"
+                  else
+                      echo "AIRFLOW_SCHEDULER_TEST_CMD_URL=${AIRFLOW_SCHEDULER_TEST_CMD_URL}" >> ".env"
+                  fi
+                  if grep -q "^AIRFLOW_WEBSERVER_PORT=" ".env"; then
+                      sed -i "s|^AIRFLOW_WEBSERVER_PORT=.*|AIRFLOW_WEBSERVER_PORT=${AIRFLOW_WEBSERVER_PORT}|" ".env"
+                  else
+                      echo "AIRFLOW_WEBSERVER_PORT=${AIRFLOW_WEBSERVER_PORT}" >> ".env"
+                  fi
+                  if grep -q "^AIRFLOW_WEBSERVER_TEST_CMD_URL=" ".env"; then
+                      sed -i "s|^AIRFLOW_WEBSERVER_TEST_CMD_URL=.*|AIRFLOW_WEBSERVER_TEST_CMD_URL=${AIRFLOW_WEBSERVER_TEST_CMD_URL}|" ".env"
+                  else
+                      echo "AIRFLOW_WEBSERVER_TEST_CMD_URL=${AIRFLOW_WEBSERVER_TEST_CMD_URL}" >> ".env"
+                  fi
+                  if grep -q "^_AIRFLOW_WWW_USER_PASSWORD=" ".env"; then
+                      sed -i "s|^_AIRFLOW_WWW_USER_PASSWORD=.*|_AIRFLOW_WWW_USER_PASSWORD=${_AIRFLOW_WWW_USER_PASSWORD}|" ".env"
+                  else
+                      echo "_AIRFLOW_WWW_USER_PASSWORD=${_AIRFLOW_WWW_USER_PASSWORD}" >> ".env"
+                  fi
+                  if grep -q "^_AIRFLOW_WWW_USER_USERNAME=" ".env"; then
+                      sed -i "s|^_AIRFLOW_WWW_USER_USERNAME=.*|_AIRFLOW_WWW_USER_USERNAME=${_AIRFLOW_WWW_USER_USERNAME}|" ".env"
+                  else
+                      echo "_AIRFLOW_WWW_USER_USERNAME=${_AIRFLOW_WWW_USER_USERNAME}" >> ".env"
+                  fi
+                  if grep -q "^BLOCKCHAIN_API_KEY=" ".env"; then
+                      sed -i "s|^BLOCKCHAIN_API_KEY=.*|BLOCKCHAIN_API_KEY=${BLOCKCHAIN_API_KEY}|" ".env"
+                  else
+                      echo "BLOCKCHAIN_API_KEY=${BLOCKCHAIN_API_KEY}" >> ".env"
+                  fi
+                  if grep -q "^CLIENT_DB_NAME=" ".env"; then
+                      sed -i "s|^CLIENT_DB_NAME=.*|CLIENT_DB_NAME=${CLIENT_DB_NAME}|" ".env"
+                  else
+                      echo "CLIENT_DB_NAME=${CLIENT_DB_NAME}" >> ".env"
+                  fi
+                  if grep -q "^CLIENT_DB_PASSWD=" ".env"; then
+                      sed -i "s|^CLIENT_DB_PASSWD=.*|CLIENT_DB_PASSWD=${CLIENT_DB_PASSWD}|" ".env"
+                  else
+                      echo "CLIENT_DB_PASSWD=${CLIENT_DB_PASSWD}" >> ".env"
+                  fi
+                  if grep -q "^CLIENT_DB_USER=" ".env"; then
+                      sed -i "s|^CLIENT_DB_USER=.*|CLIENT_DB_USER=${CLIENT_DB_USER}|" ".env"
+                  else
+                      echo "CLIENT_DB_USER=${CLIENT_DB_USER}" >> ".env"
+                  fi
+                  if grep -q "^GRAFANA_SECURITY_ADMIN_PASSWORD=" ".env"; then
+                      sed -i "s|^GRAFANA_SECURITY_ADMIN_PASSWORD=.*|GRAFANA_SECURITY_ADMIN_PASSWORD=${GRAFANA_SECURITY_ADMIN_PASSWORD}|" ".env"
+                  else
+                      echo "GRAFANA_SECURITY_ADMIN_PASSWORD=${GRAFANA_SECURITY_ADMIN_PASSWORD}" >> ".env"
+                  fi
+                  if grep -q "^GRAFANA_SECURITY_ADMIN_USER=" ".env"; then
+                      sed -i "s|^GRAFANA_SECURITY_ADMIN_USER=.*|GRAFANA_SECURITY_ADMIN_USER=${GRAFANA_SECURITY_ADMIN_USER}|" ".env"
+                  else
+                      echo "GRAFANA_SECURITY_ADMIN_USER=${GRAFANA_SECURITY_ADMIN_USER}" >> ".env"
+                  fi
+                  if grep -q "^GRAFANA_PORT=" ".env"; then
+                      sed -i "s|^GRAFANA_PORT=.*|GRAFANA_PORT=${GRAFANA_PORT}|" ".env"
+                  else
+                      echo "GRAFANA_PORT=${GRAFANA_PORT}" >> ".env"
+                  fi
+                  if grep -q "^KAFKA_ADVERTISED_LISTENERS=" ".env"; then
+                      sed -i "s|^KAFKA_ADVERTISED_LISTENERS=.*|KAFKA_ADVERTISED_LISTENERS=${KAFKA_ADVERTISED_LISTENERS}|" ".env"
+                  else
+                      echo "KAFKA_ADVERTISED_LISTENERS=${KAFKA_ADVERTISED_LISTENERS}" >> ".env"
+                  fi
+                  if grep -q "^KAFKA_BROKER_ID=" ".env"; then
+                      sed -i "s|^KAFKA_BROKER_ID=.*|KAFKA_BROKER_ID=${KAFKA_BROKER_ID}|" ".env"
+                  else
+                      echo "KAFKA_BROKER_ID=${KAFKA_BROKER_ID}" >> ".env"
+                  fi
+                  if grep -q "^KAFKA_LISTENER_SECURITY_PROTOCOL_MAP=" ".env"; then
+                      sed -i "s|^KAFKA_LISTENER_SECURITY_PROTOCOL_MAP=.*|KAFKA_LISTENER_SECURITY_PROTOCOL_MAP=${KAFKA_LISTENER_SECURITY_PROTOCOL_MAP}|" ".env"
+                  else
+                      echo "KAFKA_LISTENER_SECURITY_PROTOCOL_MAP=${KAFKA_LISTENER_SECURITY_PROTOCOL_MAP}" >> ".env"
+                  fi
+                  if grep -q "^KAFKA_LISTENERS=" ".env"; then
+                      sed -i "s|^KAFKA_LISTENERS=.*|KAFKA_LISTENERS=${KAFKA_LISTENERS}|" ".env"
+                  else
+                      echo "KAFKA_LISTENERS=${KAFKA_LISTENERS}" >> ".env"
+                  fi
+                  if grep -q "^KAFKA_PORT=" ".env"; then
+                      sed -i "s|^KAFKA_PORT=.*|KAFKA_PORT=${KAFKA_PORT}|" ".env"
+                  else
+                      echo "KAFKA_PORT=${KAFKA_PORT}" >> ".env"
+                  fi
+                  if grep -q "^KAFKA_ZOOKEEPER_CONNECT=" ".env"; then
+                      sed -i "s|^KAFKA_ZOOKEEPER_CONNECT=.*|KAFKA_ZOOKEEPER_CONNECT=${KAFKA_ZOOKEEPER_CONNECT}|" ".env"
+                  else
+                      echo "KAFKA_ZOOKEEPER_CONNECT=${KAFKA_ZOOKEEPER_CONNECT}" >> ".env"
+                  fi
+                  if grep -q "^KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR=" ".env"; then
+                      sed -i "s|^KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR=.*|KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR=${KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR}|" ".env"
+                  else
+                      echo "KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR=${KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR}" >> ".env"
+                  fi
+                  if grep -q "^PROXY_PORT=" ".env"; then
+                      sed -i "s|^PROXY_PORT=.*|PROXY_PORT=${PROXY_PORT}|" ".env"
+                  else
+                      echo "PROXY_PORT=${PROXY_PORT}" >> ".env"
+                  fi
+                  if grep -q "^ZOOKEEPER_CLIENT_PORT=" ".env"; then
+                      sed -i "s|^ZOOKEEPER_CLIENT_PORT=.*|ZOOKEEPER_CLIENT_PORT=${ZOOKEEPER_CLIENT_PORT}|" ".env"
+                  else
+                      echo "ZOOKEEPER_CLIENT_PORT=${ZOOKEEPER_CLIENT_PORT}" >> ".env"
+                  fi
+                  if grep -q "^ZOOKEEPER_TICK_TIME=" ".env"; then
+                      sed -i "s|^ZOOKEEPER_TICK_TIME=.*|ZOOKEEPER_TICK_TIME=${ZOOKEEPER_TICK_TIME}|" ".env"
+                  else
+                      echo "ZOOKEEPER_TICK_TIME=${ZOOKEEPER_TICK_TIME}" >> ".env"
+                  fi
+                  make prod_build
 
-      - name: Run Updated Docker Compose Environment
-        run: |
-          make prod_up
+            - name: Run Updated Docker Compose Environment
+              run: |
+                  make prod_up
 
-      - name: Remove Unused Docker Compose Environment
-        run: |
-          make prod_clean
-
+            - name: Remove Unused Docker Compose Environment
+              run: |
+                  make prod_clean
