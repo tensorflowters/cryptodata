@@ -54,6 +54,7 @@ jobs:
             PROD_ZOOKEEPER_CLIENT_PORT: ${{ secrets.PROD_ZOOKEEPER_CLIENT_PORT }}
             PROD_ZOOKEEPER_TICK_TIME: ${{ secrets.PROD_ZOOKEEPER_TICK_TIME }}
         run: |
+            echo pwd
             if grep -q "^${PROD_AIRFLOW__CELERY__BROKER_URL}=" ".env"; then
                 sed -i "s/^${PROD_AIRFLOW__CELERY__BROKER_URL}=.*/${PROD_AIRFLOW__CELERY__BROKER_URL}=${PROD_AIRFLOW__CELERY__BROKER_URL}/" ".env"
             else
