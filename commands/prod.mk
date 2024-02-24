@@ -1,3 +1,6 @@
+include .env
+export $(shell sed 's/=.*//' .env)
+
 DOCKER_EXECUTOR=docker compose -f docker/docker-compose.prod.yml -p cryptodata
 
 prod_stop:
