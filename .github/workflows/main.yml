@@ -9,7 +9,7 @@ jobs:
     runs-on: self-hosted
     steps:
       - name: Check out code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Print GitHub context
         env:
@@ -17,12 +17,10 @@ jobs:
         run: echo "$GITHUB_CONTEXT" > /tmp/github-context.json
 
       - name: Stop Old Docker Compose Environment
-        if: github.event.ref == 'refs/heads/pre-production'
         run:  |
           make prod_stop
 
       - name: Set up Docker compose environment
-        if: github.ref == 'refs/heads/pre-production'
         env:
             PROD_AIRFLOW__CELERY__BROKER_URL: ${{ secrets.PROD_AIRFLOW__CELERY__BROKER_URL }}
             PROD_AIRFLOW__CELERY__RESULT_BACKEND: ${{ secrets.PROD_AIRFLOW__CELERY__RESULT_BACKEND }}
@@ -90,12 +88,10 @@ jobs:
             make prod_build
 
       - name: Run Updated Docker Compose Environment
-        if: github.ref == 'refs/heads/pre-production'
         run: |
           prod_up
 
       - name: Remove Unused Docker Compose Environment
-        if: github.ref == 'refs/heads/pre-production'
         run: |
           make prod_clean
 
