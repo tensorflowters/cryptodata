@@ -11,22 +11,22 @@ x-airflow-common: &airflow-common
             condition: service_started
     environment: &airflow-common-env
         AIRFLOW__API__AUTH_BACKENDS: "airflow.api.auth.backend.basic_auth,airflow.api.auth.backend.session"
-        AIRFLOW__CELERY__BROKER_URL: ${PROD_AIRFLOW__CELERY__BROKER_URL}
-        AIRFLOW__CELERY__RESULT_BACKEND: ${PROD_AIRFLOW__CELERY__RESULT_BACKEND}
+        AIRFLOW__CELERY__BROKER_URL: ${AIRFLOW__CELERY__BROKER_URL}
+        AIRFLOW__CELERY__RESULT_BACKEND: ${AIRFLOW__CELERY__RESULT_BACKEND}
         AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION: "true"
         AIRFLOW__CORE__EXECUTOR: CeleryExecutor
         AIRFLOW__CORE__FERNET_KEY: ""
         AIRFLOW__CORE__LOAD_EXAMPLES: "false"
-        AIRFLOW__CORE__SQL_ALCHEMY_CONN: ${PROD_AIRFLOW__DATABASE__SQL_ALCHEMY_CONN}
-        AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: ${PROD_AIRFLOW__DATABASE__SQL_ALCHEMY_CONN}
+        AIRFLOW__CORE__SQL_ALCHEMY_CONN: ${AIRFLOW__DATABASE__SQL_ALCHEMY_CONN}
+        AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: ${AIRFLOW__DATABASE__SQL_ALCHEMY_CONN}
         AIRFLOW__SCHEDULER__ENABLE_HEALTH_CHECK: "true"
-        GH_TOKEN: ${PROD_AIRFLOW_GH_TOKEN}
-    user: "${PROD_AIRFLOW_UID:-50000}:0"
+        GH_TOKEN: ${AIRFLOW_GH_TOKEN}
+    user: "${AIRFLOW_UID:-50000}:0"
     volumes:
-        - ${PROD_AIRFLOW_DIR:-.}/dags:/opt/airflow/dags
-        - ${PROD_AIRFLOW_DIR:-.}/logs:/opt/airflow/logs
-        - ${PROD_AIRFLOW_DIR:-.}/config:/opt/airflow/config
-        - ${PROD_AIRFLOW_DIR:-.}/plugins:/opt/airflow/plugins
+        - ${AIRFLOW_DIR:-.}/dags:/opt/airflow/dags
+        - ${AIRFLOW_DIR:-.}/logs:/opt/airflow/logs
+        - ${AIRFLOW_DIR:-.}/config:/opt/airflow/config
+        - ${AIRFLOW_DIR:-.}/plugins:/opt/airflow/plugins
 
 networks:
     cryptodata_net:
@@ -45,12 +45,12 @@ services:
             interval: 30s
             retries: 5
             start_period: 30s
-            test: ["CMD", "curl", "--fail", "${PROD_AIRFLOW_WEBSERVER_TEST_CMD_URL}"]
+            test: ["CMD", "curl", "--fail", "${AIRFLOW_WEBSERVER_TEST_CMD_URL}"]
             timeout: 10s
         networks:
             - cryptodata_net
         ports:
-            - "${PROD_AIRFLOW_WEBSERVER_PORT}:8080"
+            - "${AIRFLOW_WEBSERVER_PORT}:8080"
         restart: always
 
     airflow-scheduler:
@@ -207,16 +207,16 @@ services:
         networks:
             - cryptodata_net
         profiles:
-            - ${PROD_AIRFLOW_CLI_PROFILE}
+            - ${AIRFLOW_CLI_PROFILE}
 
     airflow_db:
         image: postgres:13
         environment:
-            POSTGRES_DB: ${PROD_AIRFLOW_DB_NAME}
-            POSTGRES_PASSWORD: ${PROD_AIRFLOW_DB_PASSWD}
-            POSTGRES_USER: ${PROD_AIRFLOW_DB_USER}
+            POSTGRES_DB: ${AIRFLOW_DB_NAME}
+            POSTGRES_PASSWORD: ${AIRFLOW_DB_PASSWD}
+            POSTGRES_USER: ${AIRFLOW_DB_USER}
         healthcheck:
-            test: ["CMD", "pg_isready", "-U", "${PROD_AIRFLOW_DB_USER}"]
+            test: ["CMD", "pg_isready", "-U", "${AIRFLOW_DB_USER}"]
             interval: 10s
             retries: 5
             start_period: 5s
@@ -229,11 +229,11 @@ services:
     client_db:
         image: postgres:13
         environment:
-            POSTGRES_DB: ${PROD_CLIENT_DB_NAME}
-            POSTGRES_PASSWORD: ${PROD_CLIENT_DB_PASSWD}
-            POSTGRES_USER: ${PROD_CLIENT_DB_USER}
+            POSTGRES_DB: ${CLIENT_DB_NAME}
+            POSTGRES_PASSWORD: ${CLIENT_DB_PASSWD}
+            POSTGRES_USER: ${CLIENT_DB_USER}
         healthcheck:
-            test: [ "CMD", "pg_isready", "-U", "${PROD_CLIENT_DB_USER}" ]
+            test: [ "CMD", "pg_isready", "-U", "${CLIENT_DB_USER}" ]
             interval: 10s
             retries: 5
             start_period: 5s
@@ -247,9 +247,9 @@ services:
         image: epitechuser2077/cryptodata:cryptodata-client_initdb
         command: [ "python", "initdb.py" ]
         environment:
-            POSTGRES_DB: ${PROD_CLIENT_DB_NAME}
-            POSTGRES_PASSWORD: ${PROD_CLIENT_DB_PASSWD}
-            POSTGRES_USER: ${PROD_CLIENT_DB_USER}
+            POSTGRES_DB: ${CLIENT_DB_NAME}
+            POSTGRES_PASSWORD: ${CLIENT_DB_PASSWD}
+            POSTGRES_USER: ${CLIENT_DB_USER}
         depends_on:
             client_db:
                 condition: service_healthy
@@ -273,8 +273,8 @@ services:
     zookeeper:
         image: confluentinc/cp-zookeeper:latest
         environment:
-            ZOOKEEPER_CLIENT_PORT: ${PROD_ZOOKEEPER_CLIENT_PORT}
-            ZOOKEEPER_TICK_TIME: ${PROD_ZOOKEEPER_TICK_TIME}
+            ZOOKEEPER_CLIENT_PORT: ${ZOOKEEPER_CLIENT_PORT}
+            ZOOKEEPER_TICK_TIME: ${ZOOKEEPER_TICK_TIME}
         networks:
             - cryptodata_net
 
@@ -283,14 +283,14 @@ services:
         depends_on:
             - zookeeper
         environment:
-            KAFKA_BROKER_ID: ${PROD_KAFKA_BROKER_ID}
-            KAFKA_ZOOKEEPER_CONNECT: ${PROD_KAFKA_ZOOKEEPER_CONNECT}
+            KAFKA_BROKER_ID: ${KAFKA_BROKER_ID}
+            KAFKA_ZOOKEEPER_CONNECT: ${KAFKA_ZOOKEEPER_CONNECT}
             KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: ${KAFKA_LISTENER_SECURITY_PROTOCOL_MAP}
-            KAFKA_ADVERTISED_LISTENERS: ${PROD_KAFKA_ADVERTISED_LISTENERS}
-            KAFKA_LISTENERS: ${PROD_KAFKA_LISTENERS}
-            KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: ${PROD_KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR}
+            KAFKA_ADVERTISED_LISTENERS: ${KAFKA_ADVERTISED_LISTENERS}
+            KAFKA_LISTENERS: ${KAFKA_LISTENERS}
+            KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: ${KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR}
         healthcheck:
-          test: kafka-topics --bootstrap-server kafka:${PROD_KAFKA_PORT} --list
+          test: kafka-topics --bootstrap-server kafka:${KAFKA_PORT} --list
           interval: 10s
           timeout: 10s
           retries: 3
@@ -318,9 +318,9 @@ services:
             client_db:
                 condition: service_healthy
         environment:
-            POSTGRES_DB: "${PROD_CLIENT_DB_NAME}"
-            POSTGRES_PASSWORD: "${PROD_CLIENT_DB_PASSWD}"
-            POSTGRES_USER: "${PROD_CLIENT_DB_USER}"
+            POSTGRES_DB: "${CLIENT_DB_NAME}"
+            POSTGRES_PASSWORD: "${CLIENT_DB_PASSWD}"
+            POSTGRES_USER: "${CLIENT_DB_USER}"
         networks:
             - cryptodata_net
         tty: true
@@ -338,10 +338,10 @@ services:
     grafana:
         image: grafana/grafana-oss:10.2.4-ubuntu
         ports:
-            - "${PROD_GRAFANA_PORT}:3000"
+            - "${GRAFANA_PORT}:3000"
         environment:
-            GF_SECURITY_ADMIN_USER: ${PROD_GRAFANA_SECURITY_ADMIN_USER}
-            GF_SECURITY_ADMIN_PASSWORD: ${PROD_GRAFANA_SECURITY_ADMIN_PASSWORD}
+            GF_SECURITY_ADMIN_USER: ${GRAFANA_SECURITY_ADMIN_USER}
+            GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_SECURITY_ADMIN_PASSWORD}
         networks:
             - cryptodata_net
         user: "0"
@@ -355,10 +355,10 @@ services:
           client_db:
             condition: service_healthy
         environment:
-            BLOCKCHAIN_API_KEY: ${PROD_BLOCKCHAIN_API_KEY}
-            POSTGRES_DB: ${PROD_CLIENT_DB_NAME}
-            POSTGRES_PASSWORD: ${PROD_CLIENT_DB_PASSWD}
-            POSTGRES_USER: ${PROD_CLIENT_DB_USER}
+            BLOCKCHAIN_API_KEY: ${BLOCKCHAIN_API_KEY}
+            POSTGRES_DB: ${CLIENT_DB_NAME}
+            POSTGRES_PASSWORD: ${CLIENT_DB_PASSWD}
+            POSTGRES_USER: ${CLIENT_DB_USER}
         networks:
             - cryptodata_net
         tty: true
