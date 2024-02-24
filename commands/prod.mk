@@ -4,10 +4,10 @@ prod_stop:
 	@${DOCKER_EXECUTOR} stop
 
 prod_build:
-	@${DOCKER_EXECUTOR} build --no-cache
+	@${DOCKER_EXECUTOR} --env-file ./.env build --no-cache
 
 prod_up:
-	@${DOCKER_EXECUTOR} up -d
+	@${DOCKER_EXECUTOR} --env-file ./.env up -d
 
 prod_rm:
 	@docker container prune -f

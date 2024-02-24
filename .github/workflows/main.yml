@@ -57,157 +57,157 @@ jobs:
         run: |
             touch .env
             if grep -q "^${PROD_AIRFLOW__CELERY__BROKER_URL}=" ".env"; then
-                sed -i "s|^${PROD_AIRFLOW__CELERY__BROKER_URL}=.*|${PROD_AIRFLOW__CELERY__BROKER_URL}=${PROD_AIRFLOW__CELERY__BROKER_URL}|" ".env"
+                sed -i "s|^PROD_AIRFLOW__CELERY__BROKER_URL=.*|${PROD_AIRFLOW__CELERY__BROKER_URL}=${PROD_AIRFLOW__CELERY__BROKER_URL}|" ".env"
             else
                 echo "${PROD_AIRFLOW__CELERY__BROKER_URL}=${PROD_AIRFLOW__CELERY__BROKER_URL}" >> ".env"
             fi
             if grep -q "^${PROD_AIRFLOW__CELERY__RESULT_BACKEND}=" ".env"; then
-                sed -i "s|^${PROD_AIRFLOW__CELERY__RESULT_BACKEND}=.*|${PROD_AIRFLOW__CELERY__RESULT_BACKEND}=${PROD_AIRFLOW__CELERY__RESULT_BACKEND}|" ".env"
+                sed -i "s|^PROD_AIRFLOW__CELERY__RESULT_BACKEND=.*|${PROD_AIRFLOW__CELERY__RESULT_BACKEND}=${PROD_AIRFLOW__CELERY__RESULT_BACKEND}|" ".env"
             else
                 echo "${PROD_AIRFLOW__CELERY__RESULT_BACKEND}=${PROD_AIRFLOW__CELERY__RESULT_BACKEND}" >> ".env"
             fi
             if grep -q "^${PROD_AIRFLOW__CORE__SQL_ALCHEMY_CONN}=" ".env"; then
-                sed -i "s|^${PROD_AIRFLOW__CORE__SQL_ALCHEMY_CONN}=.*|${PROD_AIRFLOW__CORE__SQL_ALCHEMY_CONN}=${PROD_AIRFLOW__CORE__SQL_ALCHEMY_CONN}|" ".env"
+                sed -i "s|^PROD_AIRFLOW__CORE__SQL_ALCHEMY_CONN=.*|${PROD_AIRFLOW__CORE__SQL_ALCHEMY_CONN}=${PROD_AIRFLOW__CORE__SQL_ALCHEMY_CONN}|" ".env"
             else
                 echo "${PROD_AIRFLOW__CORE__SQL_ALCHEMY_CONN}=${PROD_AIRFLOW__CORE__SQL_ALCHEMY_CONN}" >> ".env"
             fi
             if grep -q "^${PROD_AIRFLOW__CORE__FERNET_KEY}=" ".env"; then
-                sed -i "s|^${PROD_AIRFLOW__CORE__FERNET_KEY}=.*|${PROD_AIRFLOW__CORE__FERNET_KEY}=${PROD_AIRFLOW__CORE__FERNET_KEY}|" ".env"
+                sed -i "s|^PROD_AIRFLOW__CORE__FERNET_KEY=.*|${PROD_AIRFLOW__CORE__FERNET_KEY}=${PROD_AIRFLOW__CORE__FERNET_KEY}|" ".env"
             else
                 echo "${PROD_AIRFLOW__CORE__FERNET_KEY}=${PROD_AIRFLOW__CORE__FERNET_KEY}" >> ".env"
             fi
             if grep -q "^${PROD_AIRFLOW_CLI}=" ".env"; then
-                sed -i "s|^${PROD_AIRFLOW_CLI}=.*|${PROD_AIRFLOW_CLI}=${PROD_AIRFLOW_CLI}|" ".env"
+                sed -i "s|^PROD_AIRFLOW_CLI=.*|${PROD_AIRFLOW_CLI}=${PROD_AIRFLOW_CLI}|" ".env"
             else
                 echo "${PROD_AIRFLOW_CLI}=${PROD_AIRFLOW_CLI}" >> ".env"
             fi
             if grep -q "^${PROD_AIRFLOW__DATABASE__SQL_ALCHEMY_CONN}=" ".env"; then
-                sed -i "s|^${PROD_AIRFLOW__DATABASE__SQL_ALCHEMY_CONN}=.*|${PROD_AIRFLOW__DATABASE__SQL_ALCHEMY_CONN}=${PROD_AIRFLOW__DATABASE__SQL_ALCHEMY_CONN}|" ".env"
+                sed -i "s|^PROD_AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=.*|${PROD_AIRFLOW__DATABASE__SQL_ALCHEMY_CONN}=${PROD_AIRFLOW__DATABASE__SQL_ALCHEMY_CONN}|" ".env"
             else
                 echo "${PROD_AIRFLOW__DATABASE__SQL_ALCHEMY_CONN}=${PROD_AIRFLOW__DATABASE__SQL_ALCHEMY_CONN}" >> ".env"
             fi
             if grep -q "^${PROD_AIRFLOW_DB_NAME}=" ".env"; then
-                sed -i "s|^${PROD_AIRFLOW_DB_NAME}=.*|${PROD_AIRFLOW_DB_NAME}=${PROD_AIRFLOW_DB_NAME}|" ".env"
+                sed -i "s|^PROD_AIRFLOW_DB_NAME=.*|${PROD_AIRFLOW_DB_NAME}=${PROD_AIRFLOW_DB_NAME}|" ".env"
             else
                 echo "${PROD_AIRFLOW_DB_NAME}=${PROD_AIRFLOW_DB_NAME}" >> ".env"
             fi
             if grep -q "^${PROD_AIRFLOW_DB_PASSWD}=" ".env"; then
-                sed -i "s|^${PROD_AIRFLOW_DB_PASSWD}=.*|${PROD_AIRFLOW_DB_PASSWD}=${PROD_AIRFLOW_DB_PASSWD}|" ".env"
+                sed -i "s|^PROD_AIRFLOW_DB_PASSWD=.*|${PROD_AIRFLOW_DB_PASSWD}=${PROD_AIRFLOW_DB_PASSWD}|" ".env"
             else
                 echo "${PROD_AIRFLOW_DB_PASSWD}=${PROD_AIRFLOW_DB_PASSWD}" >> ".env"
             fi
             if grep -q "^${PROD_AIRFLOW_DB_USER}=" ".env"; then
-                sed -i "s|^${PROD_AIRFLOW_DB_USER}=.*|${PROD_AIRFLOW_DB_USER}=${PROD_AIRFLOW_DB_USER}|" ".env"
+                sed -i "s|^PROD_AIRFLOW_DB_USER=.*|${PROD_AIRFLOW_DB_USER}=${PROD_AIRFLOW_DB_USER}|" ".env"
             else
                 echo "${PROD_AIRFLOW_DB_USER}=${PROD_AIRFLOW_DB_USER}" >> ".env"
             fi
             if grep -q "^${PROD_AIRFLOW_DIR}=" ".env"; then
-                sed -i "s|^${PROD_AIRFLOW_DIR}=.*|${PROD_AIRFLOW_DIR}=${PROD_AIRFLOW_DIR}|" ".env"
+                sed -i "s|^PROD_AIRFLOW_DIR=.*|${PROD_AIRFLOW_DIR}=${PROD_AIRFLOW_DIR}|" ".env"
             else
                 echo "${PROD_AIRFLOW_DIR}=${PROD_AIRFLOW_DIR}" >> ".env"
             fi
             if grep -q "^${PROD_AIRFLOW_GH_TOKEN}=" ".env"; then
-                sed -i "s|^${PROD_AIRFLOW_GH_TOKEN}=.*|${PROD_AIRFLOW_GH_TOKEN}=${PROD_AIRFLOW_GH_TOKEN}|" ".env"
+                sed -i "s|^PROD_AIRFLOW_GH_TOKEN=.*|${PROD_AIRFLOW_GH_TOKEN}=${PROD_AIRFLOW_GH_TOKEN}|" ".env"
             else
                 echo "${PROD_AIRFLOW_GH_TOKEN}=${PROD_AIRFLOW_GH_TOKEN}" >> ".env"
             fi
             if grep -q "^${PROD_AIRFLOW_UID}=" ".env"; then
-                sed -i "s|^${PROD_AIRFLOW_UID}=.*|${PROD_AIRFLOW_UID}=${PROD_AIRFLOW_UID}|" ".env"
+                sed -i "s|^PROD_AIRFLOW_UID=.*|${PROD_AIRFLOW_UID}=${PROD_AIRFLOW_UID}|" ".env"
             else
                 echo "${PROD_AIRFLOW_UID}=${PROD_AIRFLOW_UID}" >> ".env"
             fi
             if grep -q "^${PROD_AIRFLOW_WEBSERVER_PORT}=" ".env"; then
-                sed -i "s|^${PROD_AIRFLOW_WEBSERVER_PORT}=.*|${PROD_AIRFLOW_WEBSERVER_PORT}=${PROD_AIRFLOW_WEBSERVER_PORT}|" ".env"
+                sed -i "s|^PROD_AIRFLOW_WEBSERVER_PORT=.*|${PROD_AIRFLOW_WEBSERVER_PORT}=${PROD_AIRFLOW_WEBSERVER_PORT}|" ".env"
             else
                 echo "${PROD_AIRFLOW_WEBSERVER_PORT}=${PROD_AIRFLOW_WEBSERVER_PORT}" >> ".env"
             fi
             if grep -q "^${PROD_AIRFLOW_WEBSERVER_TEST_CMD_URL}=" ".env"; then
-                sed -i "s|^${PROD_AIRFLOW_WEBSERVER_TEST_CMD_URL}=.*|${PROD_AIRFLOW_WEBSERVER_TEST_CMD_URL}=${PROD_AIRFLOW_WEBSERVER_TEST_CMD_URL}|" ".env"
+                sed -i "s|^PROD_AIRFLOW_WEBSERVER_TEST_CMD_URL=.*|${PROD_AIRFLOW_WEBSERVER_TEST_CMD_URL}=${PROD_AIRFLOW_WEBSERVER_TEST_CMD_URL}|" ".env"
             else
                 echo "${PROD_AIRFLOW_WEBSERVER_TEST_CMD_URL}=${PROD_AIRFLOW_WEBSERVER_TEST_CMD_URL}" >> ".env"
             fi
             if grep -q "^${PROD_BLOCKCHAIN_API_KEY}=" ".env"; then
-                sed -i "s|^${PROD_BLOCKCHAIN_API_KEY}=.*|${PROD_BLOCKCHAIN_API_KEY}=${PROD_BLOCKCHAIN_API_KEY}|" ".env"
+                sed -i "s|^PROD_BLOCKCHAIN_API_KEY=.*|${PROD_BLOCKCHAIN_API_KEY}=${PROD_BLOCKCHAIN_API_KEY}|" ".env"
             else
                 echo "${PROD_BLOCKCHAIN_API_KEY}=${PROD_BLOCKCHAIN_API_KEY}" >> ".env"
             fi
             if grep -q "^${PROD_CLIENT_DB_NAME}=" ".env"; then
-                sed -i "s|^${PROD_CLIENT_DB_NAME}=.*|${PROD_CLIENT_DB_NAME}=${PROD_CLIENT_DB_NAME}|" ".env"
+                sed -i "s|^PROD_CLIENT_DB_NAME=.*|${PROD_CLIENT_DB_NAME}=${PROD_CLIENT_DB_NAME}|" ".env"
             else
                 echo "${PROD_CLIENT_DB_NAME}=${PROD_CLIENT_DB_NAME}" >> ".env"
             fi
             if grep -q "^${PROD_CLIENT_DB_PASSWD}=" ".env"; then
-                sed -i "s|^${PROD_CLIENT_DB_PASSWD}=.*|${PROD_CLIENT_DB_PASSWD}=${PROD_CLIENT_DB_PASSWD}|" ".env"
+                sed -i "s|^PROD_CLIENT_DB_PASSWD=.*|${PROD_CLIENT_DB_PASSWD}=${PROD_CLIENT_DB_PASSWD}|" ".env"
             else
                 echo "${PROD_CLIENT_DB_PASSWD}=${PROD_CLIENT_DB_PASSWD}" >> ".env"
             fi
             if grep -q "^${PROD_CLIENT_DB_USER}=" ".env"; then
-                sed -i "s|^${PROD_CLIENT_DB_USER}=.*|${PROD_CLIENT_DB_USER}=${PROD_CLIENT_DB_USER}|" ".env"
+                sed -i "s|^PROD_CLIENT_DB_USER=.*|${PROD_CLIENT_DB_USER}=${PROD_CLIENT_DB_USER}|" ".env"
             else
                 echo "${PROD_CLIENT_DB_USER}=${PROD_CLIENT_DB_USER}" >> ".env"
             fi
             if grep -q "^${PROD_GRAFANA_SECURITY_ADMIN_PASSWORD}=" ".env"; then
-                sed -i "s|^${PROD_GRAFANA_SECURITY_ADMIN_PASSWORD}=.*|${PROD_GRAFANA_SECURITY_ADMIN_PASSWORD}=${PROD_GRAFANA_SECURITY_ADMIN_PASSWORD}|" ".env"
+                sed -i "s|^PROD_GRAFANA_SECURITY_ADMIN_PASSWORD=.*|${PROD_GRAFANA_SECURITY_ADMIN_PASSWORD}=${PROD_GRAFANA_SECURITY_ADMIN_PASSWORD}|" ".env"
             else
                 echo "${PROD_GRAFANA_SECURITY_ADMIN_PASSWORD}=${PROD_GRAFANA_SECURITY_ADMIN_PASSWORD}" >> ".env"
             fi
             if grep -q "^${PROD_GRAFANA_SECURITY_ADMIN_USER}=" ".env"; then
-                sed -i "s|^${PROD_GRAFANA_SECURITY_ADMIN_USER}=.*|${PROD_GRAFANA_SECURITY_ADMIN_USER}=${PROD_GRAFANA_SECURITY_ADMIN_USER}|" ".env"
+                sed -i "s|^PROD_GRAFANA_SECURITY_ADMIN_USER=.*|${PROD_GRAFANA_SECURITY_ADMIN_USER}=${PROD_GRAFANA_SECURITY_ADMIN_USER}|" ".env"
             else
                 echo "${PROD_GRAFANA_SECURITY_ADMIN_USER}=${PROD_GRAFANA_SECURITY_ADMIN_USER}" >> ".env"
             fi
             if grep -q "^${PROD_GRAFANA_PORT}=" ".env"; then
-                sed -i "s|^${PROD_GRAFANA_PORT}=.*|${PROD_GRAFANA_PORT}=${PROD_GRAFANA_PORT}|" ".env"
+                sed -i "s|^PROD_GRAFANA_PORT=.*|${PROD_GRAFANA_PORT}=${PROD_GRAFANA_PORT}|" ".env"
             else
                 echo "${PROD_GRAFANA_PORT}=${PROD_GRAFANA_PORT}" >> ".env"
             fi
             if grep -q "^${PROD_KAFKA_ADVERTISED_LISTENERS}=" ".env"; then
-                sed -i "s|^${PROD_KAFKA_ADVERTISED_LISTENERS}=.*|${PROD_KAFKA_ADVERTISED_LISTENERS}=${PROD_KAFKA_ADVERTISED_LISTENERS}|" ".env"
+                sed -i "s|^PROD_KAFKA_ADVERTISED_LISTENERS=.*|${PROD_KAFKA_ADVERTISED_LISTENERS}=${PROD_KAFKA_ADVERTISED_LISTENERS}|" ".env"
             else
                 echo "${PROD_KAFKA_ADVERTISED_LISTENERS}=${PROD_KAFKA_ADVERTISED_LISTENERS}" >> ".env"
             fi
             if grep -q "^${PROD_KAFKA_BROKER_ID}=" ".env"; then
-                sed -i "s|^${PROD_KAFKA_BROKER_ID}=.*|${PROD_KAFKA_BROKER_ID}=${PROD_KAFKA_BROKER_ID}|" ".env"
+                sed -i "s|^PROD_KAFKA_BROKER_ID=.*|${PROD_KAFKA_BROKER_ID}=${PROD_KAFKA_BROKER_ID}|" ".env"
             else
                 echo "${PROD_KAFKA_BROKER_ID}=${PROD_KAFKA_BROKER_ID}" >> ".env"
             fi
             if grep -q "^${PROD_KAFKA_LISTENER_SECURITY_PROTOCOL_MAP}=" ".env"; then
-                sed -i "s|^${PROD_KAFKA_LISTENER_SECURITY_PROTOCOL_MAP}=.*|${PROD_KAFKA_LISTENER_SECURITY_PROTOCOL_MAP}=${PROD_KAFKA_LISTENER_SECURITY_PROTOCOL_MAP}|" ".env"
+                sed -i "s|^PROD_KAFKA_LISTENER_SECURITY_PROTOCOL_MAP=.*|${PROD_KAFKA_LISTENER_SECURITY_PROTOCOL_MAP}=${PROD_KAFKA_LISTENER_SECURITY_PROTOCOL_MAP}|" ".env"
             else
                 echo "${PROD_KAFKA_LISTENER_SECURITY_PROTOCOL_MAP}=${PROD_KAFKA_LISTENER_SECURITY_PROTOCOL_MAP}" >> ".env"
             fi
             if grep -q "^${PROD_KAFKA_LISTENERS}=" ".env"; then
-                sed -i "s|^${PROD_KAFKA_LISTENERS}=.*|${PROD_KAFKA_LISTENERS}=${PROD_KAFKA_LISTENERS}|" ".env"
+                sed -i "s|^PROD_KAFKA_LISTENERS=.*|${PROD_KAFKA_LISTENERS}=${PROD_KAFKA_LISTENERS}|" ".env"
             else
                 echo "${PROD_KAFKA_LISTENERS}=${PROD_KAFKA_LISTENERS}" >> ".env"
             fi
             if grep -q "^${PROD_KAFKA_PORT}=" ".env"; then
-                sed -i "s|^${PROD_KAFKA_PORT}=.*|${PROD_KAFKA_PORT}=${PROD_KAFKA_PORT}|" ".env"
+                sed -i "s|^PROD_KAFKA_PORT=.*|${PROD_KAFKA_PORT}=${PROD_KAFKA_PORT}|" ".env"
             else
                 echo "${PROD_KAFKA_PORT}=${PROD_KAFKA_PORT}" >> ".env"
             fi
             if grep -q "^${PROD_KAFKA_ZOOKEEPER_CONNECT}=" ".env"; then
-                sed -i "s|^${PROD_KAFKA_ZOOKEEPER_CONNECT}=.*|${PROD_KAFKA_ZOOKEEPER_CONNECT}=${PROD_KAFKA_ZOOKEEPER_CONNECT}|" ".env"
+                sed -i "s|^PROD_KAFKA_ZOOKEEPER_CONNECT=.*|${PROD_KAFKA_ZOOKEEPER_CONNECT}=${PROD_KAFKA_ZOOKEEPER_CONNECT}|" ".env"
             else
                 echo "${PROD_KAFKA_ZOOKEEPER_CONNECT}=${PROD_KAFKA_ZOOKEEPER_CONNECT}" >> ".env"
             fi
             if grep -q "^${PROD_KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR}=" ".env"; then
-                sed -i "s|^${PROD_KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR}=.*|${PROD_KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR}=${PROD_KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR}|" ".env"
+                sed -i "s|^PROD_KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR=.*|${PROD_KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR}=${PROD_KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR}|" ".env"
             else
                 echo "${PROD_KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR}=${PROD_KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR}" >> ".env"
             fi
             if grep -q "^${PROD_REDIS_PASSWORD}=" ".env"; then
-                sed -i "s|^${PROD_REDIS_PASSWORD}=.*|${PROD_REDIS_PASSWORD}=${PROD_REDIS_PASSWORD}|" ".env"
+                sed -i "s|^PROD_REDIS_PASSWORD=.*|${PROD_REDIS_PASSWORD}=${PROD_REDIS_PASSWORD}|" ".env"
             else
                 echo "${PROD_REDIS_PASSWORD}=${PROD_REDIS_PASSWORD}" >> ".env"
             fi
             if grep -q "^${PROD_ZOOKEEPER_CLIENT_PORT}=" ".env"; then
-                sed -i "s|^${PROD_ZOOKEEPER_CLIENT_PORT}=.*|${PROD_ZOOKEEPER_CLIENT_PORT}=${PROD_ZOOKEEPER_CLIENT_PORT}|" ".env"
+                sed -i "s|^PROD_ZOOKEEPER_CLIENT_PORT=.*|${PROD_ZOOKEEPER_CLIENT_PORT}=${PROD_ZOOKEEPER_CLIENT_PORT}|" ".env"
             else
                 echo "${PROD_ZOOKEEPER_CLIENT_PORT}=${PROD_ZOOKEEPER_CLIENT_PORT}" >> ".env"
             fi
             if grep -q "^${PROD_ZOOKEEPER_TICK_TIME}=" ".env"; then
-                sed -i "s|^${PROD_ZOOKEEPER_TICK_TIME}=.*|${PROD_ZOOKEEPER_TICK_TIME}=${PROD_ZOOKEEPER_TICK_TIME}|" ".env"
+                sed -i "s|^PROD_ZOOKEEPER_TICK_TIME=.*|${PROD_ZOOKEEPER_TICK_TIME}=${PROD_ZOOKEEPER_TICK_TIME}|" ".env"
             else
                 echo "${PROD_ZOOKEEPER_TICK_TIME}=${PROD_ZOOKEEPER_TICK_TIME}" >> ".env"
             fi
