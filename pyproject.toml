@@ -6,9 +6,9 @@ authors = []
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = ">3.10, <=3.13"
+python = ">3.9, <=3.13"
 poethepoet = "^0.24.4"
-ansible = "^9.2.0"
+redis = "^5.0.1"
 
 
 [tool.poetry.group.scraper.dependencies]
@@ -37,6 +37,10 @@ isort = "^5.13.2"
 
 [tool.poetry.group.wss.dependencies]
 websockets = "^12.0"
+
+[tool.poetry.group.ai.dependencies]
+transformers = "^4.37.2"
+torch = "^2.2.0"
 
 [build-system]
 requires = ["poetry-core"]

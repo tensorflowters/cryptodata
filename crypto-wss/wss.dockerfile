@@ -20,3 +20,5 @@ COPY ./pyproject.toml ./poetry.lock ./
 # Install project dependencies
 RUN poetry config virtualenvs.create false \
     && poetry install --only wss,db --no-interaction --no-ansi --no-root
+
+CMD ["tail", "/dev/null"]

@@ -1,6 +1,6 @@
 import os
 
-from sqlalchemy import (
+from sqlalchemy import ( # type: ignore
     ARRAY,
     BigInteger,
     Column,
@@ -56,3 +56,16 @@ if not inspect(engine).has_table("btc_prices"):
     table.create(engine)
 else:
     print("Table btc_prices already exists")
+
+if not inspect(engine).has_table("currencies_predictions"):
+    print("Table currencies_predictions does not exist, creating it...")
+    table = Table(
+        "currencies_predictions",
+        metadata,
+        Column("id", Integer, primary_key=True),
+        Column("currencies", ARRAY(String)),
+        Column("label", String) # positive, negative, neutral
+    )
+    table.create(engine)
+else:
+    print("Table currencies_predictions already exists")
