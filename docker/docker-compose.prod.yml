@@ -44,7 +44,7 @@ services:
       airflow-init:
         condition: service_completed_successfully
     environment:
-    <<: *airflow-common-env
+      <<: *airflow-common-env
     healthcheck:
       interval: 30s
       retries: 5
@@ -234,7 +234,7 @@ services:
       - ${AIRFLOW_CLI_PROFILE}
 
   airflow-db:
-    image: postgres:16.2-alpine3.18
+    image: postgres:15-alpine3.18
     environment:
       POSTGRES_DB: $AIRFLOW_DB_NAME
       POSTGRES_PASSWORD: $AIRFLOW_DB_PASSWD
@@ -251,13 +251,13 @@ services:
       - airflow-db-volume:/var/lib/postgresql/data
 
   client_db:
-    image: postgres:16.2-alpine3.18
+    image: postgres:15-alpine3.18
     environment:
       POSTGRES_DB: ${CLIENT_DB_NAME}
       POSTGRES_PASSWORD: ${CLIENT_DB_PASSWD}
       POSTGRES_USER: ${CLIENT_DB_USER}
     healthcheck:
-      test: [ "CMD", "pg_isready", "-U", "airflow" ]
+      test: [ "CMD", "pg_isready", "-U", "client" ]
       interval: 10s
       retries: 5
       start_period: 5s
