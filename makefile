@@ -3,7 +3,7 @@
 
 MAKE_EXECUTOR_ENV=make -f commands/dev.mk
 MAKE_EXECUTOR_REGISTERY=make -f commands/docker-build.mk
-MAKE_EXECUTOR_DEPLOY=make -f commands/deploy.mk
+MAKE_EXECUTOR_DEPLOY=make -f commands/prod.mk
 
 devup:
 	@${MAKE_EXECUTOR_ENV} devup
@@ -35,3 +35,7 @@ prod_up:
 
 prod_clean:
 	@${MAKE_EXECUTOR_DEPLOY} prod_rm
+
+
+fix_grafana_permissions:
+	@${MAKE_EXECUTOR_ENV} fix_grafana_permissions
