@@ -44,7 +44,7 @@ services:
       airflow-init:
         condition: service_completed_successfully
     environment:
-    <<: *airflow-common-env
+      <<: *airflow-common-env
     healthcheck:
       interval: 30s
       retries: 5
