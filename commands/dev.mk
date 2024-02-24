@@ -49,3 +49,6 @@ airflow_backfill_scrap_cryptopanic:
 	@${AIRFLOW_EXECUTOR} dags backfill scrap_cryptopanic \
     	--start-date 2015-06-01 \
     	--end-date 2015-06-07
+
+fix_grafana_permissions:
+	@${DOCKER_EXECUTOR} exec grafana grafana cli admin reset-admin-password admin
