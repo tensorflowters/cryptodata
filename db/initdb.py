@@ -4,6 +4,7 @@ from sqlalchemy import ( # type: ignore
     ARRAY,
     BigInteger,
     Column,
+    ForeignKey,
     Integer,
     MetaData,
     String,
@@ -64,7 +65,8 @@ if not inspect(engine).has_table("currencies_predictions"):
         metadata,
         Column("id", Integer, primary_key=True),
         Column("currencies", ARRAY(String)),
-        Column("label", String) # positive, negative, neutral
+        Column("label", String),  # positive, negative, neutral
+        Column("website_id", Integer, ForeignKey("scraped_websites.id"), unique=True),
     )
     table.create(engine)
 else:
