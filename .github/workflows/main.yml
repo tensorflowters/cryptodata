@@ -14,20 +14,6 @@ jobs:
             - name: Set up Docker Buildx
               uses: docker/setup-buildx-action@v1
 
-            - name: Pull Docker images
-              run: docker compose pull
-
-            - name: Login to Docker Hub
-              run: echo "${{ secrets.PROD_DOCKER_HUB_PASSWORD }}" | docker login -u ${{ secrets.PROD_DOCKER_HUB_USERNAME }} --password-stdin
-
-            - name: Build Docker images
-              run: docker compose build
-              working-directory: ./docker
-
-            - name: Push Docker images
-              run: docker compose push
-              working-directory: ./docker
-
             - name: Print GitHub context
               env:
                   GITHUB_CONTEXT: ${{ toJson(github) }}
@@ -189,15 +175,15 @@ jobs:
                   else
                       echo "CLIENT_DB_USER=${CLIENT_DB_USER}" >> ".env"
                   fi
-                  if grep -q "^DOCKER_HUB_USERNAME=" ".env"; then
-                      sed -i "s|^DOCKER_HUB_USERNAME=.*|DOCKER_HUB_USERNAME=${DOCKER_HUB_USERNAME}|" ".env"
+                  if grep -q "^DOCKER_HUB_USERNAME=" "./env-vars/.env.dockerhub"; then
+                      sed -i "s|^DOCKER_HUB_USERNAME=.*|DOCKER_HUB_USERNAME=${DOCKER_HUB_USERNAME}|" "./env-vars/.env.dockerhub"
                   else
-                      echo "DOCKER_HUB_USERNAME=${DOCKER_HUB_USERNAME}" >> ".env"
+                      echo "DOCKER_HUB_USERNAME=${DOCKER_HUB_USERNAME}" >> "./env-vars/.env.dockerhub"
                   fi
-                  if grep -q "^DOCKER_HUB_PASSWORD=" ".env"; then
-                      sed -i "s|^DOCKER_HUB_PASSWORD=.*|DOCKER_HUB_PASSWORD=${DOCKER_HUB_PASSWORD}|" ".env"
+                  if grep -q "^DOCKER_HUB_PASSWORD=" "./env-vars/.env.dockerhub"; then
+                      sed -i "s|^DOCKER_HUB_PASSWORD=.*|DOCKER_HUB_PASSWORD=${DOCKER_HUB_PASSWORD}|" "./env-vars/.env.dockerhub"
                   else
-                      echo "DOCKER_HUB_PASSWORD=${DOCKER_HUB_PASSWORD}" >> ".env"
+                      echo "DOCKER_HUB_PASSWORD=${DOCKER_HUB_PASSWORD}" >> "./env-vars/.env.dockerhub"
                   fi
                   if grep -q "^GRAFANA_SECURITY_ADMIN_PASSWORD=" ".env"; then
                       sed -i "s|^GRAFANA_SECURITY_ADMIN_PASSWORD=.*|GRAFANA_SECURITY_ADMIN_PASSWORD=${GRAFANA_SECURITY_ADMIN_PASSWORD}|" ".env"
@@ -265,6 +251,16 @@ jobs:
                       echo "ZOOKEEPER_TICK_TIME=${ZOOKEEPER_TICK_TIME}" >> ".env"
                   fi
                   make prod_build
+
+            - name: Build  and push Docker images
+              run: make build_registery_all
+
+            - name: Login to Docker Hub
+              run: echo "${{ secrets.PROD_DOCKER_HUB_PASSWORD }}" | docker login -u ${{ secrets.PROD_DOCKER_HUB_USERNAME }} --password-stdin
+
+            - name: Pull Docker images
+              run: docker-compose -f docker-compose.prod.yml pull
+              working-directory: ./docker
 
             - name: Run Updated Docker Compose Environment
               run: |
