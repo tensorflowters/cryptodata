@@ -1,11 +1,11 @@
 import json
 import os
 
-from scraper import get_binance_article_content # type: ignore
-from transformers import pipeline # type: ignore
-from kafka import KafkaConsumer # type: ignore
-from sqlalchemy import MetaData, create_engine # type: ignore
-from sqlalchemy.orm import sessionmaker # type: ignore
+from kafka import KafkaConsumer  # type: ignore
+from scraper import get_binance_article_content  # type: ignore
+from sqlalchemy import MetaData, create_engine  # type: ignore
+from sqlalchemy.orm import sessionmaker  # type: ignore
+from transformers import pipeline  # type: ignore
 
 sentiment_pipeline = pipeline("sentiment-analysis", model="ProsusAI/finbert")
 
@@ -18,10 +18,12 @@ engine = create_engine(f"postgresql://{db_u}:{db_pwd}@client_db/{db_name}")
 metadata = MetaData()
 metadata.reflect(bind=engine)
 currencies_prediction_table = metadata.tables["currencies_predictions"]
+scraped_websites_table = metadata.tables["scraped_websites"]
 
 # Create a session
 Session = sessionmaker(bind=engine)
 session = Session()
+
 
 def main():
     consumer = KafkaConsumer(
@@ -37,12 +39,23 @@ def main():
 
         article_uri = message.value.get("link_page", None)
         currencies = message.value.get("currencies", None)
-        if not currencies \
-            or not isinstance(currencies, list) \
-            or len(currencies) == 0 \
-            or not article_uri \
-            or not isinstance(article_uri, str) \
-            or not article_uri.startswith("https://www.binance.com/en/feed"):
+        hashed_url = message.value.get("hashed_url", None)
+        if (
+            not currencies
+            or not isinstance(currencies, list)
+            or len(currencies) == 0
+            or not article_uri
+            or not isinstance(article_uri, str)
+            or not article_uri.startswith("https://www.binance.com/en/feed")
+        ):
+            continue
+
+        scraped_website = (
+            session.query(scraped_websites_table)
+            .filter_by(hashed_url=hashed_url)
+            .first()
+        )
+        if not scraped_website:
             continue
 
         try:
@@ -57,11 +70,14 @@ def main():
         result = result[0]
 
         insert_data = currencies_prediction_table.insert().values(
-            currencies=currencies,
-            label=result["label"]
+            currencies=currencies, label=result["label"], website_id=scraped_website.id
         )
-        session.execute(insert_data)
-        session.commit()
+        try:
+            session.execute(insert_data)
+            session.commit()
+        except Exception as exc:
+            print(f"Error while inserting into the database: {exc}")
+            session.rollback()
 
 
 main()
