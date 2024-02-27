@@ -253,7 +253,7 @@ jobs:
                   make prod_build
 
             - name: Build  and push Docker images
-              run: make build_registery_all
+              run: make prod_build_registery_all
 
             - name: Login to Docker Hub
               run: echo "${{ secrets.PROD_DOCKER_HUB_PASSWORD }}" | docker login -u ${{ secrets.PROD_DOCKER_HUB_USERNAME }} --password-stdin
