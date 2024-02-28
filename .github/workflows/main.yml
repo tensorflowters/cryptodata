@@ -256,7 +256,7 @@ jobs:
               run: echo "${{ secrets.PROD_DOCKER_HUB_PASSWORD }}" | docker login -u ${{ secrets.PROD_DOCKER_HUB_USERNAME }} --password-stdin
 
             - name: Pull Docker images
-              run: docker-compose -f docker-compose.prod.yml pull
+              run: docker compose -f docker-compose.prod.yml pull
               working-directory: ./docker
 
             - name: Run Updated Docker Compose Environment
